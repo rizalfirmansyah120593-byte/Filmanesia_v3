@@ -65,12 +65,12 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
     <aside className="
       fixed top-0 left-0 h-full z-50
       hidden md:flex flex-col
-      ${isExpanded ? 'w-[260px]' : 'w-[84px]'}
+      w-[72px] ${isExpanded ? 'md:w-[260px] shadow-[12px_0_40px_rgba(0,0,0,0.45)]' : 'shadow-[4px_0_18px_rgba(0,0,0,0.2)]'}
       bg-gray-900/95 backdrop-blur-xl
       border-r border-white/10
       shadow-2xl shadow-black/30
       overflow-hidden
-      transition-[width] duration-300 ease-in-out
+      transition-[width,box-shadow] duration-300 ease-in-out
       select-none
     ">
 

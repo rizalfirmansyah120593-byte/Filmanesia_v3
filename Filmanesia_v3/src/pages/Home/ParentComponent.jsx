@@ -145,7 +145,7 @@ function ParentComponent() {
       )}
 
       {/* Page content */}
-      <div className="md:pl-[84px] pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0">
+      <div className="md:pl-[72px] pb-[calc(4.5rem+env(safe-area-inset-bottom))] md:pb-0">
         <Outlet />
 
         {/* Footer — home page only */}
