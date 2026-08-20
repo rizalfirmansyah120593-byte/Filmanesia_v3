@@ -124,8 +124,8 @@ function Series() {
         </div>
 
         {/* Desktop genre filters: fixed inside the sticky header */}
-        <div className="hidden md:flex justify-center overflow-x-auto hide-scrollbar mt-4 -mx-6 px-6 pb-1">
-          <div className="flex w-max max-w-full justify-center gap-2">
+        <div className="hidden md:flex justify-center mt-4 px-2 pb-1">
+          <div className="flex max-w-[1180px] flex-wrap justify-center gap-2">
             {allCategories.map(cat => {
               const isActive = cat.id === null ? genreId === null : genreId === cat.id;
               return (
