@@ -146,7 +146,7 @@ export default function TrendingRow({
     if (!autoScrollEnabled || isAutoPaused || isDragging) return undefined;
     let animationId;
     let previousTime = null;
-    const speed = 13; // pixels per second
+    const speed = 34; // pixels per second: faster, while remaining smooth
     const animate = (time) => {
       const el = rowRef.current;
       if (previousTime === null) previousTime = time;
