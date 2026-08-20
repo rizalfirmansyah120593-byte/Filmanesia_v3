@@ -1,6 +1,7 @@
 import { memo, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaServer } from 'react-icons/fa';
+import { addSubtitlePreference, getPreferredSubtitle } from '../subtitlePreference';
 
 const SOURCES = [
   { name: 'Server 1 (VidNest)', url: (id, s, e) => `https://vidnest.fun/tv/${id}/${s}/${e}` },
@@ -21,7 +22,8 @@ const VideoPlayer = ({ tvId, season = 1, episode = 1 }) => {
 
     if (!tvId) return null;
 
-    const iframeSrc = SOURCES[sourceIdx].url(tvId, season, episode);
+    const subtitle = getPreferredSubtitle();
+    const iframeSrc = addSubtitlePreference(SOURCES[sourceIdx].url(tvId, season, episode), subtitle);
     
     return (
         <div className="w-full flex flex-col gap-3">
