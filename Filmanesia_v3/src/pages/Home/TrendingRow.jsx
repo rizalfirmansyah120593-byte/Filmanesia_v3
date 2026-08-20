@@ -137,6 +137,21 @@ export default function TrendingRow({
   const dragStateRef = useRef({ active: false, startX: 0, startScrollLeft: 0, moved: false });
   const suppressClickRef = useRef(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isAutoPaused, setIsAutoPaused] = useState(false);
+  const autoScrollEnabled = type === 'movie' && variant === 'trending';
+
+  // Gently advance the Trending Movies row. Hovering or dragging pauses it so
+  // the user can inspect and click a card without the row moving underneath.
+  useEffect(() => {
+    if (!autoScrollEnabled || isAutoPaused || isDragging) return undefined;
+    const timer = window.setInterval(() => {
+      const el = rowRef.current;
+      if (!el || el.scrollWidth <= el.clientWidth) return;
+      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
+      el.scrollLeft = atEnd ? 0 : el.scrollLeft + 0.45;
+    }, 40);
+    return () => window.clearInterval(timer);
+  }, [autoScrollEnabled, isAutoPaused, isDragging]);
 
   const scroll = (dir) => {
     const el = rowRef.current;
@@ -245,7 +260,8 @@ export default function TrendingRow({
         ref={rowRef}
         onMouseDown={onRowMouseDown}
         onMouseMove={onRowMouseMove}
-        onMouseLeave={endRowDrag}
+        onMouseEnter={() => setIsAutoPaused(true)}
+        onMouseLeave={() => { endRowDrag(); setIsAutoPaused(false); }}
         className={`flex gap-3 overflow-x-auto hide-scrollbar px-4 sm:px-6 select-none ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
         style={{ paddingTop: 24, paddingBottom: 24, marginTop: -16, marginBottom: -16 }}
       >
