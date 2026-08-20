@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/Filmanesia.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
+  <script>
+    function onTurnstileLoad() {
+      window._turnstileReady = true;
+      window.dispatchEvent(new Event('turnstile-ready'));
+    }
+  </script>
+
+  <!-- Web App / PWA -->
+  <meta name="theme-color" content="#000000" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Filmanesia" />
+  <link rel="apple-touch-icon" href="/Filmanesia.svg" />
+  <link rel="manifest" href="/manifest.json" />
+
+  <!-- Primary SEO -->
+  <title>Filmanesia — Free Movie &amp; TV Show Streaming | Watch Online</title>
+  <meta name="description"
+    content="Filmanesia is a free streaming platform to watch movies and TV shows online. Discover trending titles, browse by genre, and stream instantly — no sign-up required." />
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="keywords"
+    content="Filmanesia, Filmanesia, free streaming, watch movies online, watch TV shows online, free movie streaming, trending movies, best TV series, Filmanesia app" />
+  <meta name="author" content="Filmanesia" />
+  <meta name="application-name" content="Filmanesia" />
+  <link rel="canonical" href="https://www.filmanesia.com/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Filmanesia" />
+  <meta property="og:url" content="https://www.filmanesia.com/" />
+  <meta property="og:title" content="Filmanesia — Free Movie &amp; TV Show Streaming" />
+  <meta property="og:description"
+    content="Filmanesia is a free streaming platform. Watch movies and TV shows online instantly — no subscription needed." />
+  <meta property="og:image" content="https://www.filmanesia.com/Filmanesia2.png" />
+  <meta property="og:image:alt" content="Filmanesia — Free Movie &amp; TV Show Streaming" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="en_US" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Filmanesiaapp" />
+  <meta name="twitter:creator" content="@Filmanesiaapp" />
+  <meta name="twitter:title" content="Filmanesia — Free Movie &amp; TV Show Streaming" />
+  <meta name="twitter:description"
+    content="Filmanesia is a free streaming platform. Watch movies and TV shows online instantly — no subscription needed." />
+  <meta name="twitter:image" content="https://www.filmanesia.com/Filmanesia2.png" />
+  <meta name="twitter:image:alt" content="Filmanesia — Free Movie &amp; TV Show Streaming" />
+
+  <!-- JSON-LD: WebSite schema with Sitelinks Searchbox -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "@id": "https://www.filmanesia.com/#website",
+      "name": "Filmanesia",
+      "alternateName": ["Filmanesia App", "Filmanesia"],
+      "url": "https://www.filmanesia.com/",
+      "description": "Filmanesia is a free online streaming platform to watch movies and TV shows instantly.",
+      "inLanguage": "en-US",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.filmanesia.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+  <!-- JSON-LD: Organization (Brand Entity) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://www.filmanesia.com/#organization",
+      "name": "Filmanesia",
+      "alternateName": "Filmanesia App",
+      "url": "https://www.filmanesia.com/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.filmanesia.com/Filmanesia.svg",
+        "width": 512,
+        "height": 512
+      },
+      "description": "Filmanesia is a free streaming platform where you can watch movies and TV shows online without a subscription.",
+      "sameAs": [
+        "https://www.filmanesia.com"
+      ]
+    }
+    </script>
+
+  <!-- JSON-LD: WebApplication (Product Entity) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "@id": "https://www.filmanesia.com/#webapp",
+      "name": "Filmanesia",
+      "alternateName": ["Filmanesia App", "Filmanesia streaming"],
+      "url": "https://www.filmanesia.com/",
+      "applicationCategory": "EntertainmentApplication",
+      "operatingSystem": "Web, Android, iOS",
+      "browserRequirements": "Requires JavaScript",
+      "description": "Filmanesia lets you stream movies and TV shows for free online. Browse thousands of titles by genre and watch instantly — no account required.",
+      "screenshot": "https://www.filmanesia.com/Filmanesia2.png",
+      "featureList": "Free streaming, No subscription, Movies, TV Shows, Anime, K-Drama, Search, Genre browsing",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "publisher": {
+        "@id": "https://www.filmanesia.com/#organization"
+      }
+    }
+    </script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5QZ4FQ33WN"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-5QZ4FQ33WN');
+  </script>
+  <meta name='dmca-site-verification' content='NnVjSnA3ZGtacC9vVGJ2K1d6SHQvdz090' />
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+  <!-- DMCA Badge Helper -->
+  <script src="//images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
+  <!-- Ad Network -->
+  <script>
+    (function (s) {
+      s.dataset.zone = '11498359';
+      s.src = 'https://llvpn.com/tag.min.js'
+    })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
+  </script>
+  <!-- Vignette Ad -->
+  <script>
+    (function (s) {
+      s.dataset.zone = '11498422';
+      s.src = 'https://dd133.com/vignette.min.js'
+    })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
+  </script>
+</body>
+</html>

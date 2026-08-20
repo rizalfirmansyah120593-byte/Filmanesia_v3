@@ -1,0 +1,44 @@
+{
+  "rewrites": [
+    {
+      "source": "/sw.js",
+      "destination": "/sw.js"
+    },
+    {
+      "source": "/((?!sw\\.js|manifest\\.json|robots\\.txt|sitemap\\.xml|.*\\.svg|.*\\.png|.*\\.ico|.*\\.txt|.*\\.xml).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/sw.js",
+      "headers": [
+        {
+          "key": "Service-Worker-Allowed",
+          "value": "/"
+        },
+        {
+          "key": "Content-Type",
+          "value": "application/javascript"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Permissions-Policy",
+          "value": "fullscreen=*, picture-in-picture=*, autoplay=*, encrypted-media=*, screen-wake-lock=*"
+        },
+        {
+          "key": "Feature-Policy",
+          "value": "fullscreen *; picture-in-picture *; autoplay *; encrypted-media *"
+        }
+      ]
+    }
+  ]
+}

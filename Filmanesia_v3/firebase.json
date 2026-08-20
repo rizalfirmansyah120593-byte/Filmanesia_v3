@@ -1,0 +1,17 @@
+{
+  "auth": {
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "Filmanesia",
+        "supportEmail": "contact@filmanesia.com"
+      }
+    }
+  },
+  "firestore": {
+    "database": "(default)",
+    "location": "asia-southeast3",
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }
+}

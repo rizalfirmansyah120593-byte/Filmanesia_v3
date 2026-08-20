@@ -1,0 +1,17 @@
+{
+  "name": "Filmanesia",
+  "short_name": "Filmanesia",
+  "description": "Stream Movies & TV Shows Free",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/Filmanesia.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
