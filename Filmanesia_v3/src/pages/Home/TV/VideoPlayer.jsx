@@ -54,6 +54,7 @@ const VideoPlayer = ({ tvId, season = 1, episode = 1 }) => {
                         className="absolute inset-0 w-full h-full border-0"
                         allow="fullscreen *; picture-in-picture *; autoplay *; encrypted-media *; screen-wake-lock *;"
                         allowFullScreen
+                        sandbox="allow-forms allow-scripts allow-same-origin allow-presentation"
                         webkitallowfullscreen="true"
                         mozallowfullscreen="true"
                         referrerPolicy="origin"
