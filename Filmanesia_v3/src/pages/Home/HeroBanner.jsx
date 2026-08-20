@@ -225,9 +225,9 @@ export default function HeroBanner() {
               onClick={() => { if (i !== active) goTo(i); }}
               aria-label={`Slide ${i + 1}`}
               className="relative overflow-hidden rounded-full transition-all duration-300"
-              style={{ width: i === active ? 28 : 8, height: 8 }}
+              style={{ width: 44, height: 44 }}
             >
-              <span className="absolute inset-0 rounded-full bg-gray-600/50" />
+              <span className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-gray-600/50 ${i === active ? 'w-7 h-2' : 'w-2 h-2'}`} />
               {i === active ? (
                 <span
                   key={barKey}

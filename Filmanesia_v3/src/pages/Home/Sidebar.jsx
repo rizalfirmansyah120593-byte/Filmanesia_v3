@@ -121,6 +121,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
             <button
               key={id}
               onClick={() => onNavigate(id)}
+              aria-label={label}
               title={label}
               className={`
                 relative flex items-center gap-4 px-4 py-3.5 rounded-2xl
@@ -160,6 +161,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
                   <button
                     key={genre.id}
                     onClick={() => onGenreSelect && onGenreSelect(genre.id)}
+                    aria-label={genre.name}
                     title={genre.name}
                     className={`
                       relative flex items-center gap-4 px-4 py-2.5 rounded-2xl
