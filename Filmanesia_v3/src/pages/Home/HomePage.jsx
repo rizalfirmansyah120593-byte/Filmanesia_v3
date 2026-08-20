@@ -86,6 +86,16 @@ export default function HomePage() {
           onSelect={handleSelect}
           onSeeAll={goMovies}
         />
+        <TrendingRow
+          title="K-Drama Series"
+          type="tv"
+          variant="popular"
+          originalLanguage={['ko']}
+          sinceYear={2020}
+          accent="#ec4899"
+          onSelect={handleSelect}
+          onSeeAll={goSeries}
+        />
 
         <SectionDivider label="TV Shows" />
 
