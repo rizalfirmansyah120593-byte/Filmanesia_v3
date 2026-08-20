@@ -6,7 +6,8 @@ import { BiCalendar } from 'react-icons/bi';
 
 const API_KEY  = import.meta.env.VITE_TMDB_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const BACKDROP = 'https://image.tmdb.org/t/p/w1280'; // Optimized down from 'original'
+// w780 is sufficient for the hero's rendered desktop width and saves several MB.
+const BACKDROP = 'https://image.tmdb.org/t/p/w780';
 const BACKDROP_THUMB = 'https://image.tmdb.org/t/p/w300';
 const INTERVAL = 7000;
 
@@ -131,7 +132,10 @@ export default function HeroBanner() {
         <img
           src={`${BACKDROP}${item.backdrop_path}`}
           alt={title}
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
+          width="780"
+          height="439"
           className="w-full h-full object-cover object-center"
         />
         {/* Cinematic overlays */}

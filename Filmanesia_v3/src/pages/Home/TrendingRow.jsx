@@ -5,7 +5,7 @@ import ContentCard from './ContentCard';
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
-const POSTER = 'https://image.tmdb.org/t/p/w500';
+const POSTER = 'https://image.tmdb.org/t/p/w342';
 
 /* variant → TMDB endpoint path */
 const endpointFor = (type, variant) => {
@@ -225,7 +225,7 @@ export default function TrendingRow({
 
   if (loading) {
     return (
-      <section className="mb-10">
+      <section className="content-row mb-10">
         <div className="flex items-center gap-3 px-4 sm:px-6 mb-5">
           <div className="w-24 h-5 rounded-md bg-white/[0.06] animate-pulse" />
         </div>
@@ -241,7 +241,7 @@ export default function TrendingRow({
   if (!items.length) return null;
 
   return (
-    <section className="mb-12 group/row" style={{ overflow: 'visible' }}>
+    <section className="content-row mb-12 group/row" style={{ overflow: 'visible' }}>
       {/* ── Section header ── */}
       <div className="flex items-center justify-between px-4 sm:px-6 mb-5">
         <div className="flex items-center gap-3">

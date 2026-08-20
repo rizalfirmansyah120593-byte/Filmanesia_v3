@@ -165,6 +165,8 @@ const ContentCard = memo(({
             src={src}
             alt={title}
             loading="lazy"
+            width="342"
+            height="513"
             className={`w-full h-full object-cover transition-all duration-700 ease-out ${
               imageLoaded ? 'opacity-100 blur-0 scale-100' : 'opacity-0 blur-md scale-105'
             }`}

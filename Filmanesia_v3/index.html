@@ -18,16 +18,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
-
-  <!-- Cloudflare Turnstile -->
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad" async defer></script>
-  <script>
-    function onTurnstileLoad() {
-      window._turnstileReady = true;
-      window.dispatchEvent(new Event('turnstile-ready'));
-    }
-  </script>
+    rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"></noscript>
 
   <!-- Web App / PWA -->
   <meta name="theme-color" content="#000000" />
@@ -141,35 +133,11 @@
     }
     </script>
 
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5QZ4FQ33WN"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-5QZ4FQ33WN');
-  </script>
   <meta name='dmca-site-verification' content='NnVjSnA3ZGtacC9vVGJ2K1d6SHQvdz090' />
 </head>
 
 <body>
   <div id="root"></div>
   <script type="module" src="/src/main.jsx"></script>
-  <!-- DMCA Badge Helper -->
-  <script src="//images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
-  <!-- Ad Network -->
-  <script>
-    (function (s) {
-      s.dataset.zone = '11498359';
-      s.src = 'https://llvpn.com/tag.min.js'
-    })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
-  </script>
-  <!-- Vignette Ad -->
-  <script>
-    (function (s) {
-      s.dataset.zone = '11498422';
-      s.src = 'https://dd133.com/vignette.min.js'
-    })([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))
-  </script>
 </body>
 </html>

@@ -32,6 +32,12 @@ html, body {
 #root {
   min-height: 100vh;
 }
+
+/* Rows below the fold should not compete with the hero's main-thread work. */
+.content-row {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 360px;
+}
 .fade-in {
     animation: fadeIn 0.2s ease-out forwards;
     will-change: transform, opacity;

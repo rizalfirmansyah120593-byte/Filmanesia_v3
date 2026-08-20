@@ -1,24 +1,24 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { Analytics } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import ParentComponent from './pages/Home/ParentComponent';
-import HomePage from './pages/Home/HomePage';
-import Movie from './pages/Home/Movie/Movie';
-import Series from './pages/Home/TV/Series';
-import SearchPage from './pages/Home/SearchPage';
-import MovieDetails from './pages/Home/Movie/MovieDetails';
-import TvDetails from './pages/Home/TV/TvDetails';
-import WatchlistPage from './pages/Home/WatchlistPage';
-import ResetPasswordPage from './pages/Home/ResetPasswordPage';
-import EmailVerificationPage from './pages/Home/EmailVerificationPage';
-import PersonPage from './pages/Home/Person/PersonPage';
-import AuthActionPage from './pages/Home/AuthActionPage';
+const HomePage = lazy(() => import('./pages/Home/HomePage'));
+const Movie = lazy(() => import('./pages/Home/Movie/Movie'));
+const Series = lazy(() => import('./pages/Home/TV/Series'));
+const SearchPage = lazy(() => import('./pages/Home/SearchPage'));
+const MovieDetails = lazy(() => import('./pages/Home/Movie/MovieDetails'));
+const TvDetails = lazy(() => import('./pages/Home/TV/TvDetails'));
+const WatchlistPage = lazy(() => import('./pages/Home/WatchlistPage'));
+const ResetPasswordPage = lazy(() => import('./pages/Home/ResetPasswordPage'));
+const EmailVerificationPage = lazy(() => import('./pages/Home/EmailVerificationPage'));
+const PersonPage = lazy(() => import('./pages/Home/Person/PersonPage'));
+const AuthActionPage = lazy(() => import('./pages/Home/AuthActionPage'));
 
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route element={<ParentComponent />}>
+      <Suspense fallback={<div className="min-h-screen bg-[#0a0c12]" aria-label="Loading Filmanesia" />}>
+        <Routes>
+          <Route element={<ParentComponent />}>
           <Route index element={<HomePage />} />
           <Route path="/movies" element={<Movie />} />
           <Route path="/movies/:genreSlug" element={<Movie />} />
@@ -37,10 +37,9 @@ function App() {
           {/* Legacy detail URLs (auto-canonicalized in page components) */}
           <Route path="/movie/:slug" element={<MovieDetails />} />
           <Route path="/tv/:slug" element={<TvDetails />} />
-        </Route>
-      </Routes>
-      <Analytics />
-      <SpeedInsights />
+          </Route>
+        </Routes>
+      </Suspense>
     </Router>
   );
 }

@@ -1,8 +1,8 @@
 import { Helmet } from 'react-helmet-async';
 
 const SITE_NAME = 'Filmanesia';
-const SITE_URL  = import.meta.env.VITE_SITE_URL || 'https://www.filmanesia.com';
-const DEFAULT_IMAGE = `${SITE_URL}/Filmanesia2.png`;
+const SITE_URL  = 'https://www.filmanesia.com';
+const DEFAULT_IMAGE = `${SITE_URL}/preview.png`;
 
 /**
  * Reusable SEO component.
@@ -43,6 +43,9 @@ export default function SEO({
       parsed.hostname = preferred.hostname;
       parsed.port = '';
       parsed.hash = '';
+      // Keep one canonical host and remove tracking/query parameters.
+      parsed.pathname = parsed.pathname || '/';
+      parsed.search = '';
       return parsed.toString();
     } catch {
       return SITE_URL;
