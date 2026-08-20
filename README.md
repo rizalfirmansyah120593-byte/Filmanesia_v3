@@ -4,7 +4,7 @@ A modern movie and TV show streaming discovery app built with **React 18**, **Vi
 
 ## Preview
 
-![Filmanesia Preview](public/preview.png)
+![Filmanesia Preview](Filmanesia_v3/public/preview.png)
 
 ---
 
