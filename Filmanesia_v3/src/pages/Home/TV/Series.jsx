@@ -123,6 +123,21 @@ function Series() {
           )}
         </div>
 
+        {/* Desktop genre filters: fixed inside the sticky header */}
+        <div className="hidden md:flex justify-center overflow-x-auto hide-scrollbar mt-4 -mx-6 px-6 pb-1">
+          <div className="flex w-max max-w-full justify-center gap-2">
+            {allCategories.map(cat => {
+              const isActive = cat.id === null ? genreId === null : genreId === cat.id;
+              return (
+                <button key={cat.id ?? 'trending'} onClick={() => handleGenreChip(cat.id)}
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${isActive ? 'bg-red-600 text-white shadow-md shadow-red-950/30' : 'bg-white/[0.07] text-gray-400 border border-white/10 hover:text-white hover:bg-white/[0.12]'}`}>
+                  {cat.name}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
         {/* Mobile genre chips */}
         <div className="md:hidden overflow-x-auto hide-scrollbar mt-3 -mx-4 px-4 pb-1">
           <div className="flex gap-2 w-max">

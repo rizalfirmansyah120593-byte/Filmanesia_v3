@@ -142,7 +142,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
       </nav>
 
       {/* Categories section — only on movies / series */}
-      {showCategories && (
+      {false && showCategories && (
         <>
           <div className="mx-[18px] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent shrink-0" />
           <div className="flex-1 flex flex-col min-h-0 pt-4 pb-4">
@@ -187,7 +187,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
       )}
 
       {/* Bottom spacer */}
-      {!showCategories && <div className="h-6 shrink-0" />}
+      <div className="h-6 shrink-0" />
 
       {/* User profile / Logout */}
       <div className="mt-auto pt-4 pb-6 px-[10px] shrink-0 border-t border-white/5 relative z-10 bg-gray-900/95">
