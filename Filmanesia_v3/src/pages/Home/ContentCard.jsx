@@ -192,37 +192,34 @@ const ContentCard = memo(({
           )}
 
           {/* Hover overlay — Play + Watchlist */}
-          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center gap-3">
+          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
             {/* Play */}
             <div className="w-12 h-12 rounded-full bg-red-600 shadow-lg shadow-red-700/50 flex items-center justify-center transform scale-75 group-hover:scale-100 transition-transform duration-200">
               <FaPlay className="text-white text-sm ml-0.5" />
             </div>
 
-            {/* Watchlist toggle */}
-            {showWatchlistBtn && (
-              <button
-                onClick={handleWatchlist}
-                title={inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
-                className={`w-12 h-12 rounded-full flex items-center justify-center
-                  transform scale-75 group-hover:scale-100 transition-all duration-200
-                  shadow-lg
-                  ${inWatchlist
-                    ? (isWatchlistPage ? 'bg-black/60 hover:bg-red-600/90 border border-white/20 hover:border-red-500' : 'bg-red-600 shadow-red-700/50')
-                    : 'bg-white/25 backdrop-blur-sm border border-white/30 hover:bg-white/35'
-                  }`}
-              >
-                {inWatchlist
-                  ? (isWatchlistPage ? <FaTrash className="text-white text-sm" /> : <FaCheck className="text-white text-sm" />)
-                  : <FaPlus className="text-white text-sm" />
-                }
-              </button>
-            )}
           </div>
         </div>
 
         {/* Info below poster */}
         <div className="px-2.5 pt-2 pb-2.5 shrink-0 bg-[#0d1117] relative z-20">
-          <p className="text-white text-[13px] font-semibold leading-tight line-clamp-1">{title}</p>
+          <div className="flex items-center gap-1.5 min-w-0">
+            <p className="text-white text-[13px] font-semibold leading-tight line-clamp-1 min-w-0 flex-1">{title}</p>
+            {showWatchlistBtn && (
+              <button
+                onClick={handleWatchlist}
+                title={inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
+                className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center border transition-colors shadow-sm ${inWatchlist
+                  ? (isWatchlistPage ? 'bg-black/60 border-white/20 hover:bg-red-600/90' : 'bg-red-600 border-red-500')
+                  : 'bg-white/[0.08] border-white/20 text-gray-300 hover:bg-red-600 hover:border-red-500'
+                }`}
+              >
+                {inWatchlist
+                  ? (isWatchlistPage ? <FaTrash className="text-white text-[9px]" /> : <FaCheck className="text-white text-[9px]" />)
+                  : <FaPlus className="text-white text-[10px]" />}
+              </button>
+            )}
+          </div>
           {(year || mediaType) && (
             <p className="text-gray-500 text-[11px] mt-0.5">
               {year}{year && mediaType && ' • '}{mediaType === 'tv' ? 'TV Show' : mediaType === 'movie' ? 'Movie' : ''}
