@@ -85,9 +85,12 @@ function ParentComponent() {
 
     const vv = window.visualViewport;
     const handleResize = () => {
-      if (vv && vv.height < window.innerHeight * 0.85) {
-        setKeyboardOpen(true);
-      }
+      if (!vv) return;
+      const activeTag = document.activeElement?.tagName?.toLowerCase();
+      const focusedField = activeTag === 'input' || activeTag === 'textarea';
+      // Only treat a reduced viewport as a keyboard when a text field is focused.
+      // Mobile browser URL-bar changes must not hide the bottom navigation.
+      setKeyboardOpen(focusedField && vv.height < window.innerHeight * 0.85);
     };
     if (vv) vv.addEventListener('resize', handleResize);
 
