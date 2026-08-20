@@ -68,6 +68,21 @@ export default function AuthModal({ isOpen, onClose }) {
   const turnstileWidgetId = useRef(null);
 
   useEffect(() => {
+    if (!isOpen || document.querySelector('script[data-turnstile]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onTurnstileLoad';
+    script.async = true;
+    script.defer = true;
+    script.dataset.turnstile = 'true';
+    window.onTurnstileLoad = () => {
+      window._turnstileReady = true;
+      window.dispatchEvent(new Event('turnstile-ready'));
+    };
+    document.head.appendChild(script);
+    return () => { delete window.onTurnstileLoad; };
+  }, [isOpen]);
+
+  useEffect(() => {
     if (!isOpen) return;
 
     const renderWidget = () => {

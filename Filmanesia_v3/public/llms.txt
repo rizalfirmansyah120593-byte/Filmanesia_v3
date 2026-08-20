@@ -1,0 +1,23 @@
+# Filmanesia
+
+> Filmanesia is a movie and TV discovery and streaming website.
+
+## Site
+
+- Homepage: https://www.filmanesia.com/
+- Movies: https://www.filmanesia.com/movies
+- TV series: https://www.filmanesia.com/series
+- Search: https://www.filmanesia.com/search
+- Sitemap: https://www.filmanesia.com/sitemap.xml
+
+## Content
+
+Filmanesia provides title discovery, metadata, genres, ratings, cast information,
+and links to available third-party video providers. Movie and TV metadata is
+provided by TMDB. Availability and subtitle support can vary by provider.
+
+## Privacy and access
+
+- Do not infer or expose private user information.
+- Respect robots.txt and sitemap.xml.
+- Use canonical URLs on www.filmanesia.com.

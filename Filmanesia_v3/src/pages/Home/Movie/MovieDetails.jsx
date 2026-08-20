@@ -250,6 +250,9 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
             <img
               src={`${BACKDROP}${movie.backdrop_path}`}
               alt=""
+              width="780"
+              height="439"
+              fetchPriority="high"
               className="w-full h-full object-cover object-top"
               style={{ filter: "brightness(0.6) contrast(1.1) saturate(1.1)", transform: "scale(1.02)" }}
             />
@@ -281,6 +284,9 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
               <img
                 src={`${POSTER}${movie.poster_path}`}
                 alt={movie.title}
+                width="342"
+                height="513"
+                loading="lazy"
                 className="w-48 lg:w-64 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] ring-1 ring-white/10 group-hover:scale-105 transition-transform duration-700"
               />
             </div>
@@ -451,4 +457,3 @@ MovieDetails.propTypes = {
 };
 
 export default memo(MovieDetails);
-

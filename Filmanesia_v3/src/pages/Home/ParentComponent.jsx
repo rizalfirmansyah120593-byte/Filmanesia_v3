@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
 import { Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { BiUpArrowAlt, BiHomeAlt, BiMoviePlay, BiTv, BiSearch, BiBookmark } from 'react-icons/bi';
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 import { buildBrowsePath, getCategoryBySlug } from './urlFilters';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebase";
-import AuthModal from "../../components/AuthModal";
+const AuthModal = lazy(() => import('../../components/AuthModal'));
 
 function ParentComponent() {
   const location = useLocation();
@@ -221,7 +221,11 @@ function ParentComponent() {
       </nav>
 
       {/* Auth Modal Form */}
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+      {isAuthModalOpen && (
+        <Suspense fallback={null}>
+          <AuthModal isOpen onClose={() => setIsAuthModalOpen(false)} />
+        </Suspense>
+      )}
     </div>
   );
 }

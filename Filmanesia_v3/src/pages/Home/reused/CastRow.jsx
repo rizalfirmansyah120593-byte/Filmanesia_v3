@@ -81,6 +81,9 @@ export default function CastRow({ cast }) {
                     <img 
                       src={`https://image.tmdb.org/t/p/w276_and_h350_face${person.profile_path}`} 
                       alt={person.name}
+                      width="276"
+                      height="350"
+                      loading="lazy"
                       className="w-full h-full object-cover"
                       draggable={false}
                     />

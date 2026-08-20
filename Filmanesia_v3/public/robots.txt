@@ -10,3 +10,6 @@ User-agent: Googlebot
 Allow: /
 
 Sitemap: https://www.filmanesia.com/sitemap.xml
+
+# Machine-readable site summary for AI agents
+Llms-txt: https://www.filmanesia.com/llms.txt

@@ -255,7 +255,7 @@ export default function HeroBanner() {
                   : 'ring-white/10 opacity-45 hover:opacity-75'
               }`}
             >
-              <img src={`${BACKDROP_THUMB}${it.backdrop_path}`} loading="lazy" alt="" className="w-full h-full object-cover" />
+              <img src={`${BACKDROP_THUMB}${it.backdrop_path}`} loading="lazy" width="300" height="169" alt="" className="w-full h-full object-cover" />
             </button>
           ))}
         </div>

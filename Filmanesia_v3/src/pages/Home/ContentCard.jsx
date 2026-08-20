@@ -145,9 +145,6 @@ const ContentCard = memo(({
       transition={{ type: 'spring', stiffness: 300, damping: 20 }}
       className={`group relative w-full cursor-pointer transition-shadow duration-200 ${showTrailer ? 'z-50' : 'z-10'} ${className}`}
       onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyPress={handleKeyPress}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       aria-label={`${title}${year ? ` (${year})` : ''}`}
@@ -211,6 +208,7 @@ const ContentCard = memo(({
               <button
                 onClick={handleWatchlist}
                 title={inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
+                aria-label={inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}
                 className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center border transition-colors shadow-sm ${inWatchlist
                   ? (isWatchlistPage ? 'bg-black/60 border-white/20 hover:bg-red-600/90' : 'bg-red-600 border-red-500')
                   : 'bg-white/[0.08] border-white/20 text-gray-300 hover:bg-red-600 hover:border-red-500'
@@ -286,6 +284,7 @@ const ContentCard = memo(({
               {/* Mute / Unmute button */}
               <button
                 type="button"
+                aria-label={isMuted ? 'Unmute trailer' : 'Mute trailer'}
                 onClick={toggleMute}
                 onPointerDown={(e) => e.stopPropagation()}
                 className="absolute bottom-2 right-2 z-20 w-8 h-8 rounded-full bg-black/60 border border-white/30 flex items-center justify-center text-white hover:bg-black/80 hover:border-white transition-all backdrop-blur-sm"
@@ -298,6 +297,7 @@ const ContentCard = memo(({
             <div className="px-4 py-4 shrink-0 flex flex-col gap-2.5 relative z-10 -mt-[1px] bg-[#181818]">
               <div className="flex items-center gap-2">
                 <button 
+                  aria-label="Play movie"
                   onClick={(e) => { e.stopPropagation(); onClick(); }}
                   className="w-8 h-8 rounded-full bg-white flex items-center justify-center hover:bg-gray-200 transition-colors shadow-lg shadow-white/10"
                 >
@@ -305,6 +305,7 @@ const ContentCard = memo(({
                 </button>
                 {showWatchlistBtn && (
                   <button 
+                    aria-label={inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}
                     onClick={handleWatchlist}
                     className="w-8 h-8 rounded-full bg-[#2a2a2a] border border-white/30 flex items-center justify-center hover:border-white transition-colors"
                   >

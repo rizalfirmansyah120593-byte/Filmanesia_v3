@@ -117,12 +117,14 @@ export default function ContinueWatchingRow({ onSelect, accent }) {
           {/* Nav arrows */}
           <div className="flex items-center gap-1 opacity-40 group-hover/row:opacity-100 transition-opacity duration-200">
             <button
+              aria-label="Scroll left"
               onClick={() => scroll(-1)}
               className="w-8 h-8 rounded-full bg-white/[0.08] hover:bg-white/20 flex items-center justify-center text-white transition-colors"
             >
               <BiChevronLeft className="text-xl" />
             </button>
             <button
+              aria-label="Scroll right"
               onClick={() => scroll(1)}
               className="w-8 h-8 rounded-full bg-white/[0.08] hover:bg-white/20 flex items-center justify-center text-white transition-colors"
             >

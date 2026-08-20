@@ -122,6 +122,9 @@ export default function PersonPage() {
                 <img 
                   src={`https://image.tmdb.org/t/p/h632${person.profile_path}`} 
                   alt={person.name}
+                  width="632"
+                  height="948"
+                  loading="lazy"
                   className="w-full h-full object-cover"
                 />
               ) : (

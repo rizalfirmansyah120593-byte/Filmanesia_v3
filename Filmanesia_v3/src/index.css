@@ -33,6 +33,10 @@ html, body {
   min-height: 100vh;
 }
 
+/* Raise muted text to WCAG AA contrast on the dark surface. */
+.text-gray-500 { color: #9ca3af; }
+.text-gray-600 { color: #9ca3af; }
+
 /* Rows below the fold should not compete with the hero's main-thread work. */
 .content-row {
   content-visibility: auto;
