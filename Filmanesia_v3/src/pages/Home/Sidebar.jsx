@@ -7,7 +7,7 @@ import {
   BiTv,
   BiBookmark
 } from 'react-icons/bi';
-import { FaPlay, FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
+import { FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 import { GENRES, SPECIAL_CATEGORIES } from './tmdb';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebase";
@@ -75,11 +75,11 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
 
       {/* Logo */}
       <button onClick={() => onNavigate('home')} className="relative flex items-center gap-4 px-[18px] pt-8 pb-8 shrink-0 text-left hover:opacity-90 transition-opacity">
-        <div className="flex items-center justify-center w-[48px] h-[48px] rounded-2xl bg-gradient-to-br from-red-500 to-red-700 shadow-lg shadow-red-900/40 ring-1 ring-white/10 shrink-0">
-          <FaPlay className="text-white text-[15px] ml-0.5" />
+        <div className="flex items-center justify-center w-[48px] h-[48px] shrink-0">
+          <img src="/filmanesia-icon.svg" alt="Filmanesia" className="w-full h-full drop-shadow-lg" />
         </div>
         <div className="flex flex-col leading-tight whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-100">
-          <span className="text-white font-black text-[20px] tracking-tight">Filmanesia</span>
+          <img src="/filmanesia-logo.svg" alt="Filmanesia" className="w-[154px] h-auto" />
           <span className="text-red-400/70 text-[10px] font-semibold tracking-[0.22em] uppercase mt-0.5">Streaming</span>
         </div>
       </button>

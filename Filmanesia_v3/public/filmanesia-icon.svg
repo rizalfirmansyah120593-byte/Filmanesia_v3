@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-label="Filmanesia">
+  <defs>
+    <linearGradient id="g" x1="12" y1="8" x2="108" y2="112" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff5b4d"/><stop offset=".52" stop-color="#e52d45"/><stop offset="1" stop-color="#a60e3e"/>
+    </linearGradient>
+    <linearGradient id="shine" x1="24" y1="12" x2="92" y2="94" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fff" stop-opacity=".24"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="112" height="112" rx="34" fill="#090b12"/>
+  <rect x="7" y="7" width="106" height="106" rx="31" fill="url(#g)"/>
+  <path d="M38 8h44c17 0 31 14 31 31v7C78 26 47 19 15 27 19 16 27 8 38 8Z" fill="url(#shine)"/>
+  <!-- Film perforations -->
+  <g fill="#fff" opacity=".94">
+    <circle cx="31" cy="30" r="6"/><circle cx="51" cy="30" r="6"/>
+    <circle cx="31" cy="90" r="6"/><circle cx="51" cy="90" r="6"/>
+  </g>
+  <!-- Play button doubles as the distinctive F/forward mark -->
+  <path d="M47 43v34l31-17-31-17Z" fill="#fff"/>
+  <path d="M82 47c5 4 8 8 10 13-2 5-5 9-10 13" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+</svg>

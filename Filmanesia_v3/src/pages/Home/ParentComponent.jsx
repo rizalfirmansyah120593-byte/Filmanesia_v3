@@ -153,9 +153,9 @@ function ParentComponent() {
           <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
           <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-gray-600">
             <div className="flex items-center gap-3">
-              <span className="text-white font-black text-sm">We<span className="text-red-500">Flix</span></span>
+              <img src="/filmanesia-logo.svg" alt="Filmanesia" className="w-[118px] h-auto" />
               <span>·</span>
-              <span>Developed by <span className="text-gray-400 font-semibold">Phyo Min Thein</span></span>
+              <span>Developed by <span className="text-gray-400 font-semibold">Rizal Firmansyah</span></span>
             </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 120" role="img" aria-labelledby="title desc">
+  <title id="title">Filmanesia</title>
+  <desc id="desc">Filmanesia movie streaming logo</desc>
+  <defs>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ff5147"/><stop offset="1" stop-color="#b5122b"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="104" height="104" rx="31" fill="#090b12"/>
+  <rect x="11" y="11" width="98" height="98" rx="28" fill="url(#mark)"/>
+  <g fill="#fff"><circle cx="35" cy="34" r="5.5"/><circle cx="53" cy="34" r="5.5"/><circle cx="35" cy="86" r="5.5"/><circle cx="53" cy="86" r="5.5"/></g>
+  <path d="M49 44v32l29-16-29-16Z" fill="#fff"/>
+  <path d="M82 49c4 3 6 6 8 11-2 5-4 8-8 11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55"/>
+  <text x="136" y="75" fill="#fff" font-family="Arial, Helvetica, sans-serif" font-size="51" font-weight="800" letter-spacing="-2">Filmanesia</text>
+  <circle cx="140" cy="91" r="3" fill="#ff5147"/><path d="M151 91h92" stroke="#ff5147" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+</svg>

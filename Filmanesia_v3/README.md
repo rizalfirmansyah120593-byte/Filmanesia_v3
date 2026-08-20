@@ -71,7 +71,7 @@ A modern movie and TV show streaming discovery app built with **React 18**, **Vi
    ```env
    # TMDB Configuration
    VITE_TMDB_API=your_tmdb_api_key_here
-   VITE_BASE_URL=https://api.themoviedb.org/
+   VITE_BASE_URL=https://api.themoviedb.org/3
 
    # Firebase Configuration
    VITE_FIREBASE_API_KEY=your_firebase_api_key

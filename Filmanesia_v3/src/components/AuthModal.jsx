@@ -219,12 +219,8 @@ export default function AuthModal({ isOpen, onClose }) {
                 {/* Header */}
                 <div className="flex justify-between items-center mb-8">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-red-600/20 flex items-center justify-center">
-                      <BiMoviePlay className="text-red-500 text-xl" />
-                    </div>
-                    <span className="text-xl font-black text-white tracking-tight">
-                      We<span className="text-red-500">Flix</span>
-                    </span>
+                    <img src="/filmanesia-icon.svg" alt="Filmanesia" className="w-8 h-8" />
+                    <img src="/filmanesia-logo.svg" alt="Filmanesia" className="w-[118px] h-auto" />
                   </div>
                   <button
                     onClick={onClose}
