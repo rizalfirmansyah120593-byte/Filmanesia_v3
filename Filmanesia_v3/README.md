@@ -56,8 +56,8 @@ A modern movie and TV show streaming discovery app built with **React 18**, **Vi
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/kweephyo-pmt/Filmanesia_v2.git
-   cd Filmanesia_v2
+   git clone https://github.com/rizalfirmansyah120593-byte/Filmanesia_v3.git
+   cd Filmanesia_v3
    ```
 
 2. **Install dependencies:**
@@ -141,3 +141,18 @@ src/
         ├── DetailPageSkeleton.jsx # Unified loading skeletons for details pages
         └── CastRow.jsx          # Horizontal scroll row for cast & crew
 ```
+### Sokong projek ini
+
+Anda boleh menyokong pembangunan Filmanesia melalui [Saweria Rizal Firmansyah](https://saweria.co/RizalFirmansyah).
+
+---
+
+## Tech Stack
+
+Next.js 16 · React · TypeScript · Tailwind CSS · HeroUI · TanStack Query · Supabase · TMDB API · PWA
+
+## License
+
+This open-source project is provided for learning and development purposes.
+
+<p align="center">Made with ❤️ by Filmanesia</p>

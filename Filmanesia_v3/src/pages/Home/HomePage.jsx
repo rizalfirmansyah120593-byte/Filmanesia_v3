@@ -6,6 +6,7 @@ import TrendingRow from './TrendingRow';
 import ContinueWatchingRow from './ContinueWatchingRow';
 import PersonalizedRow from './PersonalizedRow';
 import SEO from './SEO';
+import AdSlot from '../../components/AdSlot';
 
 const SectionDivider = ({ label }) => (
   <div className="flex items-center gap-4 px-4 sm:px-6 mb-8 mt-4">
@@ -55,6 +56,9 @@ export default function HomePage() {
       <h1 className="sr-only">Filmanesia - Free Movie & TV Show Streaming Platform</h1>
 
       <HeroBanner />
+
+      {/* Lazy, reserved ad slot: it does not compete with the hero LCP. */}
+      <AdSlot type="native" />
 
       <div className="pt-10 pb-8">
         <ContinueWatchingRow onSelect={handleSelect} />
