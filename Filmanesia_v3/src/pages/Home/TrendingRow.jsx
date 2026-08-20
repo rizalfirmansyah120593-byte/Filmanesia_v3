@@ -62,7 +62,19 @@ function useRow(type, variant = 'trending', minRating = 0, minVotes = 0, origina
       try {
         let results = [];
 
-        if (variant === 'trending' && langs) {
+        if (variant === 'kdrama') {
+          // Keep this row identical to the TV Shows > K-Drama special filter:
+          // South Korea origin + Drama genre + Korean original language.
+          const url = buildDiscoverUrl(type, variant, ['ko'], minRating, minVotes, sinceYear);
+          url.searchParams.set('with_origin_country', 'KR');
+          url.searchParams.set('with_genres', '18');
+          url.searchParams.set('vote_count.gte', '20');
+          const [r1, r2] = await Promise.all([
+            fetch(url).then(r => r.json()),
+            (() => { const u2 = new URL(url); u2.searchParams.set('page', '2'); return fetch(u2).then(r => r.json()); })(),
+          ]);
+          results = [...(r1.results ?? []), ...(r2.results ?? [])];
+        } else if (variant === 'trending' && langs) {
           // Trending endpoint doesn't support language param — fetch 3 pages and filter client-side
           const pages = await Promise.all([1, 2, 3].map(page => {
             const url = new URL(`${BASE_URL}/trending/${type}/week`);

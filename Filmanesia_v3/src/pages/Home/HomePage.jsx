@@ -36,6 +36,7 @@ export default function HomePage() {
 
   const goMovies = () => navigate('/movies');
   const goSeries = () => navigate('/series');
+  const goKDrama = () => navigate('/series/k-drama');
 
   return (
     <motion.div
@@ -89,12 +90,11 @@ export default function HomePage() {
         <TrendingRow
           title="K-Drama Series"
           type="tv"
-          variant="popular"
-          originalLanguage={['ko']}
+          variant="kdrama"
           sinceYear={2020}
           accent="#ec4899"
           onSelect={handleSelect}
-          onSeeAll={goSeries}
+          onSeeAll={goKDrama}
         />
 
         <SectionDivider label="TV Shows" />
