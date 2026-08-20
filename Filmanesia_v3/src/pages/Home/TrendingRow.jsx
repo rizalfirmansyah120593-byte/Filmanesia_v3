@@ -140,17 +140,27 @@ export default function TrendingRow({
   const [isAutoPaused, setIsAutoPaused] = useState(false);
   const autoScrollEnabled = type === 'movie' && variant === 'trending';
 
-  // Gently advance the Trending Movies row. Hovering or dragging pauses it so
-  // the user can inspect and click a card without the row moving underneath.
+  // Gently advance the Trending Movies row using the browser frame loop.
+  // This avoids the small jumps that a setInterval can cause during scrolling.
   useEffect(() => {
     if (!autoScrollEnabled || isAutoPaused || isDragging) return undefined;
-    const timer = window.setInterval(() => {
+    let animationId;
+    let previousTime = null;
+    const speed = 13; // pixels per second
+    const animate = (time) => {
       const el = rowRef.current;
-      if (!el || el.scrollWidth <= el.clientWidth) return;
-      const atEnd = el.scrollLeft + el.clientWidth >= el.scrollWidth - 2;
-      el.scrollLeft = atEnd ? 0 : el.scrollLeft + 0.45;
-    }, 40);
-    return () => window.clearInterval(timer);
+      if (previousTime === null) previousTime = time;
+      const delta = Math.min(time - previousTime, 50);
+      previousTime = time;
+      if (el && el.scrollWidth > el.clientWidth) {
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        const nextPosition = el.scrollLeft + (speed * delta) / 1000;
+        el.scrollLeft = nextPosition >= maxScroll ? 0 : nextPosition;
+      }
+      animationId = window.requestAnimationFrame(animate);
+    };
+    animationId = window.requestAnimationFrame(animate);
+    return () => window.cancelAnimationFrame(animationId);
   }, [autoScrollEnabled, isAutoPaused, isDragging]);
 
   const scroll = (dir) => {
