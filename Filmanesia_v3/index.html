@@ -6,6 +6,13 @@
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/filmanesia-icon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      var savedPath = params.get('filmanesia_path');
+      if (savedPath) window.history.replaceState({}, '', savedPath);
+    })();
+  </script>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

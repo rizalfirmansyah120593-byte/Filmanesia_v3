@@ -5,7 +5,7 @@
       "destination": "/sw.js"
     },
     {
-      "source": "/((?!sw\\.js|manifest\\.json|robots\\.txt|sitemap\\.xml|.*\\.svg|.*\\.png|.*\\.ico|.*\\.txt|.*\\.xml).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
