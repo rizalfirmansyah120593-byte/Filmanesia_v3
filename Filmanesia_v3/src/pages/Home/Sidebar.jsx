@@ -5,7 +5,9 @@ import {
   BiHomeAlt,
   BiMoviePlay,
   BiTv,
-  BiBookmark
+  BiBookmark,
+  BiChevronLeft,
+  BiChevronRight
 } from 'react-icons/bi';
 import { FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 import { GENRES, SPECIAL_CATEGORIES } from './tmdb';
@@ -27,6 +29,7 @@ const getCachedUser = () => {
 
 function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpenAuthModal }) {
   const [user, setUser] = useState(getCachedUser);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -60,9 +63,9 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
 
   return (
     <aside className="
-      group fixed top-0 left-0 h-full z-50
+      fixed top-0 left-0 h-full z-50
       hidden md:flex flex-col
-      w-[84px] hover:w-[260px]
+      ${isExpanded ? 'w-[260px]' : 'w-[84px]'}
       bg-gray-900/95 backdrop-blur-xl
       border-r border-white/10
       shadow-2xl shadow-black/30
@@ -73,12 +76,23 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
 
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-red-500/10 to-transparent pointer-events-none" />
 
+      {/* Desktop sidebar toggle */}
+      <button
+        type="button"
+        onClick={() => setIsExpanded((expanded) => !expanded)}
+        aria-label={isExpanded ? 'Tutup menu samping' : 'Buka menu samping'}
+        title={isExpanded ? 'Tutup menu' : 'Buka menu'}
+        className={`absolute top-5 ${isExpanded ? 'right-3' : 'right-2'} z-20 flex h-7 w-7 items-center justify-center rounded-full border border-white/10 bg-[#171923]/95 text-gray-400 shadow-lg transition-all hover:border-red-400/50 hover:bg-red-500/15 hover:text-white focus:outline-none focus:ring-2 focus:ring-red-400/50`}
+      >
+        {isExpanded ? <BiChevronLeft className="text-xl" /> : <BiChevronRight className="text-xl" />}
+      </button>
+
       {/* Logo */}
       <button onClick={() => onNavigate('home')} className="relative flex items-center gap-4 px-[18px] pt-8 pb-8 shrink-0 text-left hover:opacity-90 transition-opacity">
         <div className="flex items-center justify-center w-[48px] h-[48px] shrink-0">
           <img src="/filmanesia-icon.svg" alt="Filmanesia" className="w-full h-full drop-shadow-lg" />
         </div>
-        <div className="flex flex-col leading-tight whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-100">
+        <div className={`flex flex-col leading-tight whitespace-nowrap transition-opacity duration-200 ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
           <img src="/filmanesia-logo.svg" alt="Filmanesia" className="w-[154px] h-auto" />
           <span className="text-red-400/70 text-[10px] font-semibold tracking-[0.22em] uppercase mt-0.5">Streaming</span>
         </div>
@@ -86,7 +100,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
 
       {/* Nav section label */}
       <div className="px-[18px] mb-1 shrink-0">
-        <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-75 text-[11px] font-bold tracking-[0.22em] uppercase text-gray-500 whitespace-nowrap">
+        <span className={`transition-opacity duration-200 text-[11px] font-bold tracking-[0.22em] uppercase text-gray-500 whitespace-nowrap ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
           Menu
         </span>
       </div>
@@ -111,7 +125,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
               `}
             >
               <Icon className={`text-[24px] shrink-0 transition-colors duration-200 ${isActive ? 'text-red-400' : ''}`} />
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-75">
+              <span className={`transition-opacity duration-200 ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
                 {label}
               </span>
             </button>
@@ -126,7 +140,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
           <div className="flex-1 flex flex-col min-h-0 pt-4 pb-4">
             {/* Section label */}
             <div className="px-[18px] mb-2 shrink-0">
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-75 text-[11px] font-bold tracking-[0.22em] uppercase text-gray-500 whitespace-nowrap">
+              <span className={`transition-opacity duration-200 text-[11px] font-bold tracking-[0.22em] uppercase text-gray-500 whitespace-nowrap ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
                 Genres
               </span>
             </div>
@@ -153,7 +167,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
                       w-2 h-2 rounded-full shrink-0 transition-all duration-200
                       ${isActiveGenre ? 'bg-red-400' : 'bg-gray-700'}
                     `} />
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-75">
+                    <span className={`transition-opacity duration-200 ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
                       {genre.name}
                     </span>
                   </button>
@@ -180,7 +194,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
             "
           >
             <FaSignOutAlt className="text-[24px] shrink-0" />
-            <div className="flex flex-col text-left opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-75">
+            <div className={`flex flex-col text-left transition-opacity duration-200 ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
               <span className="text-white line-clamp-1 text-[13px] font-bold">{user.displayName || user.email?.split('@')[0]}</span>
               <span className="text-red-400 text-[10px] font-bold uppercase tracking-wider">Log Out</span>
             </div>
@@ -196,7 +210,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
             "
           >
             <FaUserCircle className="text-[24px] shrink-0" />
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 delay-75 w-24 overflow-hidden">
+            <span className={`transition-opacity duration-200 w-24 overflow-hidden ${isExpanded ? 'opacity-100' : 'opacity-0'}`}>
               Sign In
             </span>
           </button>
