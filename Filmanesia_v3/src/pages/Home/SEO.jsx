@@ -4,6 +4,14 @@ const SITE_NAME = 'Filmanesia';
 const SITE_URL  = 'https://www.filmanesia.com';
 const DEFAULT_IMAGE = `${SITE_URL}/preview.png`;
 
+const toAbsoluteUrl = (value, fallback = SITE_URL) => {
+  try {
+    return new URL(value || fallback, SITE_URL).toString();
+  } catch {
+    return fallback;
+  }
+};
+
 /**
  * Reusable SEO component.
  *
@@ -34,7 +42,7 @@ export default function SEO({
     description ||
     'Discover and stream trending movies and TV shows. Browse by genre, search titles, and watch instantly — powered by TMDB.';
 
-  const metaImage  = image  || DEFAULT_IMAGE;
+  const metaImage  = toAbsoluteUrl(image || DEFAULT_IMAGE, DEFAULT_IMAGE);
   const canonical  = (() => {
     const raw = url || (typeof window !== 'undefined' ? window.location.href : SITE_URL);
     try {
@@ -68,6 +76,8 @@ export default function SEO({
       <meta property="og:description" content={metaDescription} />
       <meta property="og:image"       content={metaImage} />
       <meta property="og:image:alt"   content={fullTitle} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
       <meta property="og:url"         content={canonical} />
       <meta property="og:locale"      content="id_ID" />
 
@@ -76,11 +86,12 @@ export default function SEO({
       <meta name="twitter:title"       content={fullTitle} />
       <meta name="twitter:description" content={metaDescription} />
       <meta name="twitter:image"       content={metaImage} />
+      <meta name="twitter:image:alt"   content={fullTitle} />
 
       {/* JSON-LD structured data */}
       {jsonLd && (
         <script type="application/ld+json">
-          {JSON.stringify(jsonLd)}
+          {JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
         </script>
       )}
     </Helmet>

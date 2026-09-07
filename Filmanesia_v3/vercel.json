@@ -11,7 +11,7 @@
   ],
   "headers": [
     {
-      "source": "/(.*)\\.(js|css|png|jpg|jpeg|webp|avif|svg|woff2)",
+      "source": "/assets/(.*)\\.(js|css|png|jpg|jpeg|webp|avif|svg|woff2)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -39,6 +39,18 @@
     {
       "source": "/(.*)",
       "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
         {
           "key": "Permissions-Policy",
           "value": "fullscreen=*, picture-in-picture=*, autoplay=*, encrypted-media=*, screen-wake-lock=*"
