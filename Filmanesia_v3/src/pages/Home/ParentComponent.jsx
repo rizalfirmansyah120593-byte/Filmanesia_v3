@@ -1,5 +1,5 @@
 import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
-import { Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { BiUpArrowAlt, BiHomeAlt, BiMoviePlay, BiTv, BiSearch, BiBookmark } from 'react-icons/bi';
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 import Sidebar from './Sidebar';
@@ -162,6 +162,14 @@ function ParentComponent() {
               <span>·</span>
               <span>Developed by <span className="text-gray-400 font-semibold">Rizal Firmansyah</span></span>
             </div>
+            <nav aria-label="Panduan film" className="flex flex-wrap justify-center gap-x-3 gap-y-2 text-gray-500">
+              <Link to="/film-terbaru" className="hover:text-white">Film Terbaru</Link>
+              <Link to="/film-indonesia" className="hover:text-white">Film Indonesia</Link>
+              <Link to="/film-netflix" className="hover:text-white">Film Netflix</Link>
+              <Link to="/film-horor" className="hover:text-white">Film Horor</Link>
+              <Link to="/rekomendasi-film" className="hover:text-white">Rekomendasi Film</Link>
+              <Link to="/trending-film" className="hover:text-white">Film Trending</Link>
+            </nav>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
                 <span>© {new Date().getFullYear()} Filmanesia</span>

@@ -68,7 +68,7 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="min-h-screen bg-[#07080a] flex items-center justify-center p-4">
-      <SEO title="Reset Password — Filmanesia" noSuffix />
+      <SEO title="Reset Password — Filmanesia" noSuffix noindex />
       
       <div className="w-full max-w-[400px] bg-[#0b0f19]/95 backdrop-blur-2xl border border-white/10 rounded-3xl shadow-2xl shadow-black p-8">
         <div className="flex justify-center items-center gap-2 mb-8">

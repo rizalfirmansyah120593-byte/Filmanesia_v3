@@ -35,8 +35,7 @@ export default {
     },
   },
   plugins: [
-    // Add the scrollbar plugin here
-    require('tailwindcss-scrollbar'),
+    // Scrollbars are defined in src/index.css (.custom-scrollbar and .hide-scrollbar).
     // You might also want the forms plugin for better form styling
     // require('@tailwindcss/forms'),
     // Or the typography plugin for prose styling

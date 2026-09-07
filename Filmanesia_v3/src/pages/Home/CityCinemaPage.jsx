@@ -1,0 +1,14 @@
+import { Link, useParams } from 'react-router-dom';
+import SEO from './SEO';
+
+const CITIES = { jakarta: 'Jakarta', bandung: 'Bandung', surabaya: 'Surabaya', yogyakarta: 'Yogyakarta', medan: 'Medan', bali: 'Bali' };
+
+export default function CityCinemaPage() {
+  const { city = 'jakarta' } = useParams();
+  const cityName = CITIES[city] || city.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  const title = `Jadwal Bioskop ${cityName} Minggu Ini`;
+  const description = `Panduan film bioskop yang sedang tayang di ${cityName}, jadwal rilis, dan cara mengecek jam tayang terbaru.`;
+  const url = `https://www.filmanesia.com/jadwal-bioskop/${city}`;
+  const jsonLd = { '@context': 'https://schema.org', '@type': 'WebPage', name: title, description, url, inLanguage: 'id-ID', breadcrumb: { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://www.filmanesia.com/' }, { '@type': 'ListItem', position: 2, name: 'Jadwal Bioskop', item: 'https://www.filmanesia.com/jadwal-bioskop' }, { '@type': 'ListItem', position: 3, name: cityName, item: url }] } };
+  return <main className="min-h-screen bg-[#07080a] text-gray-200 px-4 sm:px-8 py-10 md:py-16"><SEO title={title} description={description} url={url} jsonLd={jsonLd} /><div className="max-w-5xl mx-auto"><nav aria-label="Breadcrumb" className="text-sm text-gray-500 mb-8"><Link to="/" className="hover:text-red-400">Beranda</Link><span className="mx-2">/</span><Link to="/jadwal-bioskop" className="hover:text-red-400">Jadwal Bioskop</Link><span className="mx-2">/</span><span>{cityName}</span></nav><h1 className="text-4xl sm:text-5xl font-black text-white mb-5">{title}</h1><p className="max-w-3xl text-lg text-gray-400 leading-8 mb-10">Cari film yang sedang tayang di {cityName}. Jam tayang dan ketersediaan tiket dapat berubah menurut jaringan bioskop, jadi selalu konfirmasi melalui situs resmi bioskop sebelum berangkat.</p><section className="rounded-2xl border border-white/10 bg-white/[0.04] p-6 mb-10"><h2 className="text-2xl font-bold text-white mb-4">Cara mengecek jadwal terbaru</h2><ol className="list-decimal pl-5 space-y-3 text-gray-300 leading-7"><li>Pilih film yang ingin ditonton dari halaman <Link className="text-red-400 hover:underline" to="/movies">film populer</Link>.</li><li>Gunakan situs atau aplikasi jaringan bioskop resmi di {cityName}.</li><li>Periksa tanggal, lokasi, format layar, dan ketersediaan kursi.</li></ol></section><h2 className="text-2xl font-bold text-white mb-5">Kota lainnya</h2><div className="flex flex-wrap gap-3">{Object.entries(CITIES).filter(([key]) => key !== city).map(([key, name]) => <Link key={key} to={`/jadwal-bioskop/${key}`} className="rounded-xl border border-white/10 px-4 py-3 text-gray-300 hover:border-red-400/50 hover:text-white">Bioskop {name}</Link>)}</div></div></main>;
+}

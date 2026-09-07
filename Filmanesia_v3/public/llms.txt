@@ -9,6 +9,9 @@
 - TV series: https://www.filmanesia.com/series
 - Search: https://www.filmanesia.com/search
 - Sitemap: https://www.filmanesia.com/sitemap.xml
+- Trending film desk: https://www.filmanesia.com/trending-film
+- Editorial guides: https://www.filmanesia.com/rekomendasi-film
+- Latest films guide: https://www.filmanesia.com/film-terbaru
 
 ## Content
 

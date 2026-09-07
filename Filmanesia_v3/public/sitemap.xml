@@ -5,6 +5,22 @@
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+  <url><loc>https://www.filmanesia.com/film-terbaru</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.filmanesia.com/film-indonesia</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/film-netflix</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/film-horor</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/film-berdasarkan-genre</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/film-berdasarkan-tahun</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/review-film</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/jadwal-bioskop</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/film-yang-akan-datang</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/ending-explanation</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.filmanesia.com/rekomendasi-film</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.filmanesia.com/trending-film</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.filmanesia.com/jadwal-bioskop/jakarta</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.filmanesia.com/jadwal-bioskop/bandung</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.filmanesia.com/jadwal-bioskop/surabaya</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.filmanesia.com/jadwal-bioskop/yogyakarta</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url>
     <loc>https://www.filmanesia.com/movies</loc>
     <changefreq>daily</changefreq>

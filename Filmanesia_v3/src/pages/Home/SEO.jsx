@@ -24,6 +24,7 @@ export default function SEO({
   type = 'website',
   noSuffix = false,
   jsonLd,
+  noindex = false,
 }) {
   const fullTitle = title
     ? noSuffix ? title : `${title} | ${SITE_NAME}`
@@ -57,6 +58,7 @@ export default function SEO({
       {/* Primary */}
       <title>{fullTitle}</title>
       <meta name="description" content={metaDescription} />
+      <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
       <link rel="canonical" href={canonical} />
 
       {/* Open Graph */}
@@ -67,6 +69,7 @@ export default function SEO({
       <meta property="og:image"       content={metaImage} />
       <meta property="og:image:alt"   content={fullTitle} />
       <meta property="og:url"         content={canonical} />
+      <meta property="og:locale"      content="id_ID" />
 
       {/* Twitter Card */}
       <meta name="twitter:card"        content="summary_large_image" />

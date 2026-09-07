@@ -12,6 +12,9 @@ const ResetPasswordPage = lazy(() => import('./pages/Home/ResetPasswordPage'));
 const EmailVerificationPage = lazy(() => import('./pages/Home/EmailVerificationPage'));
 const PersonPage = lazy(() => import('./pages/Home/Person/PersonPage'));
 const AuthActionPage = lazy(() => import('./pages/Home/AuthActionPage'));
+const EditorialPage = lazy(() => import('./pages/Home/EditorialPage'));
+const TrendHubPage = lazy(() => import('./pages/Home/TrendHubPage'));
+const CityCinemaPage = lazy(() => import('./pages/Home/CityCinemaPage'));
 
 function App() {
   return (
@@ -34,6 +37,9 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/verify-email" element={<EmailVerificationPage />} />
           <Route path="/auth-action" element={<AuthActionPage />} />
+          <Route path="/trending-film" element={<TrendHubPage />} />
+          <Route path="/jadwal-bioskop/:city" element={<CityCinemaPage />} />
+          <Route path="/:slug" element={<EditorialPage />} />
           {/* Legacy detail URLs (auto-canonicalized in page components) */}
           <Route path="/movie/:slug" element={<MovieDetails />} />
           <Route path="/tv/:slug" element={<TvDetails />} />

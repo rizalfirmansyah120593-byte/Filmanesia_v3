@@ -409,6 +409,7 @@ function SearchPage() {
             ? `Search results for "${debouncedQuery}" on Filmanesia.`
             : 'Search and browse movies & TV shows by genre, year, and rating on Filmanesia.'
         }
+        noindex
       />
       {/* Mobile-aware sticky top bar */}
       <div className="sticky top-0 z-40 -mx-4 sm:-mx-8 px-4 sm:px-8 pt-[calc(env(safe-area-inset-top)+0.75rem)] md:pt-0 pb-3 md:pb-0 backdrop-blur-md bg-black/80 md:bg-transparent border-b border-white/[0.06] md:border-none mb-4 md:mb-0">

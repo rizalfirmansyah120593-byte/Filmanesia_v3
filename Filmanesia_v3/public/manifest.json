@@ -1,7 +1,7 @@
 {
   "name": "Filmanesia",
   "short_name": "Filmanesia",
-  "description": "Stream Movies & TV Shows Free",
+  "description": "Temukan film terbaru, film populer, dan serial TV berdasarkan genre di Filmanesia.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#000000",
