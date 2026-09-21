@@ -43,10 +43,6 @@ html, body {
   contain-intrinsic-size: 0 360px;
 }
 
-.ad-slot {
-  contain: layout paint;
-  min-height: 180px;
-}
 .fade-in {
     animation: fadeIn 0.2s ease-out forwards;
     will-change: transform, opacity;
