@@ -15,6 +15,7 @@ const AuthActionPage = lazy(() => import('./pages/Home/AuthActionPage'));
 const EditorialPage = lazy(() => import('./pages/Home/EditorialPage'));
 const TrendHubPage = lazy(() => import('./pages/Home/TrendHubPage'));
 const CityCinemaPage = lazy(() => import('./pages/Home/CityCinemaPage'));
+const BlogPage = lazy(() => import('./pages/Home/BlogPage'));
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
           <Route path="/verify-email" element={<EmailVerificationPage />} />
           <Route path="/auth-action" element={<AuthActionPage />} />
           <Route path="/trending-film" element={<TrendHubPage />} />
+          <Route path="/blog" element={<BlogPage />} />
           <Route path="/jadwal-bioskop/:city" element={<CityCinemaPage />} />
           <Route path="/:slug" element={<EditorialPage />} />
           {/* Legacy detail URLs (auto-canonicalized in page components) */}

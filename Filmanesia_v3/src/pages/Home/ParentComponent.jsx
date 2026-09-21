@@ -155,14 +155,15 @@ function ParentComponent() {
 
         {/* Footer — home page only */}
         {location.pathname === '/' && <footer className="bg-[#0a0c12]">
-          <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-          <div className="max-w-5xl mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-gray-600">
+          <div className="h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
+          <div className="max-w-6xl mx-auto px-6 py-9 grid gap-7 text-xs text-gray-600 md:grid-cols-[1.1fr_1.6fr_1fr] md:items-center">
             <div className="flex items-center gap-3">
-              <img src="/filmanesia-logo.svg" alt="Filmanesia" className="w-[118px] h-auto" />
+              <img src="/filmanesia-logo.svg" alt="Filmanesia" className="w-[128px] h-auto" />
               <span>·</span>
               <span>Developed by <span className="text-gray-400 font-semibold">Rizal Firmansyah</span></span>
             </div>
-            <nav aria-label="Panduan film" className="flex flex-wrap justify-center gap-x-3 gap-y-2 text-gray-500">
+            <nav aria-label="Panduan film" className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-gray-500 md:border-x md:border-white/[0.06] md:px-6">
+              <Link to="/blog" className="hover:text-red-400">Blog</Link>
               <Link to="/film-terbaru" className="hover:text-white">Film Terbaru</Link>
               <Link to="/film-indonesia" className="hover:text-white">Film Indonesia</Link>
               <Link to="/film-netflix" className="hover:text-white">Film Netflix</Link>
@@ -170,7 +171,7 @@ function ParentComponent() {
               <Link to="/rekomendasi-film" className="hover:text-white">Rekomendasi Film</Link>
               <Link to="/trending-film" className="hover:text-white">Film Trending</Link>
             </nav>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 md:justify-end">
               <div className="flex items-center gap-3">
                 <span>© {new Date().getFullYear()} Filmanesia</span>
                 <span>·</span>
