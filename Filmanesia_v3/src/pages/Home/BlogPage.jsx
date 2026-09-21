@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 import SEO from './SEO';
 
 const ARTICLES = [
-  ['Rekomendasi', 'Cara memilih film yang tepat untuk mood kamu', 'Temukan cara menyusun tontonan malam ini, mulai dari film ringan sampai cerita penuh kejutan.', '12 September 2026', 'from-red-500/25'],
-  ['Film Indonesia', 'Mengenal warna baru perfilman Indonesia', 'Cerita lokal terus berkembang. Simak hal-hal yang membuat film Indonesia semakin menarik untuk diikuti.', '8 September 2026', 'from-amber-500/25'],
-  ['Panduan', 'Panduan menemukan film dan serial favorit', 'Gunakan genre, rating, dan daftar tontonan untuk menemukan judul yang sesuai dengan selera kamu.', '2 September 2026', 'from-blue-500/25'],
+  { category: 'Rekomendasi', title: 'Rekomendasi Film Indonesia Terbaik Sepanjang Masa', excerpt: 'Pilihan film lokal dengan cerita kuat, karakter membekas, dan tema yang tetap relevan.', date: '12 September 2026', image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80', alt: 'Layar bioskop menampilkan suasana sinematik', href: '/blog/film-indonesia-terbaik' },
+  { category: 'Film Indonesia', title: 'Mengenal warna baru perfilman Indonesia', excerpt: 'Cerita lokal terus berkembang. Simak hal-hal yang membuat film Indonesia semakin menarik untuk diikuti.', date: '8 September 2026', image: 'https://images.unsplash.com/photo-1485846234645-a62644f84728?auto=format&fit=crop&w=900&q=80', alt: 'Kamera produksi film dalam suasana studio', href: '/blog' },
+  { category: 'Panduan', title: 'Panduan menemukan film dan serial favorit', excerpt: 'Gunakan genre, rating, dan daftar tontonan untuk menemukan judul yang sesuai dengan selera kamu.', date: '2 September 2026', image: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?auto=format&fit=crop&w=900&q=80', alt: 'Interior bioskop dengan kursi dan layar besar', href: '/blog' },
 ];
 
 export default function BlogPage() {
@@ -18,10 +18,10 @@ export default function BlogPage() {
           <p className="text-lg leading-8 text-gray-400">Temukan inspirasi tontonan baru dan baca sudut pandang menarik tentang dunia film dan serial.</p>
         </header>
         <div className="grid gap-5 md:grid-cols-3">
-          {ARTICLES.map(([category, title, excerpt, date, accent], index) => (
+          {ARTICLES.map(({ category, title, excerpt, date, image, alt, href }) => (
             <article key={title} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] transition-colors hover:border-red-400/40">
-              <div className={`h-36 bg-gradient-to-br ${accent} via-[#121722] to-[#0b0d12]`} />
-              <div className="p-6"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{category}</p><h2 className="mb-3 text-xl font-bold leading-snug text-white group-hover:text-red-300">{index === 0 ? <Link to="/blog/film-indonesia-terbaik">{title}</Link> : title}</h2><p className="mb-6 text-sm leading-6 text-gray-500">{excerpt}</p><time className="text-xs text-gray-600">{date}</time></div>
+              <Link to={href} aria-label={`Baca ${title}`}><img src={image} alt={alt} loading="lazy" className="h-44 w-full object-cover opacity-85 transition duration-500 group-hover:scale-105 group-hover:opacity-100" /></Link>
+              <div className="p-6"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{category}</p><h2 className="mb-3 text-xl font-bold leading-snug text-white group-hover:text-red-300"><Link to={href}>{title}</Link></h2><p className="mb-6 text-sm leading-6 text-gray-500">{excerpt}</p><div className="flex items-center justify-between"><time className="text-xs text-gray-600">{date}</time><Link to={href} className="text-xs font-semibold text-red-400 hover:text-red-300">Baca artikel →</Link></div></div>
             </article>
           ))}
         </div>

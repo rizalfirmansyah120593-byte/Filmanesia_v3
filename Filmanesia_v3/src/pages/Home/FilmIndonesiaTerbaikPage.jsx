@@ -26,6 +26,10 @@ export default function FilmIndonesiaTerbaikPage() {
           <p className="mt-6 text-lg leading-8 text-gray-400">Pilihan tontonan lokal yang kuat, beragam, dan tetap relevan untuk penonton masa kini.</p>
           <p className="mt-5 text-xs text-gray-600">Diperbarui 12 September 2026 · Waktu baca 10 menit</p>
         </header>
+        <figure className="my-10 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03]">
+          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1400&q=85" alt="Suasana layar bioskop untuk artikel film Indonesia terbaik" className="h-56 w-full object-cover sm:h-80" />
+          <figcaption className="px-4 py-3 text-xs text-gray-600">Ilustrasi suasana sinema. Sumber gambar: <a href="https://unsplash.com/photos/8YhJmXw9B9M" target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-red-400">Unsplash</a>.</figcaption>
+        </figure>
 
         <div className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-white prose-p:text-gray-300 prose-p:leading-8 prose-a:text-red-400 prose-a:no-underline hover:prose-a:text-red-300 prose-strong:text-white prose-li:text-gray-300">
           <p><strong>Film Indonesia terbaik</strong> mencakup karya dengan cerita kuat, karakter membekas, dan gagasan yang terus relevan. Rekomendasi ini memuat film lintas genre, dari drama keluarga, komedi, horor, hingga thriller. Pilih judul sesuai suasana hati, lalu nikmati cara sineas lokal memandang kehidupan sehari-hari.</p>
@@ -101,6 +105,7 @@ export default function FilmIndonesiaTerbaikPage() {
           <h2>Kesimpulan</h2>
           <p>Daftar ini menunjukkan kekayaan cerita dalam sinema Indonesia. Ada film yang menghibur, menghangatkan, menegangkan, dan mengajak berpikir. Setiap judul menawarkan pengalaman berbeda bagi penontonnya.</p>
           <p>Anda tidak perlu menonton semuanya dalam satu minggu. Pilih satu judul yang paling sesuai dengan suasana hati. Setelah itu, bagikan rekomendasi Anda kepada teman atau keluarga.</p>
+          <p>Untuk menemukan tontonan lain, kunjungi <Link to="/movies">katalog film Filmanesia</Link> atau lihat pilihan <Link to="/series">serial TV terbaru</Link>. Anda juga bisa kembali ke <Link to="/blog">halaman Blog Filmanesia</Link> untuk membaca panduan berikutnya.</p>
           <p>Jika Anda mencari <strong>film Indonesia terbaik</strong>, mulailah dari daftar ini. Lalu, jelajahi <Link to="/blog">artikel film lain di Blog Filmanesia</Link>. Satu film yang tepat sering membuka pintu menuju banyak cerita baru.</p>
         </div>
       </article>
