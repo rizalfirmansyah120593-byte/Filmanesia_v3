@@ -18,10 +18,10 @@ export default function BlogPage() {
           <p className="text-lg leading-8 text-gray-400">Temukan inspirasi tontonan baru dan baca sudut pandang menarik tentang dunia film dan serial.</p>
         </header>
         <div className="grid gap-5 md:grid-cols-3">
-          {ARTICLES.map(([category, title, excerpt, date, accent]) => (
+          {ARTICLES.map(([category, title, excerpt, date, accent], index) => (
             <article key={title} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] transition-colors hover:border-red-400/40">
               <div className={`h-36 bg-gradient-to-br ${accent} via-[#121722] to-[#0b0d12]`} />
-              <div className="p-6"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{category}</p><h2 className="mb-3 text-xl font-bold leading-snug text-white group-hover:text-red-300">{title}</h2><p className="mb-6 text-sm leading-6 text-gray-500">{excerpt}</p><time className="text-xs text-gray-600">{date}</time></div>
+              <div className="p-6"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{category}</p><h2 className="mb-3 text-xl font-bold leading-snug text-white group-hover:text-red-300">{index === 0 ? <Link to="/blog/film-indonesia-terbaik">{title}</Link> : title}</h2><p className="mb-6 text-sm leading-6 text-gray-500">{excerpt}</p><time className="text-xs text-gray-600">{date}</time></div>
             </article>
           ))}
         </div>
