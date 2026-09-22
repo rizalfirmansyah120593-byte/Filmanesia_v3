@@ -10,6 +10,7 @@ const BLOG_IMAGE_QUERIES = {
   'Film Jepang Terbaik dengan Cerita yang Membekas': 'Your Name',
   'Film Korea Terbaik untuk Ditonton Akhir Pekan': 'Parasite',
   'Film Horor Terbaik untuk Menguji Nyali': 'Pengabdi Setan',
+  'Film Horor Indonesia Paling Seram dan Bikin Trauma': 'Pengabdi Setan',
   'Film Anak-Anak Terbaik untuk Tontonan Keluarga': 'Paddington',
   'Film Terbaru yang Wajib Masuk Daftar Tontonan': 'Dune: Part Two',
   'Film Bioskop Terbaru yang Layak Dinantikan': 'Godzilla Minus One',
@@ -98,9 +99,9 @@ export default function BlogPage() {
           <p className="text-lg leading-8 text-gray-400">Temukan inspirasi tontonan baru dan baca sudut pandang menarik tentang dunia film dan serial.</p>
         </header>
         <div className="grid gap-5 md:grid-cols-3">
-          {ARTICLES.map(({ category, title, excerpt, date, alt, href }) => (
+          {ARTICLES.map(({ category, title, excerpt, date, image, alt, href }) => (
             <article key={title} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] transition-colors hover:border-red-400/40">
-              <Link to={href} aria-label={`Baca ${title}`}><TmdbBlogImage query={title} fallback="/preview.png" alt={`${alt} dari TMDB`} /></Link>
+              <Link to={href} aria-label={`Baca ${title}`}><TmdbBlogImage query={title} fallback={image} alt={`${alt} dari TMDB`} /></Link>
               <div className="p-6"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{category}</p><h2 className="mb-3 text-xl font-bold leading-snug text-white group-hover:text-red-300"><Link to={href}>{title}</Link></h2><p className="mb-6 text-sm leading-6 text-gray-500">{excerpt}</p><div className="flex items-center justify-between"><time className="text-xs text-gray-600">{date}</time><Link to={href} className="text-xs font-semibold text-red-400 hover:text-red-300">Baca artikel →</Link></div></div>
             </article>
           ))}
