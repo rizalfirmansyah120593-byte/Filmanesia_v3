@@ -2,6 +2,32 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import SEO from './SEO';
 
+const BLOG_IMAGE_QUERIES = {
+  'Rekomendasi Film Indonesia Terbaik Sepanjang Masa': 'Petualangan Sherina',
+  'Greenland Film: Sinopsis, Review, dan Alasan Layak Ditonton': 'Greenland',
+  'Film Cina Terbaik untuk Menemani Waktu Santai': 'The Wandering Earth',
+  'Film India Terbaik: Rekomendasi Cerita Penuh Warna': 'RRR',
+  'Film Jepang Terbaik dengan Cerita yang Membekas': 'Your Name',
+  'Film Korea Terbaik untuk Ditonton Akhir Pekan': 'Parasite',
+  'Film Horor Terbaik untuk Menguji Nyali': 'Pengabdi Setan',
+  'Film Anak-Anak Terbaik untuk Tontonan Keluarga': 'Paddington',
+  'Film Terbaru yang Wajib Masuk Daftar Tontonan': 'Dune: Part Two',
+  'Film Bioskop Terbaru yang Layak Dinantikan': 'Godzilla Minus One',
+  'Resident Evil 2026: Yang Perlu Diketahui Sebelum Menonton': 'Resident Evil: Welcome to Raccoon City',
+  'Film Daniel yang Menarik untuk Masuk Daftar Tontonan': 'Daniel',
+  'Film Romantis Indonesia Paling Baper': 'Ada Apa dengan Cinta?',
+  'Film Action Terbaik 2026 yang Wajib Ditonton': 'Top Gun: Maverick',
+  'Film Korea Terbaik untuk Pemula': 'Train to Busan',
+  'Film Thriller dengan Plot Twist Tak Terduga': 'Shutter Island',
+  'Film Berdasarkan Kisah Nyata yang Menyentuh': 'The Pursuit of Happyness',
+  'Film Keluarga untuk Ditonton Bareng Anak': 'Keluarga Cemara',
+  'Film Animasi Terbaik untuk Semua Umur': 'Spirited Away',
+  'Film Fiksi Ilmiah yang Bikin Mikir': 'Interstellar',
+  'Film Perang Terbaik Sepanjang Masa': 'Saving Private Ryan',
+  'Film Dokumenter Menarik Penambah Wawasan': 'Free Solo',
+  'Anime Movie Terbaik yang Wajib Ditonton': 'A Silent Voice',
+};
+
 function TmdbBlogImage({ query, fallback, alt }) {
   const [src, setSrc] = useState(fallback);
   const ref = useRef(null);
@@ -22,7 +48,8 @@ function TmdbBlogImage({ query, fallback, alt }) {
     const key = import.meta.env.VITE_TMDB_API;
     if (!key) return undefined;
     const controller = new AbortController();
-    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=id-ID&query=${encodeURIComponent(query)}`, { signal: controller.signal })
+    const searchQuery = BLOG_IMAGE_QUERIES[query] || query;
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=id-ID&query=${encodeURIComponent(searchQuery)}`, { signal: controller.signal })
       .then((response) => response.ok ? response.json() : null)
       .then((data) => { const path = data?.results?.find((item) => item.backdrop_path || item.poster_path); if (path) setSrc(`https://image.tmdb.org/t/p/w780${path.backdrop_path || path.poster_path}`); })
       .catch(() => {});
