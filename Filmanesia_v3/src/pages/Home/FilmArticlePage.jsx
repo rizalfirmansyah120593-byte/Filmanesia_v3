@@ -19,43 +19,6 @@ const ARTICLES = {
 };
 
 const FALLBACK = '/preview.png';
-function TmdbPoster({ title, alt, link = false }) {
-  const [src, setSrc] = useState(FALLBACK);
-  const [movieId, setMovieId] = useState(null);
-  useEffect(() => {
-    const key = import.meta.env.VITE_TMDB_API;
-    if (!key) return undefined;
-    const controller = new AbortController();
-    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=id-ID&query=${encodeURIComponent(title)}`, { signal: controller.signal })
-      .then((response) => response.ok ? response.json() : null)
-      .then((data) => { const item = data?.results?.find((result) => result.poster_path); if (item) { setMovieId(item.id); setSrc(`https://image.tmdb.org/t/p/w500${item.poster_path}`); } })
-      .catch(() => {});
-    return () => controller.abort();
-  }, [title]);
-  const image = <img src={src} alt={alt} loading="lazy" onError={() => setSrc(FALLBACK)} className="h-52 w-full object-cover transition duration-500 group-hover:scale-105" />;
-  return link && movieId ? <Link to={toDetailPath('movie', movieId, title)} aria-label={`Tonton ${title} di Filmanesia`}>{image}</Link> : image;
-}
-
-function TmdbFilmCard({ title }) {
-  const [movieId, setMovieId] = useState(null);
-  const [src, setSrc] = useState(FALLBACK);
-  useEffect(() => {
-    const key = import.meta.env.VITE_TMDB_API;
-    if (!key) return undefined;
-    const controller = new AbortController();
-    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=id-ID&query=${encodeURIComponent(title)}`, { signal: controller.signal })
-      .then((response) => response.ok ? response.json() : null)
-      .then((data) => { const item = data?.results?.find((result) => result.poster_path); if (item) { setMovieId(item.id); setSrc(`https://image.tmdb.org/t/p/w500${item.poster_path}`); } })
-      .catch(() => {});
-    return () => controller.abort();
-  }, [title]);
-  const href = movieId ? toDetailPath('movie', movieId, title) : '/movies';
-  return <article className="group overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] hover:border-red-400/40">
-    <Link to={href} aria-label={`Tonton ${title} di Filmanesia`}><img src={src} alt={`Poster ${title} dari TMDB`} loading="lazy" onError={() => setSrc(FALLBACK)} className="h-52 w-full object-cover transition duration-500 group-hover:scale-105" /></Link>
-    <div className="p-4"><h3 className="font-bold text-white group-hover:text-red-300"><Link to={href}>{title}</Link></h3><p className="mt-1 text-xs text-gray-500">Klik poster atau judul untuk menonton →</p></div>
-  </article>;
-}
-
 function TmdbFilmBlock({ title, index }) {
   const [movieId, setMovieId] = useState(null);
   const [src, setSrc] = useState(FALLBACK);

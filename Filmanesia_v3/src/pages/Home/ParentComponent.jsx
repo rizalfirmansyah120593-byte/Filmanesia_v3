@@ -49,11 +49,25 @@ function ParentComponent() {
     : 'home';
 
   const handleScroll = useCallback(() => {
-    setScrollPosition(window.scrollY);
+    setScrollPosition((current) => {
+      const next = window.scrollY;
+      return current === next ? current : next;
+    });
   }, []);
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let frame = 0;
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        handleScroll();
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, [handleScroll]);
 
   // Hide bottom nav when the virtual keyboard is open (mobile)

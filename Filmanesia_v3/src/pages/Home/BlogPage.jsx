@@ -1,10 +1,24 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SEO from './SEO';
 
 function TmdbBlogImage({ query, fallback, alt }) {
   const [src, setSrc] = useState(fallback);
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
   useEffect(() => {
+    if (!ref.current || typeof IntersectionObserver === 'undefined') {
+      setVisible(true);
+      return undefined;
+    }
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) { setVisible(true); observer.disconnect(); }
+    }, { rootMargin: '300px' });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    if (!visible) return undefined;
     const key = import.meta.env.VITE_TMDB_API;
     if (!key) return undefined;
     const controller = new AbortController();
@@ -13,8 +27,8 @@ function TmdbBlogImage({ query, fallback, alt }) {
       .then((data) => { const path = data?.results?.find((item) => item.backdrop_path || item.poster_path); if (path) setSrc(`https://image.tmdb.org/t/p/w780${path.backdrop_path || path.poster_path}`); })
       .catch(() => {});
     return () => controller.abort();
-  }, [query, fallback]);
-  return <img src={src} alt={alt} loading="lazy" onError={() => setSrc('/preview.png')} className="h-44 w-full object-cover transition duration-500 group-hover:scale-105 group-hover:opacity-100" />;
+  }, [query, fallback, visible]);
+  return <img ref={ref} src={src} alt={alt} loading="lazy" width="780" height="440" onError={() => setSrc('/preview.png')} className="h-44 w-full object-cover transition duration-500 group-hover:scale-105 group-hover:opacity-100" />;
 }
 
 const ARTICLES = [
@@ -47,7 +61,7 @@ export default function BlogPage() {
           <p className="text-lg leading-8 text-gray-400">Temukan inspirasi tontonan baru dan baca sudut pandang menarik tentang dunia film dan serial.</p>
         </header>
         <div className="grid gap-5 md:grid-cols-3">
-          {ARTICLES.map(({ category, title, excerpt, date, image, alt, href }) => (
+          {ARTICLES.map(({ category, title, excerpt, date, alt, href }) => (
             <article key={title} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] transition-colors hover:border-red-400/40">
               <Link to={href} aria-label={`Baca ${title}`}><TmdbBlogImage query={title} fallback="/preview.png" alt={`${alt} dari TMDB`} /></Link>
               <div className="p-6"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{category}</p><h2 className="mb-3 text-xl font-bold leading-snug text-white group-hover:text-red-300"><Link to={href}>{title}</Link></h2><p className="mb-6 text-sm leading-6 text-gray-500">{excerpt}</p><div className="flex items-center justify-between"><time className="text-xs text-gray-600">{date}</time><Link to={href} className="text-xs font-semibold text-red-400 hover:text-red-300">Baca artikel →</Link></div></div>
