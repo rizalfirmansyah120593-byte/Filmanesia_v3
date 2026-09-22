@@ -4,6 +4,7 @@ import { toDetailPath } from './urlUtils';
 import SEO from './SEO';
 
 const ARTICLES = {
+  'greenland-film': ['Greenland Film: Sinopsis, Review, dan Alasan Layak Ditonton', 'film Greenland', ['Greenland', 'The Day After Tomorrow', 'Deep Impact', 'Greenland: Migration'], 'Film Greenland menghadirkan thriller bencana yang menempatkan keluarga dan rasa kemanusiaan di pusat kehancuran global.'],
   'film-romantis-indonesia-paling-baper': ['Film Romantis Indonesia Paling Baper', 'film romantis Indonesia', ['Ada Apa dengan Cinta?', 'Habibie & Ainun', 'Dilan 1990', 'Milly & Mamet'], 'Cerita cinta lokal terasa dekat karena memakai bahasa, keluarga, dan kebiasaan yang kita kenal.'],
   'film-action-terbaik-2026': ['Film Action Terbaik 2026 yang Wajib Ditonton', 'film action terbaik 2026', ['Mission: Impossible', 'John Wick', 'The Raid', 'Top Gun: Maverick'], 'Film action terbaik memadukan koreografi, konflik jelas, dan karakter yang punya taruhan personal.'],
   'film-korea-terbaik-untuk-pemula': ['Film Korea Terbaik untuk Pemula', 'film korea terbaik', ['Parasite', 'Train to Busan', 'Decision to Leave', 'The Handmaiden'], 'Film Korea menawarkan drama kuat, genre berani, dan karakter yang berkembang secara meyakinkan.'],
