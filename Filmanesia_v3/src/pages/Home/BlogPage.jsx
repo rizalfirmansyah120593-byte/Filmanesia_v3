@@ -1,5 +1,21 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import SEO from './SEO';
+
+function TmdbBlogImage({ query, fallback, alt }) {
+  const [src, setSrc] = useState(fallback);
+  useEffect(() => {
+    const key = import.meta.env.VITE_TMDB_API;
+    if (!key) return undefined;
+    const controller = new AbortController();
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=id-ID&query=${encodeURIComponent(query)}`, { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => { const path = data?.results?.find((item) => item.backdrop_path || item.poster_path); if (path) setSrc(`https://image.tmdb.org/t/p/w780${path.backdrop_path || path.poster_path}`); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [query, fallback]);
+  return <img src={src} alt={alt} loading="lazy" onError={() => setSrc('/preview.png')} className="h-44 w-full object-cover transition duration-500 group-hover:scale-105 group-hover:opacity-100" />;
+}
 
 const ARTICLES = [
   { category: 'Rekomendasi', title: 'Rekomendasi Film Indonesia Terbaik Sepanjang Masa', excerpt: 'Pilihan film lokal dengan cerita kuat, karakter membekas, dan tema yang tetap relevan.', date: '12 September 2026', image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=900&q=80', alt: 'Layar bioskop menampilkan suasana sinematik', href: '/blog/film-indonesia-terbaik' },
@@ -32,7 +48,7 @@ export default function BlogPage() {
         <div className="grid gap-5 md:grid-cols-3">
           {ARTICLES.map(({ category, title, excerpt, date, image, alt, href }) => (
             <article key={title} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] transition-colors hover:border-red-400/40">
-              <Link to={href} aria-label={`Baca ${title}`}><img src={image} alt={alt} loading="lazy" className="h-44 w-full object-cover opacity-85 transition duration-500 group-hover:scale-105 group-hover:opacity-100" /></Link>
+              <Link to={href} aria-label={`Baca ${title}`}><TmdbBlogImage query={title} fallback="/preview.png" alt={`${alt} dari TMDB`} /></Link>
               <div className="p-6"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{category}</p><h2 className="mb-3 text-xl font-bold leading-snug text-white group-hover:text-red-300"><Link to={href}>{title}</Link></h2><p className="mb-6 text-sm leading-6 text-gray-500">{excerpt}</p><div className="flex items-center justify-between"><time className="text-xs text-gray-600">{date}</time><Link to={href} className="text-xs font-semibold text-red-400 hover:text-red-300">Baca artikel →</Link></div></div>
             </article>
           ))}
