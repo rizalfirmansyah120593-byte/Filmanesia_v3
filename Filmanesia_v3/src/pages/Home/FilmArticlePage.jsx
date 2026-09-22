@@ -55,6 +55,32 @@ function TmdbFilmCard({ title }) {
   </article>;
 }
 
+function TmdbFilmBlock({ title, index }) {
+  const [movieId, setMovieId] = useState(null);
+  const [src, setSrc] = useState(FALLBACK);
+  useEffect(() => {
+    const key = import.meta.env.VITE_TMDB_API;
+    if (!key) return undefined;
+    const controller = new AbortController();
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=id-ID&query=${encodeURIComponent(title)}`, { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => { const item = data?.results?.find((result) => result.poster_path); if (item) { setMovieId(item.id); setSrc(`https://image.tmdb.org/t/p/w500${item.poster_path}`); } })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [title]);
+  const href = movieId ? toDetailPath('movie', movieId, title) : '/movies';
+  return <section>
+    <h3>{index}. <Link to={href}>{title}</Link></h3>
+    <div className="not-prose my-5 max-w-sm overflow-hidden rounded-xl border border-white/10 bg-white/[0.04]">
+      <Link to={href} aria-label={`Tonton ${title} di Filmanesia`}><img src={src} alt={`Poster ${title} dari TMDB`} loading="lazy" onError={() => setSrc(FALLBACK)} className="h-[26rem] w-full object-cover transition duration-500 hover:scale-[1.02]" /></Link>
+      <p className="px-4 py-3 text-xs text-gray-500">Klik poster atau judul untuk menonton di Filmanesia →</p>
+    </div>
+    <p>{title} memberi pengalaman yang kuat melalui karakter dan konflik yang mudah diikuti. Ceritanya mengajak penonton memahami keputusan tokoh, bukan sekadar menunggu akhir. Karena itu, judul ini cocok untuk penonton yang ingin menikmati film dengan perhatian penuh.</p>
+    <p>Perhatikan cara film membangun suasana. Musik, warna, dialog, dan ruang sering menyimpan petunjuk penting. Selain itu, pengalaman Anda dapat berubah ketika menonton bersama orang lain. Teman, pasangan, atau keluarga mungkin menangkap detail berbeda.</p>
+    <p>Anda dapat <Link to={href}>mencari dan menonton {title} di Filmanesia</Link>. Gunakan halaman detail untuk melihat informasi film dan pilihan tontonan yang tersedia.</p>
+  </section>;
+}
+
 export default function FilmArticlePage() {
   const { slug } = useParams();
   const article = ARTICLES[slug] || ARTICLES['film-romantis-indonesia-paling-baper'];
@@ -73,8 +99,7 @@ export default function FilmArticlePage() {
         <p>Penonton kini memiliki banyak pilihan dari bioskop dan layanan streaming. Akan tetapi, terlalu banyak pilihan sering membuat kita sulit mulai. Artikel ini membantu Anda menyaring pilihan berdasarkan suasana, tema, dan kekuatan cerita.</p>
         <p>Selain itu, setiap genre memiliki cara bercerita sendiri. Film romantis mengandalkan chemistry. Film aksi mengejar ritme. Film dokumenter membangun rasa ingin tahu. Oleh karena itu, rekomendasi berikut tidak hanya mengejar popularitas.</p>
         <h2>Rekomendasi film pilihan</h2>
-        <div className="not-prose my-8 grid gap-4 sm:grid-cols-2">{films.map((film) => <TmdbFilmCard key={film} title={film} />)}</div>
-        {films.map((film, index) => <section key={`${film}-text`}><h3>{index + 1}. {film}</h3><p>{film} memberi pengalaman yang kuat melalui karakter dan konflik yang mudah diikuti. Ceritanya mengajak penonton memahami keputusan tokoh, bukan sekadar menunggu akhir. Karena itu, judul ini cocok untuk penonton yang ingin menikmati film dengan perhatian penuh.</p><p>Perhatikan cara film membangun suasana. Musik, warna, dialog, dan ruang sering menyimpan petunjuk penting. Selain itu, pengalaman Anda dapat berubah ketika menonton bersama orang lain. Teman, pasangan, atau keluarga mungkin menangkap detail berbeda.</p><p>Anda dapat <Link to="/movies">mencari {film} di katalog Film Filmanesia</Link>. Gunakan pencarian dan filter genre untuk menemukan judul serupa. Jika judul belum tersedia, jelajahi rekomendasi lain dengan tema yang sama.</p></section>)}
+        {films.map((film, index) => <TmdbFilmBlock key={film} title={film} index={index + 1} />)}
         <h2>Cara memilih tontonan yang paling cocok</h2>
         <p>Mulailah dari waktu yang Anda miliki. Film dengan konflik padat cocok untuk malam singkat. Sebaliknya, cerita yang lebih lambat cocok untuk akhir pekan. Jangan lupa mempertimbangkan teman menonton dan batas usia.</p>
         <p>Selanjutnya, baca sinopsis tanpa spoiler. Langkah ini membantu Anda memilih cerita tanpa merusak kejutan. Anda juga dapat menyimpan judul menarik dalam daftar pribadi. Dengan begitu, Anda tidak perlu mengingat semuanya.</p>
