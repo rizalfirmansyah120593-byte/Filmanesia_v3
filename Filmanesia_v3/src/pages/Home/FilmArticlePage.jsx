@@ -35,6 +35,26 @@ function TmdbPoster({ title, alt, link = false }) {
   return link && movieId ? <Link to={toDetailPath('movie', movieId, title)} aria-label={`Tonton ${title} di Filmanesia`}>{image}</Link> : image;
 }
 
+function TmdbFilmCard({ title }) {
+  const [movieId, setMovieId] = useState(null);
+  const [src, setSrc] = useState(FALLBACK);
+  useEffect(() => {
+    const key = import.meta.env.VITE_TMDB_API;
+    if (!key) return undefined;
+    const controller = new AbortController();
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=id-ID&query=${encodeURIComponent(title)}`, { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => { const item = data?.results?.find((result) => result.poster_path); if (item) { setMovieId(item.id); setSrc(`https://image.tmdb.org/t/p/w500${item.poster_path}`); } })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [title]);
+  const href = movieId ? toDetailPath('movie', movieId, title) : '/movies';
+  return <article className="group overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] hover:border-red-400/40">
+    <Link to={href} aria-label={`Tonton ${title} di Filmanesia`}><img src={src} alt={`Poster ${title} dari TMDB`} loading="lazy" onError={() => setSrc(FALLBACK)} className="h-52 w-full object-cover transition duration-500 group-hover:scale-105" /></Link>
+    <div className="p-4"><h3 className="font-bold text-white group-hover:text-red-300"><Link to={href}>{title}</Link></h3><p className="mt-1 text-xs text-gray-500">Klik poster atau judul untuk menonton →</p></div>
+  </article>;
+}
+
 export default function FilmArticlePage() {
   const { slug } = useParams();
   const article = ARTICLES[slug] || ARTICLES['film-romantis-indonesia-paling-baper'];
@@ -53,7 +73,7 @@ export default function FilmArticlePage() {
         <p>Penonton kini memiliki banyak pilihan dari bioskop dan layanan streaming. Akan tetapi, terlalu banyak pilihan sering membuat kita sulit mulai. Artikel ini membantu Anda menyaring pilihan berdasarkan suasana, tema, dan kekuatan cerita.</p>
         <p>Selain itu, setiap genre memiliki cara bercerita sendiri. Film romantis mengandalkan chemistry. Film aksi mengejar ritme. Film dokumenter membangun rasa ingin tahu. Oleh karena itu, rekomendasi berikut tidak hanya mengejar popularitas.</p>
         <h2>Rekomendasi film pilihan</h2>
-        <div className="not-prose my-8 grid gap-4 sm:grid-cols-2">{films.map((film) => <article key={film} className="group overflow-hidden rounded-xl border border-white/10 bg-white/[0.04] hover:border-red-400/40"><TmdbPoster title={film} alt={`Poster ${film} dari TMDB`} link /><div className="p-4"><h3 className="font-bold text-white group-hover:text-red-300">{film}</h3><p className="mt-1 text-xs text-gray-500">Klik poster untuk membuka halaman film →</p></div></article>)}</div>
+        <div className="not-prose my-8 grid gap-4 sm:grid-cols-2">{films.map((film) => <TmdbFilmCard key={film} title={film} />)}</div>
         {films.map((film, index) => <section key={`${film}-text`}><h3>{index + 1}. {film}</h3><p>{film} memberi pengalaman yang kuat melalui karakter dan konflik yang mudah diikuti. Ceritanya mengajak penonton memahami keputusan tokoh, bukan sekadar menunggu akhir. Karena itu, judul ini cocok untuk penonton yang ingin menikmati film dengan perhatian penuh.</p><p>Perhatikan cara film membangun suasana. Musik, warna, dialog, dan ruang sering menyimpan petunjuk penting. Selain itu, pengalaman Anda dapat berubah ketika menonton bersama orang lain. Teman, pasangan, atau keluarga mungkin menangkap detail berbeda.</p><p>Anda dapat <Link to="/movies">mencari {film} di katalog Film Filmanesia</Link>. Gunakan pencarian dan filter genre untuk menemukan judul serupa. Jika judul belum tersedia, jelajahi rekomendasi lain dengan tema yang sama.</p></section>)}
         <h2>Cara memilih tontonan yang paling cocok</h2>
         <p>Mulailah dari waktu yang Anda miliki. Film dengan konflik padat cocok untuk malam singkat. Sebaliknya, cerita yang lebih lambat cocok untuk akhir pekan. Jangan lupa mempertimbangkan teman menonton dan batas usia.</p>
