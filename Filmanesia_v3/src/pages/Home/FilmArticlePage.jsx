@@ -31,6 +31,20 @@ const ARTICLES = {
 };
 
 const FALLBACK = '/preview.png';
+function getSeoDescription(slug, keyword, intro) {
+  const descriptions = {
+    'film-jepang-terbaik': `${keyword} pilihan untuk pembaca yang menyukai cerita hening, karakter berlapis, dan detail kehidupan sehari-hari. Temukan sinopsis, kekuatan cerita, serta alasan setiap judul layak masuk daftar tontonan.`,
+    'film-korea-terbaik-untuk-pemula': `Mulai mengenal ${keyword} melalui cerita yang mudah diikuti, konflik kuat, dan genre yang beragam. Panduan ini membantu pemula memilih film Korea sesuai suasana dan selera.`,
+    'film-horor-indonesia-paling-seram': `${keyword} dengan atmosfer mencekam, mitos lokal, dan konflik keluarga yang terasa dekat. Simak sinopsis singkat dan alasan setiap film mampu membangun rasa takut.`,
+    'film-thriller-plot-twist-tak-terduga': `Cari ${keyword} yang penuh petunjuk tersembunyi dan kejutan masuk akal. Daftar ini membahas premis, ketegangan, serta pengalaman menonton tanpa membocorkan akhir cerita.`,
+    'film-keluarga-untuk-ditonton-bareng-anak': `Rekomendasi ${keyword} yang aman untuk momen bersama keluarga. Setiap pilihan menawarkan hiburan, pesan emosional, dan bahan percakapan setelah film selesai.`,
+    'film-fiksi-ilmiah-yang-bikin-mikir': `${keyword} yang menggabungkan gagasan besar, teknologi, dan pertanyaan tentang manusia. Temukan film dengan konsep kuat yang tetap menarik bagi penonton umum.`,
+    'film-dokumenter-menarik-penambah-wawasan': `${keyword} yang mengubah fakta menjadi cerita manusiawi dan mudah dipahami. Pilihan ini cocok untuk pembaca yang ingin menambah wawasan tanpa kehilangan pengalaman menonton.`,
+    'anime-movie-terbaik-wajib-ditonton': `${keyword} dengan visual memikat, emosi kuat, dan tema yang relevan lintas usia. Simak rekomendasi beserta alasan setiap anime movie layak Anda tonton.`,
+  };
+  return descriptions[slug] || `${keyword} pilihan Filmanesia dengan sinopsis, kekuatan cerita, dan alasan menonton yang jelas. ${intro}`;
+}
+
 function TmdbFilmBlock({ title, index, theme }) {
   const [movieId, setMovieId] = useState(null);
   const [src, setSrc] = useState(FALLBACK);
@@ -66,6 +80,7 @@ export default function FilmArticlePage() {
   const { slug } = useParams();
   const article = ARTICLES[slug] || ARTICLES['film-romantis-indonesia-paling-baper'];
   const [title, keyword, films, intro] = article;
+  const seoDescription = getSeoDescription(slug, keyword, intro);
   const url = `https://www.filmanesia.com/blog/${slug}`;
   const faq = [
     [`Apa yang menarik dari ${title}?`, `${title} menawarkan pilihan cerita yang relevan dengan kebutuhan penonton dan suasana hati yang berbeda.`],
@@ -73,7 +88,7 @@ export default function FilmArticlePage() {
     ['Di mana saya bisa menemukan film yang direkomendasikan?', 'Buka link pada poster atau judul film untuk melihat halaman tontonan yang tersedia di Filmanesia.'],
   ];
   const jsonLd = { '@context': 'https://schema.org', '@graph': [
-    { '@type': 'Article', headline: title, description: `${title}. Rekomendasi tontonan lengkap dengan insight dan link film di Filmanesia.`, author: { '@type': 'Organization', name: 'Filmanesia' }, publisher: { '@type': 'Organization', name: 'Filmanesia' }, mainEntityOfPage: url, inLanguage: 'id-ID' },
+    { '@type': 'Article', headline: title, description: seoDescription, author: { '@type': 'Organization', name: 'Filmanesia' }, publisher: { '@type': 'Organization', name: 'Filmanesia' }, mainEntityOfPage: url, inLanguage: 'id-ID' },
     { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://www.filmanesia.com/' }, { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.filmanesia.com/blog' }, { '@type': 'ListItem', position: 3, name: title, item: url }] },
     { '@type': 'FAQPage', mainEntity: faq.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) },
   ] };
@@ -81,14 +96,14 @@ export default function FilmArticlePage() {
   const related = Object.entries(ARTICLES).filter(([key]) => key !== slug).slice(0, 3);
   const share = (target) => { const shareUrl = encodeURIComponent(typeof window === 'undefined' ? url : window.location.href); const shareText = encodeURIComponent(title); window.open(target(shareUrl, shareText), '_blank', 'noopener,noreferrer,width=640,height=520'); };
   return <main className="min-h-screen bg-[#07080a] px-5 py-12 text-gray-200 sm:px-8 md:py-16">
-    <SEO title={title} description={`${title}, lengkap dengan rekomendasi, alasan menonton, dan pilihan film di Filmanesia.`} url={url} image="/preview.png" jsonLd={jsonLd} />
+    <SEO title={title} description={seoDescription} url={url} image="/preview.png" jsonLd={jsonLd} />
     <article className="mx-auto max-w-3xl">
       <nav aria-label="Breadcrumb" className="text-sm text-gray-500"><Link to="/" className="hover:text-white">Beranda</Link><span className="mx-2">/</span><Link to="/blog" className="hover:text-white">Blog</Link><span className="mx-2">/</span><span className="text-gray-400">{title}</span></nav>
       <header className="mt-8 border-b border-white/10 pb-10"><p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-red-400">Filmanesia Journal</p><h1 className="text-4xl font-black leading-tight text-white sm:text-5xl">{title}</h1><p className="mt-6 text-lg leading-8 text-gray-400">{intro}</p><p className="mt-5 text-xs text-gray-600">Panduan Filmanesia · Waktu baca 9 menit</p></header>
       <div className="not-prose mt-8 rounded-2xl border border-white/10 bg-white/[0.035] p-5 sm:p-6"><h2 className="mb-4 text-sm font-bold uppercase tracking-[0.16em] text-gray-300">Daftar Isi</h2><nav aria-label="Daftar isi" className="grid gap-2 text-sm text-red-400"><a href="#konsep">Mengapa tema ini menarik?</a><a href="#rekomendasi">Rekomendasi film pilihan</a><a href="#memilih">Cara memilih tontonan</a><a href="#faq">Pertanyaan yang sering ditanyakan</a></nav></div>
       <div className="not-prose mt-8 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-white/[0.025] p-5 text-sm sm:grid-cols-4"><div><span className="block text-xs text-gray-500">Kategori</span><Link to={genreLink} className="font-semibold text-red-400 hover:text-red-300">{keyword}</Link></div><div><span className="block text-xs text-gray-500">Rating editorial</span><strong className="text-white">8,5/10</strong></div><div><span className="block text-xs text-gray-500">Waktu baca</span><strong className="text-white">9 menit</strong></div><div><span className="block text-xs text-gray-500">Diperbarui</span><strong className="text-white">22 Sep 2026</strong></div></div>
       <div className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:text-white prose-p:text-gray-300 prose-p:leading-8 prose-a:text-red-400 prose-a:no-underline hover:prose-a:text-red-300 prose-strong:text-white">
-        <p><strong>{keyword}</strong> membantu Anda memilih tontonan tanpa menghabiskan waktu terlalu lama. Daftar ini merangkum judul yang punya cerita kuat, karakter menarik, dan alasan jelas untuk masuk daftar putar. Direct answer-nya sederhana: mulai dari judul yang sesuai suasana hati, lalu lanjutkan ke karya dengan pendekatan berbeda.</p>
+        <p><strong>{keyword}</strong> membantu Anda menemukan tontonan yang sesuai tanpa menghabiskan waktu terlalu lama. {intro} Daftar ini membandingkan sinopsis, karakter, tema, dan pengalaman menonton setiap judul. Dengan begitu, Anda dapat memilih film berdasarkan kebutuhan, bukan sekadar judul populer.</p>
         <p>Menonton film bukan sekadar mengisi waktu luang. Cerita yang tepat dapat membuka percakapan, memberi perspektif baru, atau menemani malam yang terasa panjang. Karena itu, kami menyusun rekomendasi dengan mempertimbangkan pengalaman penonton Indonesia.</p>
         <h2 id="konsep">Kenapa tema ini menarik bagi penonton Indonesia?</h2>
         <p>Penonton kini memiliki banyak pilihan dari bioskop dan layanan streaming. Akan tetapi, terlalu banyak pilihan sering membuat kita sulit mulai. Artikel ini membantu Anda menyaring pilihan berdasarkan suasana, tema, dan kekuatan cerita.</p>

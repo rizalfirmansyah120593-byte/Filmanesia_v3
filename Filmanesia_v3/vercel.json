@@ -1,6 +1,14 @@
 {
   "rewrites": [
     {
+      "source": "/ai-catalog.json",
+      "destination": "/ai-catalog.json"
+    },
+    {
+      "source": "/llms.txt",
+      "destination": "/llms.txt"
+    },
+    {
       "source": "/sw.js",
       "destination": "/sw.js"
     },
@@ -10,6 +18,20 @@
     }
   ],
   "headers": [
+    {
+      "source": "/ai-catalog.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
+    {
+      "source": "/llms.txt",
+      "headers": [
+        { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=3600" }
+      ]
+    },
     {
       "source": "/assets/(.*)\\.(js|css|png|jpg|jpeg|webp|avif|svg|woff2)",
       "headers": [

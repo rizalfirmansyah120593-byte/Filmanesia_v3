@@ -253,7 +253,7 @@ export default function TrendingRow({
         <div className="flex items-center gap-2">
           {onSeeAll && (
             <button
-              aria-label={`Scroll ${title} ke kiri`}
+              aria-label={`Lihat semua ${title}`}
               onClick={onSeeAll}
               className="flex items-center gap-1 text-gray-500 hover:text-red-400 text-xs font-semibold uppercase tracking-wider transition-colors duration-200 mr-1"
             >
@@ -263,15 +263,16 @@ export default function TrendingRow({
           {/* Nav arrows: always visible, brighter on hover */}
           <div className="flex items-center gap-1 opacity-40 group-hover/row:opacity-100 transition-opacity duration-200">
             <button
-              aria-label={`Scroll ${title} ke kanan`}
+              aria-label={`Scroll ${title} ke kiri`}
               onClick={() => scroll(-1)}
-              className="w-8 h-8 rounded-full bg-white/[0.08] hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+              className="w-10 h-10 min-w-[44px] min-h-[44px] rounded-full bg-white/[0.08] hover:bg-white/20 flex items-center justify-center text-white transition-colors"
             >
               <BiChevronLeft className="text-xl" />
             </button>
             <button
+              aria-label={`Scroll ${title} ke kanan`}
               onClick={() => scroll(1)}
-              className="w-8 h-8 rounded-full bg-white/[0.08] hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+              className="w-10 h-10 min-w-[44px] min-h-[44px] rounded-full bg-white/[0.08] hover:bg-white/20 flex items-center justify-center text-white transition-colors"
             >
               <BiChevronRight className="text-xl" />
             </button>
