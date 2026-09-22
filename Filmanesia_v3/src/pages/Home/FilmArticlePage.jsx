@@ -44,7 +44,7 @@ function TmdbFilmBlock({ title, index }) {
   }, [title]);
   const href = movieId ? toDetailPath('movie', movieId, title) : '/movies';
   return <section>
-    <h3>{index}. <Link to={href}>{title}</Link></h3>
+    <h3 className="!mt-16 !mb-6 !text-2xl !font-black leading-tight tracking-tight text-white sm:!text-3xl">{index}. <Link to={href}>{title}</Link></h3>
     <div className="not-prose my-5 max-w-sm overflow-hidden rounded-xl border border-white/10 bg-white/[0.04]">
       <Link to={href} aria-label={`Tonton ${title} di Filmanesia`}><img src={src} alt={`Poster ${title} dari TMDB`} loading="lazy" onError={() => setSrc(FALLBACK)} className="h-[26rem] w-full object-cover transition duration-500 hover:scale-[1.02]" /></Link>
       <p className="px-4 py-3 text-xs text-gray-500">Klik poster atau judul untuk menonton di Filmanesia →</p>
