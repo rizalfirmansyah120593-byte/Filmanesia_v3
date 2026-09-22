@@ -11,7 +11,6 @@ import PropTypes from "prop-types";
 import { motion, AnimatePresence } from "framer-motion";
 import { fetchSeriesDetails, fetchAllEpisodes, fetchRelatedSeries } from "../Fetcher";
 import { getIdFromDetailSlug, toDetailPath } from "../urlUtils";
-import { saveToContinueWatching } from "../../../utils/continueWatching";
 import { FaRedo, FaStar, FaArrowLeft, FaTv, FaStepBackward, FaStepForward, FaInfoCircle, FaBookmark } from "react-icons/fa";
 import { BiCalendar, BiGlobe, BiTv, BiChevronLeft, BiChevronRight, BiSearch } from "react-icons/bi";
 import DetailPageSkeleton from "../reused/DetailPageSkeleton";
@@ -19,7 +18,6 @@ import VideoPlayer from "./VideoPlayer";
 import SEO from "../SEO";
 import ContentCard from "../ContentCard";
 import CastRow from "../reused/CastRow";
-import AuthModal from "../../../components/AuthModal";
 import { useWatchlist } from "../../../context/WatchlistContext";
 
 const MemoizedVideoPlayer = memo(VideoPlayer);
@@ -62,8 +60,7 @@ const TvDetails = ({ tvId: tvIdProp }) => {
   const [isDraggingSeasons, setIsDraggingSeasons] = useState(false);
   const [isDraggingRelated, setIsDraggingRelated] = useState(false);
   const [related, setRelated] = useState([]);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { user, watchlistIds, toggleWatchlist: ctxToggleWatchlist } = useWatchlist();
+  const { watchlistIds, toggleWatchlist: ctxToggleWatchlist } = useWatchlist();
   const inWatchlist = tv?.id ? watchlistIds.has(String(tv.id)) : false;
   const numericTvId = Number(tvId);
 
@@ -101,7 +98,6 @@ const TvDetails = ({ tvId: tvIdProp }) => {
     setIsDraggingEpisodes(false);
     setIsDraggingSeasons(false);
     setIsDraggingRelated(false);
-    setIsAuthModalOpen(false);
     suppressClickRef.current = false;
     suppressSeasonClickRef.current = false;
     suppressRelatedClickRef.current = false;
@@ -196,7 +192,7 @@ const TvDetails = ({ tvId: tvIdProp }) => {
         vote_average: tv.vote_average,
         release_date: tv.first_air_date,
       },
-      () => setIsAuthModalOpen(true)
+      undefined
     );
   };
 
@@ -242,21 +238,6 @@ const TvDetails = ({ tvId: tvIdProp }) => {
     nextParams.set('episode', String(playingEpisode));
     setSearchParams(nextParams, { replace: true });
   }, [allSeasons.length, playingSeason, playingEpisode, location.search, setSearchParams, loading, tv, numericTvId]);
-
-  // Save to "Continue Watching" tracking
-  useEffect(() => {
-    if (!tv || playingSeason === null || playingEpisode === null || !user?.uid) return;
-    saveToContinueWatching(user.uid, {
-      id: tv.id,
-      mediaType: 'tv',
-      title: `${tv.name} - S${playingSeason}E${playingEpisode}`,
-      poster_path: tv.poster_path,
-      vote_average: tv.vote_average,
-      release_date: tv.first_air_date,
-      season: playingSeason,
-      episode: playingEpisode,
-    });
-  }, [tv, playingSeason, playingEpisode, user]);
 
   useEffect(() => {
     if (activeEpisodeRef.current && episodeListRef.current && viewingSeason === playingSeason) {
@@ -900,7 +881,6 @@ const TvDetails = ({ tvId: tvIdProp }) => {
       </footer>
       
       {/* Auth Modal Form */}
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   );
 };

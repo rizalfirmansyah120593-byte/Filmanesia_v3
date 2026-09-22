@@ -3,7 +3,6 @@ import { useParams, useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
 import { fetchMovieDetails, fetchRelatedMovies } from "../Fetcher";
 import { getIdFromDetailSlug, toDetailPath } from "../urlUtils";
-import { saveToContinueWatching } from "../../../utils/continueWatching";
 import { FaRedo, FaStar, FaArrowLeft, FaInfoCircle, FaBookmark } from "react-icons/fa";
 import { BiCalendar, BiTime, BiGlobe } from "react-icons/bi";
 import DetailPageSkeleton from "../reused/DetailPageSkeleton";
@@ -11,7 +10,6 @@ import VideoPlayer from "./VideoPlayer";
 import SEO from "../SEO";
 import ContentCard from "../ContentCard";
 import CastRow from "../reused/CastRow";
-import AuthModal from "../../../components/AuthModal";
 import { useWatchlist } from "../../../context/WatchlistContext";
 
 const MemoizedVideoPlayer = memo(VideoPlayer);
@@ -31,8 +29,7 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
   const [showOverview, setShowOverview] = useState(false);
   const [related,      setRelated]      = useState([]);
   const [isDraggingRelated, setIsDraggingRelated] = useState(false);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const { user, watchlistIds, toggleWatchlist: ctxToggleWatchlist } = useWatchlist();
+  const { watchlistIds, toggleWatchlist: ctxToggleWatchlist } = useWatchlist();
   const inWatchlist = movie?.id ? watchlistIds.has(String(movie.id)) : false;
 
   const relatedListRef = useRef(null);
@@ -47,7 +44,6 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
     setRelated([]);
     setShowOverview(false);
     setIsDraggingRelated(false);
-    setIsAuthModalOpen(false);
     suppressRelatedClickRef.current = false;
   }, [movieId]);
 
@@ -84,19 +80,6 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
     window.scrollTo({ top: 0, behavior: 'auto' });
   }, [movieId]);
 
-  // Save to "Continue Watching" tracking
-  useEffect(() => {
-    if (!movie || !user?.uid) return;
-    saveToContinueWatching(user.uid, {
-      id: movie.id,
-      mediaType: 'movie',
-      title: movie.title,
-      poster_path: movie.poster_path,
-      vote_average: movie.vote_average,
-      release_date: movie.release_date,
-    });
-  }, [movie, user]);
-
   useEffect(() => {
     if (!movie?.id) return;
     const isLegacyRoute = location.pathname.startsWith('/movie/');
@@ -118,7 +101,7 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
         vote_average: movie.vote_average,
         release_date: movie.release_date,
       },
-      () => setIsAuthModalOpen(true)
+      undefined
     );
   };
 
@@ -446,8 +429,6 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
         </div>
       </footer>
       
-      {/* Auth Modal Form */}
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </div>
   );
 };

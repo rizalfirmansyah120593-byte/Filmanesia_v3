@@ -246,16 +246,17 @@ export default function HeroBanner() {
       {items.length > 1 && (
         <div className="absolute bottom-6 right-6 z-20 hidden lg:flex gap-2">
           {items.map((it, i) => (
-            <button
-              key={it.id}
-              onClick={() => { if (i !== active) goTo(i); }}
-              className={`relative w-[80px] h-[50px] rounded-lg overflow-hidden ring-1 transition-all duration-200 ${
+          <button
+            key={it.id}
+            onClick={() => { if (i !== active) goTo(i); }}
+            aria-label={`Tampilkan ${it.title || it.name}`}
+            className={`relative w-[80px] h-[50px] rounded-lg overflow-hidden ring-1 transition-all duration-200 ${
                 i === active
                   ? 'ring-red-500 scale-105 opacity-100'
                   : 'ring-white/10 opacity-45 hover:opacity-75'
               }`}
             >
-              <img src={`${BACKDROP_THUMB}${it.backdrop_path}`} loading="lazy" width="300" height="169" alt="" className="w-full h-full object-cover" />
+              <img src={`${BACKDROP_THUMB}${it.backdrop_path}`} loading="lazy" width="300" height="169" sizes="80px" alt={`Thumbnail ${it.title || it.name}`} className="w-full h-full object-cover" />
             </button>
           ))}
         </div>

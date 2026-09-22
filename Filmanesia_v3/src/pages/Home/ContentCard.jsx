@@ -24,21 +24,13 @@ const ContentCard = memo(({
   const [imageError, setImageError] = useState(false);
   const [wlLoading, setWlLoading] = useState(false);
 
-  const { watchlistIds, toggleWatchlist, ready, user } = useWatchlist();
+  const { watchlistIds, toggleWatchlist, ready } = useWatchlist();
 
   // Instantly read from shared in-memory Set — no async, no flash
   const inWatchlist = ready && !!mediaId && watchlistIds.has(String(mediaId));
 
   const handleWatchlist = useCallback(async (e) => {
     e.stopPropagation();
-    if (!user) {
-      if (onNeedAuth) {
-        onNeedAuth();
-      } else {
-        window.dispatchEvent(new Event('openAuthModal'));
-      }
-      return;
-    }
     if (!mediaId) return;
     setWlLoading(true);
     try {
@@ -53,7 +45,7 @@ const ContentCard = memo(({
     } finally {
       setWlLoading(false);
     }
-  }, [user, mediaId, mediaType, title, posterPath, voteAverage, rating, releaseDate, onNeedAuth, toggleWatchlist]);
+  }, [mediaId, mediaType, title, posterPath, voteAverage, rating, releaseDate, onNeedAuth, toggleWatchlist]);
 
   const handleKeyPress = useCallback((e) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -207,6 +199,7 @@ const ContentCard = memo(({
             {showWatchlistBtn && (
               <button
                 onClick={handleWatchlist}
+                aria-label={inWatchlist ? `Remove ${title} from watchlist` : `Add ${title} to watchlist`}
                 title={inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
                 aria-label={inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}
                 className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center border transition-colors shadow-sm ${inWatchlist

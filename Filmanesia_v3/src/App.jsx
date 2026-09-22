@@ -8,10 +8,7 @@ const SearchPage = lazy(() => import('./pages/Home/SearchPage'));
 const MovieDetails = lazy(() => import('./pages/Home/Movie/MovieDetails'));
 const TvDetails = lazy(() => import('./pages/Home/TV/TvDetails'));
 const WatchlistPage = lazy(() => import('./pages/Home/WatchlistPage'));
-const ResetPasswordPage = lazy(() => import('./pages/Home/ResetPasswordPage'));
-const EmailVerificationPage = lazy(() => import('./pages/Home/EmailVerificationPage'));
 const PersonPage = lazy(() => import('./pages/Home/Person/PersonPage'));
-const AuthActionPage = lazy(() => import('./pages/Home/AuthActionPage'));
 const EditorialPage = lazy(() => import('./pages/Home/EditorialPage'));
 const TrendHubPage = lazy(() => import('./pages/Home/TrendHubPage'));
 const CityCinemaPage = lazy(() => import('./pages/Home/CityCinemaPage'));
@@ -38,9 +35,6 @@ function App() {
           <Route path="/search" element={<SearchPage />} />
           <Route path="/person/:id/:slug" element={<PersonPage />} />
           <Route path="/watchlist" element={<WatchlistPage />} />
-          <Route path="/reset-password" element={<ResetPasswordPage />} />
-          <Route path="/verify-email" element={<EmailVerificationPage />} />
-          <Route path="/auth-action" element={<AuthActionPage />} />
           <Route path="/trending-film" element={<TrendHubPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/film-indonesia-terbaik" element={<FilmIndonesiaTerbaikPage />} />

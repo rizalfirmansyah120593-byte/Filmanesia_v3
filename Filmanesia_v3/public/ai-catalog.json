@@ -1,0 +1,12 @@
+{
+  "name": "Filmanesia",
+  "description": "Katalog film, serial TV, rekomendasi, dan artikel hiburan Filmanesia.",
+  "url": "https://www.filmanesia.com/",
+  "language": "id-ID",
+  "resources": [
+    { "name": "Film", "url": "https://www.filmanesia.com/movies", "type": "collection" },
+    { "name": "Serial TV", "url": "https://www.filmanesia.com/series", "type": "collection" },
+    { "name": "Film Trending", "url": "https://www.filmanesia.com/trending-film", "type": "collection" },
+    { "name": "Blog Filmanesia", "url": "https://www.filmanesia.com/blog", "type": "collection" }
+  ]
+}

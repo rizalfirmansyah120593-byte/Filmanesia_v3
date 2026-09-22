@@ -9,10 +9,7 @@ import {
   BiChevronLeft,
   BiChevronRight
 } from 'react-icons/bi';
-import { FaSignOutAlt, FaUserCircle } from 'react-icons/fa';
 import { GENRES, SPECIAL_CATEGORIES } from './tmdb';
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../../firebase";
 
 const NAV_ITEMS = [
   { id: 'search', icon: BiSearch, action: 'navigate', label: 'Search' },
@@ -22,37 +19,11 @@ const NAV_ITEMS = [
   { id: 'watchlist', icon: BiBookmark, action: 'navigate', label: 'Watchlist' },
 ];
 
-// Read cached auth flag from localStorage for instant render
-const getCachedUser = () => {
-  try { return JSON.parse(localStorage.getItem('Filmanesia_user')) ?? null; } catch { return null; }
-};
-
-function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpenAuthModal }) {
-  const [user, setUser] = useState(getCachedUser);
+function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const isOpen = isExpanded || isHovered;
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        const cached = { uid: currentUser.uid, displayName: currentUser.displayName, email: currentUser.email };
-        localStorage.setItem('Filmanesia_user', JSON.stringify(cached));
-      } else {
-        localStorage.removeItem('Filmanesia_user');
-      }
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
 
   const ACTIVE_MAP = { search: 'search', movies: 'movies', series: 'series', watchlist: 'watchlist', home: 'home' };
   const activeId = ACTIVE_MAP[activePage] ?? 'home';
@@ -191,41 +162,7 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect, onOpe
       {/* Bottom spacer */}
       <div className="h-6 shrink-0" />
 
-      {/* User profile / Logout */}
-      <div className="mt-auto pt-4 pb-6 px-[10px] shrink-0 border-t border-white/5 relative z-10 bg-gray-900/95">
-        {user ? (
-          <button
-            onClick={handleLogout}
-            title="Log Out"
-            className="
-              relative flex items-center gap-4 px-4 py-3.5 rounded-2xl
-              w-full whitespace-nowrap
-              border-2 border-transparent text-gray-400 hover:text-red-400 hover:bg-red-500/10 hover:border-red-500/20 transition-colors duration-200 focus:outline-none group/user
-            "
-          >
-            <FaSignOutAlt className="text-[24px] shrink-0" />
-            <div className={`flex flex-col text-left transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-              <span className="text-white line-clamp-1 text-[13px] font-bold">{user.displayName || user.email?.split('@')[0]}</span>
-              <span className="text-red-400 text-[10px] font-bold uppercase tracking-wider">Log Out</span>
-            </div>
-          </button>
-        ) : (
-          <button
-            onClick={onOpenAuthModal}
-            title="Log In"
-            className="
-              relative flex items-center gap-4 px-4 py-3.5 rounded-2xl
-              w-full text-[14px] font-medium whitespace-nowrap
-              border-2 border-transparent text-gray-400 hover:text-white hover:bg-white/5 hover:border-transparent transition-colors duration-200 focus:outline-none
-            "
-          >
-            <FaUserCircle className="text-[24px] shrink-0" />
-            <span className={`transition-opacity duration-200 w-24 overflow-hidden ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-              Sign In
-            </span>
-          </button>
-        )}
-      </div>
+      <div className="mt-auto h-6 shrink-0" />
     </aside>
   );
 }
@@ -234,8 +171,7 @@ Sidebar.propTypes = {
   activePage: PropTypes.string.isRequired,
   onNavigate: PropTypes.func.isRequired,
   selectedGenreId: PropTypes.number,
-  onGenreSelect: PropTypes.func,
-  onOpenAuthModal: PropTypes.func
+  onGenreSelect: PropTypes.func
 };
 
 export default React.memo(Sidebar);

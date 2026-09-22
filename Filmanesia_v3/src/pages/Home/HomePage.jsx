@@ -3,8 +3,6 @@ import { motion } from 'framer-motion';
 import { toDetailPath } from './urlUtils';
 import HeroBanner from './HeroBanner';
 import TrendingRow from './TrendingRow';
-import ContinueWatchingRow from './ContinueWatchingRow';
-import PersonalizedRow from './PersonalizedRow';
 import SEO from './SEO';
 
 const SectionDivider = ({ label }) => (
@@ -57,9 +55,6 @@ export default function HomePage() {
       <HeroBanner />
 
       <div className="pt-10 pb-8">
-        <ContinueWatchingRow onSelect={handleSelect} />
-        <PersonalizedRow onSelect={handleSelect} />
-
         {/* ── Movies ── */}
         <TrendingRow
           title="Trending Movies"

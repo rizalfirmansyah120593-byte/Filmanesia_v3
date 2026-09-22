@@ -1,42 +1,17 @@
-import { lazy, Suspense, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Link, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { BiUpArrowAlt, BiHomeAlt, BiMoviePlay, BiTv, BiSearch, BiBookmark } from 'react-icons/bi';
-import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
+import { FaUserCircle } from 'react-icons/fa';
 import Sidebar from './Sidebar';
 import { buildBrowsePath, getCategoryBySlug } from './urlFilters';
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { auth } from "../../firebase";
-const AuthModal = lazy(() => import('../../components/AuthModal'));
 
 function ParentComponent() {
   const location = useLocation();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [user, setUser] = useState(null);
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [keyboardOpen, setKeyboardOpen] = useState(false);
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const handleOpenAuthModal = () => setIsAuthModalOpen(true);
-    window.addEventListener('openAuthModal', handleOpenAuthModal);
-    return () => window.removeEventListener('openAuthModal', handleOpenAuthModal);
-  }, []);
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-  };
 
   const activePage =
     location.pathname === '/'                  ? 'home'
@@ -148,7 +123,6 @@ function ParentComponent() {
         onNavigate={handleNavigation}
         selectedGenreId={selectedGenreId}
         onGenreSelect={handleGenreSelect}
-        onOpenAuthModal={() => setIsAuthModalOpen(true)}
       />
 
       {scrollPosition > 300 && (
@@ -225,32 +199,11 @@ function ParentComponent() {
             </button>
           );
         })}
-        {/* Mobile Profile/Auth Button */}
-        {user ? (
-          <button
-            onClick={handleLogout}
-            className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors text-red-500/80 hover:text-red-400"
-          >
-            <FaSignOutAlt className="text-2xl" />
-            <span className="text-[10px] font-medium font-bold uppercase tracking-wider">Log Out</span>
-          </button>
-        ) : (
-          <button
-            onClick={() => setIsAuthModalOpen(true)}
-            className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors text-gray-500 hover:text-gray-300"
-          >
-            <FaUserCircle className="text-2xl" />
-            <span className="text-[10px] font-medium">Log In</span>
-          </button>
-        )}
+        <button onClick={() => handleNavigation('watchlist')} aria-label="Buka watchlist" className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors text-gray-500 hover:text-gray-300">
+          <FaUserCircle className="text-2xl" />
+          <span className="text-[10px] font-medium">Profile</span>
+        </button>
       </nav>
-
-      {/* Auth Modal Form */}
-      {isAuthModalOpen && (
-        <Suspense fallback={null}>
-          <AuthModal isOpen onClose={() => setIsAuthModalOpen(false)} />
-        </Suspense>
-      )}
     </div>
   );
 }
