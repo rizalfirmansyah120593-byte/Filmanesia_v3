@@ -4,6 +4,7 @@ import { toDetailPath } from './urlUtils';
 import SEO from './SEO';
 
 const ARTICLES = {
+  'film-horor-indonesia-paling-seram': ['Film Horor Indonesia Paling Seram dan Bikin Trauma', 'film horor Indonesia', ['Pengabdi Setan', 'Perempuan Tanah Jahanam', 'Sewu Dino', 'KKN di Desa Penari'], 'Pilihan horor lokal dengan atmosfer kuat, mitos dekat, dan adegan yang sulit hilang dari ingatan.'],
   'film-cina-terbaik': ['Film Cina Terbaik untuk Menemani Waktu Santai', 'film Cina', ['The Wandering Earth', 'Better Days', 'Farewell My Concubine', 'Detective Chinatown'], 'Film Cina menawarkan drama kuat, visual menarik, dan cerita yang mencerminkan perubahan sosial.'],
   'film-india-terbaik': ['Film India Terbaik: Rekomendasi Cerita Penuh Warna', 'film India', ['3 Idiots', 'Dangal', 'RRR', 'Andhadhun'], 'Film India memadukan emosi, musik, humor, dan konflik keluarga dalam cerita yang mudah membekas.'],
   'film-jepang-terbaik': ['Film Jepang Terbaik dengan Cerita yang Membekas', 'film Jepang', ['Shoplifters', 'Rashomon', 'Your Name', 'Drive My Car'], 'Film Jepang menghadirkan cerita tenang, karakter kompleks, dan detail kehidupan yang terasa manusiawi.'],
