@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import { toDetailPath } from './urlUtils';
 import HeroBanner from './HeroBanner';
 import TrendingRow from './TrendingRow';
@@ -37,12 +36,7 @@ export default function HomePage() {
   const goKDrama = () => navigate('/series/k-drama');
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}
-      className="bg-[#0a0c12] min-h-screen"
-    >
+    <div className="bg-[#0a0c12] min-h-screen">
       <SEO
         title="Filmanesia — Stream Movies & TV Shows"
         description="Watch trending movies and TV shows for free. Browse by genre, discover new releases, and stream instantly on Filmanesia — powered by TMDB."
@@ -123,6 +117,6 @@ export default function HomePage() {
           onSeeAll={goSeries}
         />
       </div>
-    </motion.div>
+    </div>
   );
 }

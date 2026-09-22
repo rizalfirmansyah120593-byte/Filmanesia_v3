@@ -1,14 +1,6 @@
 {
   "rewrites": [
     {
-      "source": "/ai-catalog.json",
-      "destination": "/ai-catalog.json"
-    },
-    {
-      "source": "/llms.txt",
-      "destination": "/llms.txt"
-    },
-    {
       "source": "/sw.js",
       "destination": "/sw.js"
     },
@@ -33,7 +25,7 @@
       ]
     },
     {
-      "source": "/assets/(.*)\\.(js|css|png|jpg|jpeg|webp|avif|svg|woff2)",
+      "source": "/assets/(.*)",
       "headers": [
         {
           "key": "Cache-Control",

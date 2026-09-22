@@ -134,8 +134,10 @@ export default function HeroBanner() {
           alt={title}
           loading="eager"
           fetchPriority="high"
+          decoding="async"
           width="780"
           height="439"
+          sizes="100vw"
           className="w-full h-full object-cover object-center"
         />
         {/* Cinematic overlays */}
