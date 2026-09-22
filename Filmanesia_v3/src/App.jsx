@@ -17,6 +17,8 @@ const TrendHubPage = lazy(() => import('./pages/Home/TrendHubPage'));
 const CityCinemaPage = lazy(() => import('./pages/Home/CityCinemaPage'));
 const BlogPage = lazy(() => import('./pages/Home/BlogPage'));
 const FilmIndonesiaTerbaikPage = lazy(() => import('./pages/Home/FilmIndonesiaTerbaikPage'));
+const HororIndonesiaPage = lazy(() => import('./pages/Home/HororIndonesiaPage'));
+const FilmArticlePage = lazy(() => import('./pages/Home/FilmArticlePage'));
 
 function App() {
   return (
@@ -42,6 +44,8 @@ function App() {
           <Route path="/trending-film" element={<TrendHubPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/film-indonesia-terbaik" element={<FilmIndonesiaTerbaikPage />} />
+          <Route path="/blog/film-horor-indonesia-paling-seram" element={<HororIndonesiaPage />} />
+          <Route path="/blog/:slug" element={<FilmArticlePage />} />
           <Route path="/jadwal-bioskop/:city" element={<CityCinemaPage />} />
           <Route path="/:slug" element={<EditorialPage />} />
           {/* Legacy detail URLs (auto-canonicalized in page components) */}
