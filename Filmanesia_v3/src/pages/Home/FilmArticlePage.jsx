@@ -4,6 +4,7 @@ import { toDetailPath } from './urlUtils';
 import SEO from './SEO';
 
 const ARTICLES = {
+  'film-indonesia-terbaik': ['Rekomendasi Film Indonesia Terbaik Sepanjang Masa', 'film Indonesia terbaik', ['Petualangan Sherina', 'Ada Apa dengan Cinta?', 'Laskar Pelangi', 'Ngeri-Ngeri Sedap'], 'Film Indonesia terbaik menghadirkan cerita kuat, karakter membekas, dan tema yang tetap relevan bagi penonton lintas generasi.'],
   'film-horor-indonesia-paling-seram': ['Film Horor Indonesia Paling Seram dan Bikin Trauma', 'film horor Indonesia', ['Pengabdi Setan', 'Perempuan Tanah Jahanam', 'Sewu Dino', 'KKN di Desa Penari'], 'Pilihan horor lokal dengan atmosfer kuat, mitos dekat, dan adegan yang sulit hilang dari ingatan.'],
   'film-cina-terbaik': ['Film Cina Terbaik untuk Menemani Waktu Santai', 'film Cina', ['The Wandering Earth', 'Better Days', 'Farewell My Concubine', 'Detective Chinatown'], 'Film Cina menawarkan drama kuat, visual menarik, dan cerita yang mencerminkan perubahan sosial.'],
   'film-india-terbaik': ['Film India Terbaik: Rekomendasi Cerita Penuh Warna', 'film India', ['3 Idiots', 'Dangal', 'RRR', 'Andhadhun'], 'Film India memadukan emosi, musik, humor, dan konflik keluarga dalam cerita yang mudah membekas.'],
@@ -30,16 +31,19 @@ const ARTICLES = {
 };
 
 const FALLBACK = '/preview.png';
-function TmdbFilmBlock({ title, index }) {
+function TmdbFilmBlock({ title, index, theme }) {
   const [movieId, setMovieId] = useState(null);
   const [src, setSrc] = useState(FALLBACK);
+  const [overview, setOverview] = useState('');
+  const [year, setYear] = useState('');
+  const [rating, setRating] = useState(null);
   useEffect(() => {
     const key = import.meta.env.VITE_TMDB_API;
     if (!key) return undefined;
     const controller = new AbortController();
     fetch(`https://api.themoviedb.org/3/search/movie?api_key=${key}&language=id-ID&query=${encodeURIComponent(title)}`, { signal: controller.signal })
       .then((response) => response.ok ? response.json() : null)
-      .then((data) => { const item = data?.results?.find((result) => result.poster_path); if (item) { setMovieId(item.id); setSrc(`https://image.tmdb.org/t/p/w500${item.poster_path}`); } })
+      .then((data) => { const item = data?.results?.find((result) => result.poster_path); if (item) { setMovieId(item.id); setSrc(`https://image.tmdb.org/t/p/w500${item.poster_path}`); setOverview(item.overview || ''); setYear((item.release_date || '').slice(0, 4)); setRating(item.vote_average ? item.vote_average.toFixed(1) : null); } })
       .catch(() => {});
     return () => controller.abort();
   }, [title]);
@@ -48,10 +52,12 @@ function TmdbFilmBlock({ title, index }) {
     <h3 className="!mt-16 !mb-6 !text-2xl !font-black leading-tight tracking-tight text-white sm:!text-3xl">{index}. <Link to={href}>{title}</Link></h3>
     <div className="not-prose my-5 max-w-sm overflow-hidden rounded-xl border border-white/10 bg-white/[0.04]">
       <Link to={href} aria-label={`Tonton ${title} di Filmanesia`}><img src={src} alt={`Poster ${title} dari TMDB`} loading="lazy" onError={() => setSrc(FALLBACK)} className="h-[26rem] w-full object-cover transition duration-500 hover:scale-[1.02]" /></Link>
-      <p className="px-4 py-3 text-xs text-gray-500">Klik poster atau judul untuk menonton di Filmanesia →</p>
+      <div className="flex items-center justify-between px-4 py-3 text-xs text-gray-500"><span>{year || 'Film pilihan'}</span><span>{rating ? `TMDB ${rating}/10` : 'TMDB'}</span></div>
     </div>
-    <p>{title} memberi pengalaman yang kuat melalui karakter dan konflik yang mudah diikuti. Ceritanya mengajak penonton memahami keputusan tokoh, bukan sekadar menunggu akhir. Karena itu, judul ini cocok untuk penonton yang ingin menikmati film dengan perhatian penuh.</p>
-    <p>Perhatikan cara film membangun suasana. Musik, warna, dialog, dan ruang sering menyimpan petunjuk penting. Selain itu, pengalaman Anda dapat berubah ketika menonton bersama orang lain. Teman, pasangan, atau keluarga mungkin menangkap detail berbeda.</p>
+    <p><strong>Sinopsis:</strong> {overview || `${title} mengikuti tokoh utama melalui konflik yang menguji pilihan, hubungan, dan cara pandangnya terhadap dunia.`}</p>
+    <p>{theme.toLowerCase().includes('horor') ? `${title} membangun ketegangan melalui ruang, suara, dan rahasia yang perlahan muncul. Penonton mengikuti perubahan situasi sambil menebak sumber ancaman yang mengelilingi karakter.` : theme.toLowerCase().includes('romantis') ? `${title} mengembangkan hubungan antarkarakter melalui pilihan, jarak, dan emosi yang tidak selalu mudah disampaikan. Karena itu, konflik personal terasa sama pentingnya dengan alur utama.` : theme.toLowerCase().includes('action') || theme.toLowerCase().includes('perang') ? `${title} menggerakkan cerita melalui risiko, keputusan cepat, dan konsekuensi yang terus meningkat. Adegan aksinya tetap terasa penting karena memperkuat perjalanan karakter.` : theme.toLowerCase().includes('dokumenter') ? `${title} mengajak penonton melihat fakta melalui pengalaman manusia dan detail kehidupan nyata. Setiap informasi mendapat konteks, sehingga pembaca tidak hanya menerima data secara mentah.` : `${title} memperluas tema ${theme} melalui karakter, konflik, dan detail visual yang saling mendukung. Cerita ini memberi ruang bagi penonton untuk membaca makna di balik keputusan setiap tokoh.`}</p>
+    <p><strong>Kenapa menarik:</strong> Film ini tidak hanya mengandalkan premis. Sutradara menyusun ritme, visual, dialog, dan performa pemain untuk membangun pengalaman yang utuh. Penonton dapat memperhatikan perubahan karakter dari awal hingga akhir. Detail kecil sering membantu menjelaskan pilihan tokoh tanpa memberi penjelasan berlebihan.</p>
+    <p><strong>Cocok untuk:</strong> Penonton yang mencari {theme} dengan cerita yang lebih berlapis. Film ini cocok untuk tontonan mandiri atau bahan diskusi bersama teman. Setelah menonton, bandingkan respons Anda dengan keputusan karakter dan tema yang film tersebut tawarkan.</p>
     <p>Anda dapat <Link to={href}>mencari dan menonton {title} di Filmanesia</Link>. Gunakan halaman detail untuk melihat informasi film dan pilihan tontonan yang tersedia.</p>
   </section>;
 }
@@ -88,7 +94,7 @@ export default function FilmArticlePage() {
         <p>Penonton kini memiliki banyak pilihan dari bioskop dan layanan streaming. Akan tetapi, terlalu banyak pilihan sering membuat kita sulit mulai. Artikel ini membantu Anda menyaring pilihan berdasarkan suasana, tema, dan kekuatan cerita.</p>
         <p>Selain itu, setiap genre memiliki cara bercerita sendiri. Film romantis mengandalkan chemistry. Film aksi mengejar ritme. Film dokumenter membangun rasa ingin tahu. Oleh karena itu, rekomendasi berikut tidak hanya mengejar popularitas.</p>
         <h2 id="rekomendasi">Rekomendasi film pilihan</h2>
-        {films.map((film, index) => <TmdbFilmBlock key={film} title={film} index={index + 1} />)}
+        {films.map((film, index) => <TmdbFilmBlock key={film} title={film} theme={keyword} index={index + 1} />)}
         <h2 id="memilih">Cara memilih tontonan yang paling cocok</h2>
         <p>Mulailah dari waktu yang Anda miliki. Film dengan konflik padat cocok untuk malam singkat. Sebaliknya, cerita yang lebih lambat cocok untuk akhir pekan. Jangan lupa mempertimbangkan teman menonton dan batas usia.</p>
         <p>Selanjutnya, baca sinopsis tanpa spoiler. Langkah ini membantu Anda memilih cerita tanpa merusak kejutan. Anda juga dapat menyimpan judul menarik dalam daftar pribadi. Dengan begitu, Anda tidak perlu mengingat semuanya.</p>
