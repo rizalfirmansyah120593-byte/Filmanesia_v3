@@ -35,8 +35,6 @@ function App() {
           <Route path="/watchlist" element={<WatchlistPage />} />
           <Route path="/trending-film" element={<TrendHubPage />} />
           <Route path="/blog" element={<BlogPage />} />
-          <Route path="/blog/film-indonesia-terbaik" element={<FilmArticlePage />} />
-          <Route path="/blog/film-horor-indonesia-paling-seram" element={<FilmArticlePage />} />
           <Route path="/blog/:slug" element={<FilmArticlePage />} />
           <Route path="/jadwal-bioskop/:city" element={<CityCinemaPage />} />
           <Route path="/:slug" element={<EditorialPage />} />
