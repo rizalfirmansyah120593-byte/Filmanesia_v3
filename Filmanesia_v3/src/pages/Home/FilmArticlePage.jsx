@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toDetailPath } from './urlUtils';
 import SEO from './SEO';
+import { getArticleBySlug, getArticleImage } from '../../lib/hostingerArticles';
 
 const ARTICLES = {
   'film-indonesia-terbaik': ['Rekomendasi Film Indonesia Terbaik Sepanjang Masa', 'film Indonesia terbaik', ['Petualangan Sherina', 'Ada Apa dengan Cinta?', 'Laskar Pelangi', 'Ngeri-Ngeri Sedap'], 'Film Indonesia terbaik menghadirkan cerita kuat, karakter membekas, dan tema yang tetap relevan bagi penonton lintas generasi.'],
@@ -76,8 +77,59 @@ function TmdbFilmBlock({ title, index, theme }) {
   </section>;
 }
 
+function RemoteArticlePage({ article }) {
+  const url = `${window.location.origin}/blog/${article.slug}`;
+  const description = article.meta_description || article.excerpt || '';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description,
+    image: getArticleImage(article),
+    datePublished: article.published_at,
+    author: { '@type': 'Organization', name: 'Filmanesia' },
+    mainEntityOfPage: url,
+    inLanguage: 'id-ID',
+  };
+
+  return (
+    <main className="min-h-screen bg-[#07080a] px-5 py-12 text-gray-200 sm:px-8 md:py-16">
+      <SEO title={article.title} description={description} url={url} image={getArticleImage(article)} jsonLd={jsonLd} />
+      <article className="mx-auto max-w-3xl">
+        <Link to="/blog" className="text-sm text-red-400 hover:text-red-300">← Kembali ke Blog</Link>
+        <header className="mt-8 border-b border-white/10 pb-10">
+          <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-red-400">{article.category || 'Filmanesia Journal'}</p>
+          <h1 className="text-4xl font-black leading-tight text-white sm:text-5xl">{article.title}</h1>
+          {article.excerpt && <p className="mt-6 text-lg leading-8 text-gray-400">{article.excerpt}</p>}
+          {article.published_at && <p className="mt-5 text-xs text-gray-600">{new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>}
+        </header>
+        <img className="mt-8 max-h-[28rem] w-full rounded-2xl object-cover" src={getArticleImage(article)} alt={article.title} />
+        <div className="prose prose-invert prose-lg mt-8 max-w-none prose-headings:text-white prose-p:text-gray-300 prose-a:text-red-400" dangerouslySetInnerHTML={{ __html: article.content || article.content_html || '' }} />
+      </article>
+    </main>
+  );
+}
+
 export default function FilmArticlePage() {
   const { slug } = useParams();
+  const [remoteArticle, setRemoteArticle] = useState(null);
+  const [remoteLoading, setRemoteLoading] = useState(true);
+
+  useEffect(() => {
+    let active = true;
+    getArticleBySlug(slug)
+      .then((article) => { if (active) setRemoteArticle(article); })
+      .catch((error) => console.warn('Artikel dari PocketBase tidak tersedia:', error))
+      .finally(() => { if (active) setRemoteLoading(false); });
+    return () => { active = false; };
+  }, [slug]);
+
+  if (remoteLoading) {
+    return <main className="min-h-screen bg-[#07080a] px-5 py-20 text-center text-gray-400">Memuat artikel...</main>;
+  }
+
+  if (remoteArticle) return <RemoteArticlePage article={remoteArticle} />;
+
   const article = ARTICLES[slug] || ARTICLES['film-romantis-indonesia-paling-baper'];
   const [title, keyword, films, intro] = article;
   const seoDescription = getSeoDescription(slug, keyword, intro);
