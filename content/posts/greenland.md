@@ -1,7 +1,7 @@
 =---
 title: "Greenland"
 slug: "greenland"
-date: "2026-09-24 Sept 2026"
+date: "2026-09-24"
 category: "REVIEW FILM"
 rating_editorial: "7.1/10"
 read_time: "8 menit"
@@ -13,54 +13,61 @@ description: "Ulasan lengkap Greenland. Pelajari sinopsis, alur cerita, dan pemb
 
 # Greenland
 
+Ketika kiamat di ambang pintu, bagaimana cara manusia paling biasa bertahan hidup di tengah kekacauan global yang mengerikan?
 
-Ketika kiamat bukan lagi sekadar teori sains fiksi, bagaimana cara manusia bertahan hidup di ambang kepunahan? Pertanyaan inilah yang dieksplorasi secara intens dalam film thriller bencana yang dirilis pada tahun 2020 ini, menghadirkan ketegangan tanpa henti dari awal hingga akhir.
 
 
 ## Daftar Isi
-- Pengantar
-- Alur Cerita dan Ketegangan Tanpa Henti
-- Perjuangan Keluarga di Tengah Bencana
-- FAQ
-- Kesimpulan
+- [Pendahuluan](#pendahuluan)
+- [Sinopsis dan Ketegangan Alur Cerita](#sinopsis-dan-ketegangan-alur-cerita)
+- [Analisis Karakter dan Perjuangan Keluarga](#analisis-karakter-dan-perjuangan-keluarga)
+- [FAQ](#faq)
+- [Kesimpulan](#kesimpulan)
+
 
 
 ![Greenland Poster](https://image.tmdb.org/t/p/w500/bNo2mcvSwIvnx8K6y1euAc1TLVq.jpg)
 *Tahun: 2020 | Rating: TMDB 7.1/10*
 
 
-## Menyelami Ketegangan Film Greenland (2020)
 
-Dirilis pada tahun 2020, film ini berhasil mencuri perhatian para pecinta sinema dunia dan mendapatkan skor yang solid yaitu TMDB 7.1/10. Berbeda dengan film-film bencana kolosal lainnya yang sering kali hanya memamerkan kehancuran gedung dan efek visual megah, film ini memilih untuk fokus pada sisi humanis dan perjuangan emosional sebuah keluarga kecil.
+## Pendahuluan
 
-
-### Sinopsis dan Ancaman Komet Interstellar
-
-Cerita bermula ketika sebuah komet bernama Clarke melintas mendekati Bumi. Awalnya, peristiwa ini dianggap sebagai tontonan astronomi yang menakjubkan. Namun, situasi berubah menjadi mimpi buruk ketika pecahan komet mulai menghantam berbagai belahan dunia dengan kekuatan destruktif yang masif, memicu kepanikan global.
+Dirilis pada tahun 2020, film yang disutradarai oleh Ric Roman Waugh ini berhasil mencuri perhatian para pecinta sinema bencana. Dengan skor TMDB 7.1/10, film ini menawarkan pendekatan yang sedikit berbeda dari kebanyakan film *disaster* Hollywood pada umumnya. Alih-alih berfokus pada kehancuran kota secara masif dengan CGI berlebihan, film ini lebih menyoroti drama emosional sebuah keluarga.
 
 
-## Perjalanan Emosional John Garrity
 
-Dalam kekacauan tersebut, tokoh utama John Garrity (yang diperankan dengan sangat apik oleh Gerard Butler) bersama istrinya Allison (Morena Baccarin) dan putra mereka Nathan, mendapatkan notifikasi misterius dari pemerintah. Mereka terpilih untuk dievakuasi ke sebuah bunker perlindungan rahasia di Greenland.
+## Sinopsis dan Ketegangan Alur Cerita
 
-
-### Hambatan dan Sisi Gelap Manusia
-
-Perjalanan menuju tempat evakuasi sama sekali tidak mudah. Keluarga Garrity harus menghadapi kemacetan total, kerusuhan sosial, hingga keputusasaan orang-orang di sekitar yang juga ingin menyelamatkan diri. Di sinilah film ini bersinar, memperlihatkan bagaimana kepanikan dapat memunculkan sisi terbaik sekaligus sisi tergelap dari umat manusia.
+Cerita bermula ketika sebuah komet antarbintang bernama Clarke melintasi bumi dan mulai menghujani permukaan planet dengan pecahan meteor yang mematikan. John Garrity (diperankan oleh Gerard Butler) bersama istrinya, Allison (Morena Baccarin), dan putra mereka yang menderita diabetes, Nathan, terpilih untuk dievakuasi ke bunker perlindungan rahasia.
 
 
-## Pertanyaan yang Sering Diajukan (FAQ)
 
-**1. Kapan film Greenland dirilis?**
-Film ini dirilis secara global pada tahun 2020 dan mendapatkan sambutan positif dari penonton maupun kritikus.
+### Kekacauan Sosial Menjelang Akhir Dunia
 
-**2. Berapa rating untuk film ini?**
-Film ini memiliki rating yang cukup baik, yaitu TMDB 7.1/10 berdasarkan penilaian dari para pengguna.
+Perjalanan menuju tempat evakuasi tidak berjalan mulus. Kepanikan massal, kerusuhan warga yang putus asa, hingga terpisahnya anggota keluarga menjadi bumbu utama yang membangun tensi tinggi di sepanjang durasi film. Setiap sudut jalan memperlihatkan sisi gelap umat manusia ketika dihadapkan pada kepunahan.
 
-**3. Siapa pemeran utama dalam film ini?**
-Film ini dibintangi oleh Gerard Butler dan Morena Baccarin sebagai pemeran utama.
+
+
+## Analisis Karakter dan Perjuangan Keluarga
+
+Kelebihan utama dari film ini terletak pada realisme karakternya. John Garrity bukanlah seorang pahlawan super atau agen rahasia yang kebal, melainkan seorang insinyur struktural biasa yang sangat menyayangi keluarganya. Ketakutan, keputusasaan, dan ketulusan yang ditampilkan membuat penonton dapat dengan mudah berempati dengan situasi genting yang mereka hadapi.
+
+
+
+## FAQ
+
+**Q: Kapan film ini dirilis?**  
+A: Film ini dirilis secara global pada tahun 2020.
+
+**Q: Berapa rating TMDB untuk film ini?**  
+A: Film ini mendapatkan rating yang cukup baik yaitu TMDB 7.1/10.
+
+**Q: Siapa pemeran utama dalam film ini?**  
+A: Pemeran utama dibintangi oleh Gerard Butler dan Morena Baccarin.
+
 
 
 ## Kesimpulan
 
-Secara keseluruhan, film ini sukses menawarkan pengalaman menonton yang mendebarkan sekaligus menguras emosi. Dengan kombinasi akting yang kuat, tensi cerita yang konsisten, serta premis bencana yang terasa realistis, film ini sangat layak untuk disaksikan kembali di filmanesia.com.
+Secara keseluruhan, film ini sukses menghadirkan tontonan yang menegangkan sekaligus mengharukan. Dengan fokus pada perjuangan bertahan hidup yang membumi, tidak heran jika film ini mendapatkan apresiasi positif dari penonton global dengan perolehan TMDB 7.1/10. Sebuah rekomendasi tontonan wajib bagi Anda yang menyukai genre drama bencana.
