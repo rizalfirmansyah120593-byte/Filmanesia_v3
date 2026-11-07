@@ -413,9 +413,8 @@ function SearchPage() {
       />
       {/* Mobile-aware sticky top bar */}
       <div className="sticky top-0 z-40 -mx-4 sm:-mx-8 px-4 sm:px-8 pt-[calc(env(safe-area-inset-top)+0.75rem)] md:pt-0 pb-3 md:pb-0 backdrop-blur-md bg-black/80 md:bg-transparent border-b border-white/[0.06] md:border-none mb-4 md:mb-0">
-        <h1 className="text-2xl sm:text-3xl font-bold md:hidden">Search</h1>
+        <h1 className="mb-4 text-2xl font-bold sm:text-3xl md:mb-6">Search</h1>
       </div>
-      <h1 className="hidden md:block text-3xl font-bold mb-6">Search</h1>
 
       {/* ── Search + Filter Toggle row ── */}
       <div className="flex gap-3 items-center max-w-3xl">

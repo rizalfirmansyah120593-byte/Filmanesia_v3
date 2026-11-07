@@ -12,6 +12,10 @@
 - [Trending film desk](https://www.filmanesia.com/trending-film)
 - [Editorial guides](https://www.filmanesia.com/rekomendasi-film)
 - [Latest films guide](https://www.filmanesia.com/film-terbaru)
+- [About Filmanesia](https://www.filmanesia.com/tentang)
+- [Contact](https://www.filmanesia.com/kontak)
+- [Terms](https://www.filmanesia.com/syarat-ketentuan)
+- [MCP Server Card](https://www.filmanesia.com/.well-known/mcp/server-card.json)
 
 ## Content
 

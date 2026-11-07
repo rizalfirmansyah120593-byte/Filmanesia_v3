@@ -158,9 +158,14 @@ function ParentComponent() {
               <Link to="/film-horor" className="hover:text-white">Film Horor</Link>
               <Link to="/rekomendasi-film" className="hover:text-white">Rekomendasi Film</Link>
               <Link to="/trending-film" className="hover:text-white">Film Trending</Link>
+              <Link to="/tentang" className="hover:text-white">Tentang</Link>
+              <Link to="/kontak" className="hover:text-white">Kontak</Link>
+              <Link to="/syarat-ketentuan" className="hover:text-white">Syarat &amp; Ketentuan</Link>
             </nav>
             <div className="flex flex-wrap items-center gap-3 md:justify-end">
               <div className="flex items-center gap-3">
+                <a href="tel:+6281293161515" className="hover:text-white">+62 812-9316-1515</a>
+                <span>·</span>
                 <span>© {new Date().getFullYear()} Filmanesia</span>
                 <span>·</span>
                 <span>

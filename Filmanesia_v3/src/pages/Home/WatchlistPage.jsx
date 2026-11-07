@@ -27,16 +27,10 @@ function WatchlistPage() {
 
       {/* Mobile-aware sticky top bar */}
       <div className="sticky top-0 z-40 -mx-4 sm:-mx-8 px-4 sm:px-8 pt-[calc(env(safe-area-inset-top)+0.75rem)] md:pt-0 pb-3 md:pb-0 backdrop-blur-md bg-black/80 md:bg-transparent border-b border-white/[0.06] md:border-none mb-4 md:mb-0">
-        <div className="flex items-center gap-3 md:hidden">
+        <div className="flex items-center gap-3">
           <span className="w-1.5 h-8 bg-red-600 rounded-full inline-block shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
-          <h1 className="text-2xl font-bold tracking-tight">My Watchlist</h1>
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">My Watchlist</h1>
         </div>
-      </div>
-
-      {/* Desktop heading */}
-      <div className="hidden md:flex items-center gap-3 mb-6">
-        <span className="w-1.5 h-8 bg-red-600 rounded-full inline-block shadow-[0_0_10px_rgba(220,38,38,0.5)]" />
-        <h1 className="text-3xl font-bold tracking-tight">My Watchlist</h1>
       </div>
 
       {/* Not logged in */}

@@ -5,6 +5,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WatchlistProvider } from './context/WatchlistContext'
 import './index.css'
+import './lib/webmcp.js'
 import App from './App.jsx'
 
 const queryClient = new QueryClient({

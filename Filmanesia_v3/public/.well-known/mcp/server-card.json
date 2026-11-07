@@ -1,0 +1,19 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/v1/server-card.schema.json",
+  "name": "com.filmanesia/mcp",
+  "title": "Filmanesia",
+  "description": "Search Filmanesia's movie and TV catalog.",
+  "version": "1.0.0",
+  "websiteUrl": "https://www.filmanesia.com/",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://www.filmanesia.com/api/mcp"
+    }
+  ],
+  "_meta": {
+    "com.filmanesia/server": {
+      "capabilities": ["tools"]
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import SEO from './SEO';
+import NotFoundPage from './NotFoundPage';
 
 const PILLARS = {
   'film-terbaru': {
@@ -74,7 +75,9 @@ const related = Object.entries(PILLARS);
 
 export default function EditorialPage() {
   const { slug } = useParams();
-  const page = PILLARS[slug] || PILLARS['rekomendasi-film'];
+  const page = PILLARS[slug];
+  if (!page) return <NotFoundPage />;
+
   const canonical = `https://www.filmanesia.com/${slug}`;
   const jsonLd = {
     '@context': 'https://schema.org',

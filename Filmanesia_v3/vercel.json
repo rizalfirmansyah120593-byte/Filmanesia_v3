@@ -1,6 +1,25 @@
 {
   "routes": [
     {
+      "src": "^/$",
+      "has": [
+        { "type": "header", "key": "accept", "value": ".*text/markdown.*" }
+      ],
+      "dest": "/index.md",
+      "headers": { "Content-Type": "text/markdown; charset=utf-8" }
+    },
+    {
+      "src": "/api/mcp",
+      "dest": "/api/mcp.js"
+    },
+    {
+      "src": "/.well-known/mcp/server-card.json",
+      "headers": {
+        "Content-Type": "application/mcp-server-card+json; charset=utf-8",
+        "Access-Control-Allow-Origin": "*"
+      }
+    },
+    {
       "src": "/sw.js",
       "headers": {
         "Content-Type": "application/javascript",
@@ -26,11 +45,60 @@
       "handle": "filesystem"
     },
     {
-      "src": "/(.*)",
+      "src": "^/(movies|series)(/[^/]+){0,2}$",
       "dest": "/index.html"
+    },
+    {
+      "src": "^/(movie|tv)/[^/]+$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/person/[^/]+/[^/]+$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/(search|watchlist|trending-film|blog)$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/blog/[^/]+$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/jadwal-bioskop/[^/]+$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/(tentang|kontak|syarat-ketentuan)$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "^/(film-terbaru|film-indonesia|film-netflix|film-horor|film-berdasarkan-genre|film-berdasarkan-tahun|review-film|jadwal-bioskop|film-yang-akan-datang|ending-explanation|rekomendasi-film)$",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/404.html",
+      "status": 404
     }
   ],
   "headers": [
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Link",
+          "value": "<https://www.filmanesia.com/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.filmanesia.com/llms.txt>; rel=\"describedby\"; type=\"text/plain\""
+        }
+      ]
+    },
+    {
+      "source": "/.well-known/mcp/server-card.json",
+      "headers": [
+        { "key": "Content-Type", "value": "application/mcp-server-card+json; charset=utf-8" },
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
+      ]
+    },
     {
       "source": "/ai-catalog.json",
       "headers": [
