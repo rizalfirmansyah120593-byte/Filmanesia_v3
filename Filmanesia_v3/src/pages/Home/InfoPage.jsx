@@ -14,7 +14,7 @@ const PAGES = {
   },
   '/kontak': {
     title: 'Kontak Filmanesia',
-    description: 'Hubungi Filmanesia melalui nomor telepon yang tercantum.',
+    description: 'Hubungi Filmanesia melalui telepon atau email.',
     content: (
       <p>Untuk pertanyaan tentang Filmanesia, hubungi <a className="text-red-400 underline" href="tel:+6281293161515">+62 812-9316-1515</a> atau kirim email ke <a className="text-red-400 underline" href="mailto:contact@filmanesia.com">contact@filmanesia.com</a>.</p>
     ),

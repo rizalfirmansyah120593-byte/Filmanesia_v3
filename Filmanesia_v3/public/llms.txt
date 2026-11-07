@@ -16,6 +16,7 @@
 - [Contact](https://www.filmanesia.com/kontak)
 - [Terms](https://www.filmanesia.com/syarat-ketentuan)
 - [MCP Server Card](https://www.filmanesia.com/.well-known/mcp/server-card.json)
+- Email: [contact@filmanesia.com](mailto:contact@filmanesia.com)
 
 ## Content
 
