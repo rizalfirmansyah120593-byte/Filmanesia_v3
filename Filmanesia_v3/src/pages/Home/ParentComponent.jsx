@@ -166,6 +166,8 @@ function ParentComponent() {
               <div className="flex items-center gap-3">
                 <a href="tel:+6281293161515" className="hover:text-white">+62 812-9316-1515</a>
                 <span>·</span>
+                <a href="mailto:contact@filmanesia.com" className="hover:text-white">contact@filmanesia.com</a>
+                <span>·</span>
                 <span>© {new Date().getFullYear()} Filmanesia</span>
                 <span>·</span>
                 <span>

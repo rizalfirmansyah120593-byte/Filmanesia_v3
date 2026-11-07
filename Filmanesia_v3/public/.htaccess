@@ -2,7 +2,7 @@ Options -Indexes
 ErrorDocument 404 /404.html
 
 <IfModule mod_headers.c>
-  Header set Link "<https://www.filmanesia.com/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.filmanesia.com/llms.txt>; rel=\"describedby\"; type=\"text/plain\""
+  Header set Link "<https://www.filmanesia.com/index.md>; rel=alternate, <https://www.filmanesia.com/llms.txt>; rel=describedby"
   Header append Vary Accept
 </IfModule>
 
