@@ -11,9 +11,7 @@
       "url": "https://www.filmanesia.com/api/mcp"
     }
   ],
-  "_meta": {
-    "com.filmanesia/server": {
-      "capabilities": ["tools"]
-    }
+  "capabilities": {
+    "tools": {}
   }
 }

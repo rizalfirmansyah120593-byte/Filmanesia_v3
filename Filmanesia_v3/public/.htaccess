@@ -1,5 +1,31 @@
-RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
-RewriteRule ^ index.html [L]
+Options -Indexes
+ErrorDocument 404 /404.html
+
+<IfModule mod_headers.c>
+  Header set Link "<https://www.filmanesia.com/index.md>; rel=\"alternate\"; type=\"text/markdown\", <https://www.filmanesia.com/llms.txt>; rel=\"describedby\"; type=\"text/plain\""
+  Header append Vary Accept
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType text/markdown .md
+</IfModule>
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  RewriteCond %{HTTP_ACCEPT} text/markdown [NC]
+  RewriteRule ^$ index.md [T=text/markdown,L]
+
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^ - [L]
+
+  RewriteRule ^(movies|series)(/[^/]+){0,2}$ index.html [L]
+  RewriteRule ^(movie|tv)/[^/]+$ index.html [L]
+  RewriteRule ^person/[^/]+/[^/]+$ index.html [L]
+  RewriteRule ^(search|watchlist|trending-film|blog)$ index.html [L]
+  RewriteRule ^blog/[^/]+$ index.html [L]
+  RewriteRule ^jadwal-bioskop/[^/]+$ index.html [L]
+  RewriteRule ^(tentang|kontak|syarat-ketentuan)$ index.html [L]
+  RewriteRule ^(film-terbaru|film-indonesia|film-netflix|film-horor|film-berdasarkan-genre|film-berdasarkan-tahun|review-film|jadwal-bioskop|film-yang-akan-datang|ending-explanation|rekomendasi-film)$ index.html [L]
+</IfModule>
