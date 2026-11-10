@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import SEO from './SEO';
 import { getArticleImage, getPublishedArticles } from '../../lib/hostingerArticles';
+import seedArticles from '../../../data/articles.seed.json';
 
 const BLOG_IMAGE_QUERIES = {
   'Rekomendasi Film Indonesia Terbaik Sepanjang Masa': 'Petualangan Sherina',
@@ -29,6 +30,16 @@ const BLOG_IMAGE_QUERIES = {
   'Film Dokumenter Menarik Penambah Wawasan': 'Free Solo',
   'Anime Movie Terbaik yang Wajib Ditonton': 'A Silent Voice',
 };
+
+const SEEDED_ARTICLES = seedArticles.map((article) => ({
+  category: article.category || 'Artikel Film',
+  title: article.title,
+  excerpt: article.excerpt || article.meta_description || '',
+  date: article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '',
+  image: getArticleImage(article),
+  alt: article.title,
+  href: `/blog/${article.slug}`,
+}));
 
 function TmdbBlogImage({ query, fallback, alt }) {
   const [src, setSrc] = useState(fallback);
@@ -112,7 +123,7 @@ export default function BlogPage() {
       alt: article.title,
       href: `/blog/${article.slug}`,
     }))
-    : ARTICLES;
+    : [...SEEDED_ARTICLES, ...ARTICLES];
 
   return (
     <main className="min-h-screen bg-[#07080a] px-5 py-12 text-gray-200 sm:px-8 md:py-16">

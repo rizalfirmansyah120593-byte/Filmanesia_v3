@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { toDetailPath } from './urlUtils';
 import SEO from './SEO';
 import { getArticleBySlug, getArticleImage } from '../../lib/hostingerArticles';
+import seedArticles from '../../../data/articles.seed.json';
 
 const ARTICLES = {
   'film-indonesia-terbaik': ['Rekomendasi Film Indonesia Terbaik Sepanjang Masa', 'film Indonesia terbaik', ['Petualangan Sherina', 'Ada Apa dengan Cinta?', 'Laskar Pelangi', 'Ngeri-Ngeri Sedap'], 'Film Indonesia terbaik menghadirkan cerita kuat, karakter membekas, dan tema yang tetap relevan bagi penonton lintas generasi.'],
@@ -129,6 +130,9 @@ export default function FilmArticlePage() {
   }
 
   if (remoteArticle) return <RemoteArticlePage article={remoteArticle} />;
+
+  const seededArticle = seedArticles.find((article) => article.slug === slug);
+  if (seededArticle) return <RemoteArticlePage article={seededArticle} />;
 
   const article = ARTICLES[slug] || ARTICLES['film-romantis-indonesia-paling-baper'];
   const [title, keyword, films, intro] = article;
