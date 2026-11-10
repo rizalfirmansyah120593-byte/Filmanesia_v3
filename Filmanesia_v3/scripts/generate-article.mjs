@@ -80,6 +80,7 @@ async function publish(topic, article) {
     category: String(article.category || 'Review Film').trim().slice(0, 40),
     poster_url: topic.poster_path ? `https://image.tmdb.org/t/p/w780${topic.poster_path}` : '',
     tmdb_id: String(topic.id),
+    media_type: topic.media_type === 'tv' ? 'tv' : 'movie',
     status: 'published',
     published_at: new Date().toISOString(),
   };

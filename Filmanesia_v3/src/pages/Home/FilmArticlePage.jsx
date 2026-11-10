@@ -1,9 +1,11 @@
+/* eslint-disable react/prop-types */
 import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toDetailPath } from './urlUtils';
 import SEO from './SEO';
 import NotFoundPage from './NotFoundPage';
 import { getArticleBySlug, getArticleImage } from '../../lib/hostingerArticles';
+import { FiArrowLeft, FiArrowUpRight, FiClock, FiLink, FiPlay, FiShare2 } from 'react-icons/fi';
 import seedArticles from '../../../data/articles.seed.json';
 
 const ARTICLES = {
@@ -79,8 +81,35 @@ function TmdbFilmBlock({ title, index, theme }) {
   </section>;
 }
 
+function TrailerEmbed({ article }) {
+  const [trailerKey, setTrailerKey] = useState(null);
+  useEffect(() => {
+    if (!article.tmdb_id) return undefined;
+    const controller = new AbortController();
+    const type = article.media_type === 'tv' ? 'tv' : 'movie';
+    const key = import.meta.env.VITE_TMDB_API;
+    if (!key) return undefined;
+    fetch(`https://api.themoviedb.org/3/${type}/${article.tmdb_id}/videos?api_key=${key}&language=en-US`, { signal: controller.signal })
+      .then((response) => response.ok ? response.json() : null)
+      .then((data) => { const video = data?.results?.find((item) => item.site === 'YouTube' && ['Trailer', 'Teaser'].includes(item.type)); if (video) setTrailerKey(video.key); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [article.media_type, article.tmdb_id]);
+  if (!trailerKey) return null;
+  return <section className="mt-10 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035]"><div className="flex items-center gap-2 border-b border-white/10 px-5 py-4 text-sm font-bold text-white"><FiPlay className="text-red-400" /> Trailer resmi</div><div className="aspect-video"><iframe className="h-full w-full" src={`https://www.youtube-nocookie.com/embed/${trailerKey}`} title={`Trailer ${article.title}`} loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen /></div></section>;
+}
+
 function RemoteArticlePage({ article }) {
   const url = `${window.location.origin}/blog/${article.slug}`;
+  const [copied, setCopied] = useState(false);
+  const [readingProgress, setReadingProgress] = useState(0);
+  useEffect(() => {
+    const updateProgress = () => { const max = document.documentElement.scrollHeight - window.innerHeight; setReadingProgress(max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0); };
+    window.addEventListener('scroll', updateProgress, { passive: true });
+    updateProgress();
+    return () => window.removeEventListener('scroll', updateProgress);
+  }, []);
+  const copyLink = async () => { try { await navigator.clipboard.writeText(window.location.href); setCopied(true); setTimeout(() => setCopied(false), 1800); } catch { /* clipboard unavailable */ } };
   const description = article.meta_description || article.excerpt || '';
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -95,19 +124,22 @@ function RemoteArticlePage({ article }) {
   };
 
   return (
-    <main className="min-h-screen bg-[#07080a] px-5 py-12 text-gray-200 sm:px-8 md:py-16">
+    <main className="min-h-screen bg-[#07080a] text-gray-200">
       <SEO title={article.title} description={description} url={url} image={getArticleImage(article)} jsonLd={jsonLd} />
-      <article className="mx-auto max-w-3xl">
-        <Link to="/blog" className="text-sm text-red-400 hover:text-red-300">← Kembali ke Blog</Link>
-        <header className="mt-8 border-b border-white/10 pb-10">
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-red-400">{article.category || 'Filmanesia Journal'}</p>
-          <h1 className="text-4xl font-black leading-tight text-white sm:text-5xl">{article.title}</h1>
-          {article.excerpt && <p className="mt-6 text-lg leading-8 text-gray-400">{article.excerpt}</p>}
-          {article.published_at && <p className="mt-5 text-xs text-gray-600">{new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' })}</p>}
-        </header>
-        <img className="mt-8 max-h-[28rem] w-full rounded-2xl object-cover" src={getArticleImage(article)} alt={article.title} />
-        <div className="prose prose-invert prose-lg mt-8 max-w-none prose-headings:text-white prose-p:text-gray-300 prose-a:text-red-400" dangerouslySetInnerHTML={{ __html: article.content || article.content_html || '' }} />
-      </article>
+      <div className="fixed left-0 right-0 top-0 z-[60] h-1 bg-white/10"><div className="h-full bg-red-500 transition-[width]" style={{ width: `${readingProgress}%` }} /></div>
+      <div className="mx-auto max-w-7xl px-5 py-8 sm:px-8 md:py-14">
+        <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-gray-500 transition-colors hover:text-white"><FiArrowLeft /> Kembali ke Blog</Link>
+        <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,820px)_260px] lg:justify-center">
+          <article>
+            <header className="border-b border-white/10 pb-8"><p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-red-400">{article.category || 'Filmanesia Journal'}</p><h1 className="text-4xl font-black leading-[1.08] tracking-tight text-white sm:text-6xl">{article.title}</h1>{article.excerpt && <p className="mt-6 max-w-3xl text-lg leading-8 text-gray-400">{article.excerpt}</p>}<div className="mt-6 flex flex-wrap items-center gap-3 text-xs text-gray-500"><span>Filmanesia Editorial</span><span>·</span><time>{article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : ''}</time><span>·</span><span className="inline-flex items-center gap-1"><FiClock /> 8 menit baca</span></div></header>
+            <figure className="mt-8"><img className="aspect-video w-full rounded-2xl object-cover shadow-2xl shadow-black/40" src={getArticleImage(article)} alt={article.title} width="1280" height="720" /><figcaption className="mt-3 text-xs text-gray-600">Gambar ilustrasi dari TMDB untuk artikel {article.title}.</figcaption></figure>
+            <div className="mt-6 flex items-center gap-2 border-b border-white/10 pb-6"><button type="button" onClick={copyLink} className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs text-gray-400 hover:border-red-400/50 hover:text-white"><FiLink /> {copied ? 'Tautan disalin' : 'Salin tautan'}</button><a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent(url)}`} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-full border border-white/10 px-4 py-2 text-xs text-gray-400 hover:border-red-400/50 hover:text-white"><FiShare2 /> Bagikan</a></div>
+            <div className="prose prose-invert prose-lg mt-9 max-w-none prose-headings:font-bold prose-headings:text-white prose-p:text-gray-300 prose-p:leading-8 prose-a:text-red-400 prose-strong:text-white" dangerouslySetInnerHTML={{ __html: article.content || article.content_html || '' }} />
+            <TrailerEmbed article={article} />
+          </article>
+          <aside className="hidden lg:block"><div className="sticky top-8 space-y-5"><div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5"><p className="mb-3 text-[10px] font-bold uppercase tracking-widest text-red-400">Dalam artikel</p><p className="text-sm leading-6 text-gray-400">Analisis, sinopsis, dan sudut pandang editorial Filmanesia.</p></div><Link to="/blog" className="flex items-center justify-between rounded-2xl border border-white/10 p-5 text-sm text-gray-300 transition-colors hover:border-red-400/50 hover:text-white">Artikel lainnya <FiArrowUpRight /></Link></div></aside>
+        </div>
+      </div>
     </main>
   );
 }

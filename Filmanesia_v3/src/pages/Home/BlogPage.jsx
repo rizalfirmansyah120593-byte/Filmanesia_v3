@@ -1,7 +1,9 @@
+/* eslint-disable react/prop-types */
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import SEO from './SEO';
 import { getArticleImage, getPublishedArticles } from '../../lib/hostingerArticles';
+import { FiArrowUpRight, FiClock, FiSearch } from 'react-icons/fi';
 import seedArticles from '../../../data/articles.seed.json';
 
 const BLOG_IMAGE_QUERIES = {
@@ -125,24 +127,26 @@ export default function BlogPage() {
     }))
     : [...SEEDED_ARTICLES, ...ARTICLES];
 
+  const featured = articles[0];
+  const latest = articles.slice(1);
+  const categories = [...new Set(articles.map((article) => article.category).filter(Boolean))].slice(0, 8);
+
   return (
-    <main className="min-h-screen bg-[#07080a] px-5 py-12 text-gray-200 sm:px-8 md:py-16">
-      <SEO title="Blog Film dan Serial" description="Baca rekomendasi, panduan, dan cerita seputar film dan serial di Blog Filmanesia." url="https://www.filmanesia.com/blog" />
-      <div className="mx-auto max-w-6xl">
-        <header className="mb-12 max-w-2xl">
-          <p className="mb-4 text-xs font-bold uppercase tracking-[0.22em] text-red-400">Filmanesia Journal</p>
-          <h1 className="mb-4 text-4xl font-black tracking-tight text-white sm:text-5xl">Cerita, rekomendasi, dan panduan film</h1>
-          <p className="text-lg leading-8 text-gray-400">Temukan inspirasi tontonan baru dan baca sudut pandang menarik tentang dunia film dan serial.</p>
+    <main className="min-h-screen bg-[#07080a] px-5 py-10 text-gray-200 sm:px-8 md:py-16">
+      <SEO title="Blog Film dan Serial" description="Baca review, rekomendasi, analisis, dan panduan film terbaru di Blog Filmanesia." url="https://www.filmanesia.com/blog" />
+      <div className="mx-auto max-w-7xl">
+        <header className="mb-10 border-b border-white/10 pb-10 lg:flex lg:items-end lg:justify-between lg:gap-10">
+          <div className="max-w-3xl"><p className="mb-4 text-xs font-bold uppercase tracking-[0.25em] text-red-400">Filmanesia Journal</p><h1 className="mb-4 text-4xl font-black tracking-tight text-white sm:text-6xl">Cerita film yang layak dibaca</h1><p className="max-w-2xl text-lg leading-8 text-gray-400">Review jujur, rekomendasi pilihan, dan analisis ringan untuk membantu Anda memilih tontonan berikutnya.</p></div>
+          <div className="mt-6 flex items-center gap-3 lg:mt-0"><span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-xs text-gray-400">Diperbarui setiap hari</span><Link to="/movies" className="inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-500">Jelajahi film <FiArrowUpRight /></Link></div>
         </header>
-        <div className="grid gap-5 md:grid-cols-3">
-          {articles.map(({ category, title, excerpt, date, image, alt, href }) => (
-            <article key={title} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.035] transition-colors hover:border-red-400/40">
-              <Link to={href} aria-label={`Baca ${title}`}><TmdbBlogImage query={title} fallback={image} alt={`${alt} dari TMDB`} /></Link>
-              <div className="p-6"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{category}</p><h2 className="mb-3 text-xl font-bold leading-snug text-white group-hover:text-red-300"><Link to={href}>{title}</Link></h2><p className="mb-6 text-sm leading-6 text-gray-500">{excerpt}</p><div className="flex items-center justify-between"><time className="text-xs text-gray-600">{date}</time><Link to={href} className="text-xs font-semibold text-red-400 hover:text-red-300">Baca artikel →</Link></div></div>
-            </article>
-          ))}
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_280px]">
+          <div>
+            {featured && <article className="group mb-10 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-2xl shadow-black/20"><Link to={featured.href} className="relative block overflow-hidden" aria-label={`Baca ${featured.title}`}><TmdbBlogImage query={featured.title} fallback={featured.image} alt={`${featured.alt} dari TMDB`} /><span className="absolute left-5 top-5 rounded-full bg-red-600 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white">Artikel utama</span></Link><div className="p-6 sm:p-8"><p className="mb-3 text-xs font-bold uppercase tracking-wider text-red-400">{featured.category}</p><h2 className="max-w-3xl text-2xl font-black leading-tight text-white transition-colors group-hover:text-red-300 sm:text-4xl"><Link to={featured.href}>{featured.title}</Link></h2><p className="mt-4 max-w-2xl text-base leading-7 text-gray-400">{featured.excerpt}</p><div className="mt-6 flex items-center gap-4 text-xs text-gray-500"><time>{featured.date}</time><span>·</span><span className="inline-flex items-center gap-1"><FiClock /> 8 menit baca</span><Link to={featured.href} className="ml-auto inline-flex items-center gap-1 font-semibold text-red-400">Baca lengkap <FiArrowUpRight /></Link></div></div></article>}
+            <div className="mb-5 flex items-center justify-between"><h2 className="text-2xl font-bold text-white">Artikel terbaru</h2><span className="text-xs text-gray-600">{articles.length} artikel</span></div>
+            <div className="grid gap-5 sm:grid-cols-2">{latest.map(({ category, title, excerpt, date, image, alt, href }) => <article key={href} className="group overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] transition-all hover:-translate-y-1 hover:border-red-400/40"><Link to={href} aria-label={`Baca ${title}`}><TmdbBlogImage query={title} fallback={image} alt={`${alt} dari TMDB`} /></Link><div className="p-5"><p className="mb-2 text-[10px] font-bold uppercase tracking-widest text-red-400">{category}</p><h3 className="mb-3 text-lg font-bold leading-snug text-white group-hover:text-red-300"><Link to={href}>{title}</Link></h3><p className="line-clamp-3 text-sm leading-6 text-gray-500">{excerpt}</p><div className="mt-5 flex items-center justify-between text-xs text-gray-600"><time>{date}</time><Link to={href} className="inline-flex items-center gap-1 text-red-400">Baca <FiArrowUpRight /></Link></div></div></article>)}</div>
+          </div>
+          <aside className="space-y-5 lg:sticky lg:top-6 lg:self-start"><div className="rounded-2xl border border-white/10 bg-white/[0.035] p-5"><div className="mb-4 flex items-center gap-2 text-white"><FiSearch /><h2 className="font-bold">Jelajahi topik</h2></div><div className="flex flex-wrap gap-2">{categories.map((category) => <span key={category} className="rounded-full border border-white/10 px-3 py-1.5 text-xs text-gray-400">{category}</span>)}</div></div><div className="rounded-2xl border border-red-500/20 bg-gradient-to-br from-red-500/15 to-white/[0.03] p-6"><p className="mb-2 text-xs font-bold uppercase tracking-widest text-red-400">Pilihan editor</p><h2 className="text-xl font-bold text-white">Cari tontonan yang pas untuk malam ini.</h2><p className="mt-3 text-sm leading-6 text-gray-400">Buka katalog film atau serial dan temukan judul berdasarkan genre, bahasa, dan suasana hati.</p><div className="mt-5 flex flex-col gap-2"><Link to="/movies" className="rounded-lg bg-red-600 px-4 py-2.5 text-center text-sm font-semibold text-white hover:bg-red-500">Lihat katalog film</Link><Link to="/series" className="rounded-lg border border-white/10 px-4 py-2.5 text-center text-sm text-gray-300 hover:text-white">Lihat serial TV</Link></div></div></aside>
         </div>
-        <section className="mt-12 rounded-2xl border border-red-500/20 bg-red-500/[0.06] p-6 sm:p-8"><h2 className="mb-2 text-xl font-bold text-white">Jelajahi lebih banyak film</h2><p className="mb-5 text-sm leading-6 text-gray-400">Lanjutkan menemukan tontonan favoritmu dari koleksi Film dan Serial TV Filmanesia.</p><div className="flex flex-wrap gap-3"><Link to="/movies" className="rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-500">Jelajahi Film</Link><Link to="/series" className="rounded-lg border border-white/10 px-4 py-2.5 text-sm font-semibold text-gray-300 hover:border-white/25 hover:text-white">Lihat Serial TV</Link></div></section>
       </div>
     </main>
   );
