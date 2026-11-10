@@ -87,10 +87,27 @@ async function main() {
       await mkdir(route, { recursive: true });
       await writeFile(path.join(route, 'index.html'), detailPage(template, item, type), 'utf8');
     }));
+    const sitemapPath = path.join(distDir, 'sitemap.xml');
+    const sitemap = await readFile(sitemapPath, 'utf8');
+    const sitemapUrls = new Set(extractSitemapUrls(sitemap));
+    pages.forEach(([item, type]) => {
+      const name = type === 'tv' ? item.name : item.title;
+      sitemapUrls.add(`${siteUrl}/${type === 'tv' ? 'series' : 'movies'}/watch/${slugify(name)}-${item.id}`);
+    });
+    const sitemapBody = [...sitemapUrls].sort((a, b) => a.localeCompare(b))
+      .map((url) => `  <url><loc>${url}</loc></url>`).join('\n');
+    const updatedSitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${sitemapBody}\n</urlset>\n`;
+    await writeFile(sitemapPath, updatedSitemap, 'utf8');
+    await writeFile(path.resolve('public', 'sitemap.xml'), updatedSitemap, 'utf8');
     console.log(`[prerender] Generated ${pages.length} trending detail pages.`);
+    console.log(`[sitemap] Added ${pages.length} prerendered detail pages.`);
   } catch (error) {
     console.warn(`[prerender] Skipped due to TMDB error: ${error.message}`);
   }
+}
+
+function extractSitemapUrls(sitemap) {
+  return [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
 }
 
 main();

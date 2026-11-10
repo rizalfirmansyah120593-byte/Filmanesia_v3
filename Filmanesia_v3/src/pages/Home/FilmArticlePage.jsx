@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toDetailPath } from './urlUtils';
 import SEO from './SEO';
+import NotFoundPage from './NotFoundPage';
 import { getArticleBySlug, getArticleImage } from '../../lib/hostingerArticles';
 import seedArticles from '../../../data/articles.seed.json';
 
@@ -134,7 +135,8 @@ export default function FilmArticlePage() {
   const seededArticle = seedArticles.find((article) => article.slug === slug);
   if (seededArticle) return <RemoteArticlePage article={seededArticle} />;
 
-  const article = ARTICLES[slug] || ARTICLES['film-romantis-indonesia-paling-baper'];
+  const article = ARTICLES[slug];
+  if (!article) return <NotFoundPage />;
   const [title, keyword, films, intro] = article;
   const seoDescription = getSeoDescription(slug, keyword, intro);
   const url = `https://www.filmanesia.com/blog/${slug}`;

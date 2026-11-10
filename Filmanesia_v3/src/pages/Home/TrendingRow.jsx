@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { FiArrowRight } from 'react-icons/fi';
 import ContentCard from './ContentCard';
+import { fetchContentByGenre } from './Fetcher';
+import { SPECIAL_PARAMS } from './tmdb';
 
 const API_KEY = import.meta.env.VITE_TMDB_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -62,7 +64,13 @@ function useRow(type, variant = 'trending', minRating = 0, minVotes = 0, origina
       try {
         let results = [];
 
-        if (variant === 'kdrama') {
+        if (variant === 'anime') {
+          const [r1, r2] = await Promise.all([
+            fetchContentByGenre(type, -1, 1, SPECIAL_PARAMS[`-1_${type}`]),
+            fetchContentByGenre(type, -1, 2, SPECIAL_PARAMS[`-1_${type}`]),
+          ]);
+          results = [...r1, ...r2];
+        } else if (variant === 'kdrama') {
           // Keep this row identical to the TV Shows > K-Drama special filter:
           // South Korea origin + Drama genre + Korean original language.
           const url = buildDiscoverUrl(type, variant, ['ko'], minRating, minVotes, sinceYear);

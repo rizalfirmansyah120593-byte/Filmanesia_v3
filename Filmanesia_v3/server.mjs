@@ -10,6 +10,19 @@ const port = Number(process.env.PORT || 3000);
 const automationToken = process.env.ARTICLE_AUTOMATION_TOKEN;
 let generationInProgress = false;
 const autoPublishEnabled = process.env.ARTICLE_AUTOPUBLISH_ENABLED === 'true';
+const editorialPaths = new Set([
+  'film-terbaru',
+  'film-indonesia',
+  'film-netflix',
+  'film-horor',
+  'film-berdasarkan-genre',
+  'film-berdasarkan-tahun',
+  'review-film',
+  'jadwal-bioskop',
+  'film-yang-akan-datang',
+  'ending-explanation',
+  'rekomendasi-film',
+]);
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -67,6 +80,16 @@ async function serveArticles(response, url) {
   return sendJson(response, 200, article);
 }
 
+function isAppRoute(pathname) {
+  if (pathname === '/' || /^\/(?:movies|series)(?:\/[^/]+){0,2}$/.test(pathname)) return true;
+  if (/^\/(?:movie|tv)\/[^/]+$/.test(pathname)) return true;
+  if (/^\/person\/[^/]+\/[^/]+$/.test(pathname)) return true;
+  if (/^\/blog(?:\/[^/]+)?$/.test(pathname)) return true;
+  if (/^\/jadwal-bioskop\/[^/]+$/.test(pathname)) return true;
+  if (['/search', '/watchlist', '/trending-film', '/tentang', '/kontak', '/syarat-ketentuan'].includes(pathname)) return true;
+  return editorialPaths.has(pathname.slice(1));
+}
+
 async function serveStatic(response, pathname) {
   const requested = pathname === '/' ? '/index.html' : pathname;
   const filePath = normalize(join(root, `.${requested}`));
@@ -79,6 +102,12 @@ async function serveStatic(response, pathname) {
     response.writeHead(200, { 'Content-Type': mimeTypes[extname(filePath)] || 'application/octet-stream' });
     response.end(body);
   } catch {
+    if (!isAppRoute(pathname)) {
+      const notFound = await readFile(join(root, '404.html'));
+      response.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
+      response.end(notFound);
+      return;
+    }
     const index = await readFile(join(root, 'index.html'));
     response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     response.end(index);
@@ -110,6 +139,11 @@ if (autoPublishEnabled) {
 
 createServer((request, response) => {
   const url = new URL(request.url || '/', `http://${request.headers.host || 'localhost'}`);
+  const host = request.headers.host?.split(':')[0].toLowerCase();
+  if (host === 'filmanesia.com') {
+    response.writeHead(301, { Location: `https://www.filmanesia.com${url.pathname}${url.search}` });
+    return response.end();
+  }
   if (url.pathname === '/health') return sendJson(response, 200, { ok: true });
   if (url.pathname === '/api/articles' || url.pathname === '/api/articles.php' || url.pathname === '/api/article' || url.pathname === '/api/article.php') {
     return serveArticles(response, url).catch((error) => sendJson(response, 500, { error: error.message }));

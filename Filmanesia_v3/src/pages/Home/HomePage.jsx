@@ -70,17 +70,18 @@ export default function HomePage() {
   const goMovies = () => navigate('/movies');
   const goSeries = () => navigate('/series');
   const goKDrama = () => navigate('/series/k-drama');
+  const goAnime = () => navigate('/series/anime');
 
   return (
     <div className="bg-[#0a0c12] min-h-screen">
       <SEO
-        title="Filmanesia — Stream Movies & TV Shows"
-        description="Watch trending movies and TV shows for free. Browse by genre, discover new releases, and stream instantly on Filmanesia — powered by TMDB."
+        title="Filmanesia — Katalog Film dan Serial TV"
+        description="Jelajahi katalog film dan serial TV Filmanesia. Temukan judul populer, anime, genre favorit, sinopsis, pemeran, dan panduan tontonan."
         noSuffix
       />
       
       {/* ── Visually Hidden H1 for SEO (Brand Keyword 'Filmanesia') ── */}
-      <h1 className="sr-only">Filmanesia - Free Movie & TV Show Streaming Platform</h1>
+      <h1 className="sr-only">Filmanesia - Katalog Film dan Serial TV</h1>
 
       <HeroBanner />
 
@@ -131,6 +132,16 @@ export default function HomePage() {
         <SectionDivider label="TV Shows" />
 
         {/* ── TV ── */}
+        <DeferredTrendingRow>
+          <TrendingRow
+            title="Anime Series"
+            type="tv"
+            variant="anime"
+            accent="#8b5cf6"
+            onSelect={handleSelect}
+            onSeeAll={goAnime}
+          />
+        </DeferredTrendingRow>
         <DeferredTrendingRow>
           <TrendingRow
             title="Asian TV Shows"

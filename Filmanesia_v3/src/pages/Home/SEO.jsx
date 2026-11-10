@@ -1,4 +1,4 @@
-import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 const SITE_NAME = 'Filmanesia';
 const SITE_URL  = 'https://www.filmanesia.com';
@@ -11,6 +11,28 @@ const toAbsoluteUrl = (value, fallback = SITE_URL) => {
     return fallback;
   }
 };
+
+function updateMeta(attribute, key, content) {
+  let element = document.head.querySelector(`meta[${attribute}="${key}"]`);
+  if (!element) {
+    element = document.createElement('meta');
+    element.setAttribute(attribute, key);
+    document.head.appendChild(element);
+  }
+  element.setAttribute('content', content);
+  element.setAttribute('data-rh', 'true');
+}
+
+function updateCanonical(url) {
+  let element = document.head.querySelector('link[rel="canonical"]');
+  if (!element) {
+    element = document.createElement('link');
+    element.setAttribute('rel', 'canonical');
+    document.head.appendChild(element);
+  }
+  element.setAttribute('href', url);
+  element.setAttribute('data-rh', 'true');
+}
 
 /**
  * Reusable SEO component.
@@ -36,11 +58,11 @@ export default function SEO({
 }) {
   const fullTitle = title
     ? noSuffix ? title : `${title} | ${SITE_NAME}`
-    : `${SITE_NAME} — Movie & TV Streaming`;
+    : `${SITE_NAME} — Katalog Film dan Serial TV`;
 
   const metaDescription =
     description ||
-    'Discover and stream trending movies and TV shows. Browse by genre, search titles, and watch instantly — powered by TMDB.';
+    'Jelajahi katalog film dan serial TV Filmanesia. Temukan judul berdasarkan genre, tren, sinopsis, pemeran, dan panduan tontonan.';
 
   const metaImage  = toAbsoluteUrl(image || DEFAULT_IMAGE, DEFAULT_IMAGE);
   const canonical  = (() => {
@@ -61,39 +83,41 @@ export default function SEO({
     }
   })();
 
-  return (
-    <Helmet>
-      {/* Primary */}
-      <title>{fullTitle}</title>
-      <meta name="description" content={metaDescription} />
-      <meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
-      <link rel="canonical" href={canonical} />
+  useEffect(() => {
+    document.title = fullTitle;
+    updateMeta('name', 'description', metaDescription);
+    updateMeta('name', 'robots', noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1');
+    updateMeta('property', 'og:site_name', SITE_NAME);
+    updateMeta('property', 'og:type', type);
+    updateMeta('property', 'og:title', fullTitle);
+    updateMeta('property', 'og:description', metaDescription);
+    updateMeta('property', 'og:image', metaImage);
+    updateMeta('property', 'og:image:alt', fullTitle);
+    updateMeta('property', 'og:image:width', '1200');
+    updateMeta('property', 'og:image:height', '630');
+    updateMeta('property', 'og:url', canonical);
+    updateMeta('property', 'og:locale', 'id_ID');
+    updateMeta('name', 'twitter:card', 'summary_large_image');
+    updateMeta('name', 'twitter:title', fullTitle);
+    updateMeta('name', 'twitter:description', metaDescription);
+    updateMeta('name', 'twitter:image', metaImage);
+    updateMeta('name', 'twitter:image:alt', fullTitle);
+    updateCanonical(canonical);
 
-      {/* Open Graph */}
-      <meta property="og:site_name"   content={SITE_NAME} />
-      <meta property="og:type"        content={type} />
-      <meta property="og:title"       content={fullTitle} />
-      <meta property="og:description" content={metaDescription} />
-      <meta property="og:image"       content={metaImage} />
-      <meta property="og:image:alt"   content={fullTitle} />
-      <meta property="og:image:width" content="1200" />
-      <meta property="og:image:height" content="630" />
-      <meta property="og:url"         content={canonical} />
-      <meta property="og:locale"      content="id_ID" />
+    const schemaId = 'filmanesia-page-jsonld';
+    let schema = document.getElementById(schemaId);
+    if (jsonLd) {
+      if (!schema) {
+        schema = document.createElement('script');
+        schema.id = schemaId;
+        schema.type = 'application/ld+json';
+        document.head.appendChild(schema);
+      }
+      schema.textContent = JSON.stringify(jsonLd).replace(/</g, '\\u003c');
+    } else {
+      schema?.remove();
+    }
+  }, [canonical, fullTitle, jsonLd, metaDescription, metaImage, noindex, type]);
 
-      {/* Twitter Card */}
-      <meta name="twitter:card"        content="summary_large_image" />
-      <meta name="twitter:title"       content={fullTitle} />
-      <meta name="twitter:description" content={metaDescription} />
-      <meta name="twitter:image"       content={metaImage} />
-      <meta name="twitter:image:alt"   content={fullTitle} />
-
-      {/* JSON-LD structured data */}
-      {jsonLd && (
-        <script type="application/ld+json">
-          {JSON.stringify(jsonLd).replace(/</g, '\\u003c')}
-        </script>
-      )}
-    </Helmet>
-  );
+  return null;
 }

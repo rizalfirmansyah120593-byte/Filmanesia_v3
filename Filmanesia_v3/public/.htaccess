@@ -13,6 +13,9 @@ ErrorDocument 404 /404.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
+  RewriteCond %{HTTP_HOST} ^filmanesia\.com$ [NC]
+  RewriteRule ^ https://www.filmanesia.com%{REQUEST_URI} [R=301,L,NE]
+
   RewriteCond %{HTTP_ACCEPT} text/markdown [NC]
   RewriteRule ^$ index.md [T=text/markdown,L]
 
@@ -28,4 +31,7 @@ ErrorDocument 404 /404.html
   RewriteRule ^jadwal-bioskop/[^/]+$ index.html [L]
   RewriteRule ^(tentang|kontak|syarat-ketentuan)$ index.html [L]
   RewriteRule ^(film-terbaru|film-indonesia|film-netflix|film-horor|film-berdasarkan-genre|film-berdasarkan-tahun|review-film|jadwal-bioskop|film-yang-akan-datang|ending-explanation|rekomendasi-film)$ index.html [L]
+
+  RewriteRule ^(health|api/articles?(\.php)?|automation/generate)$ - [L]
+  RewriteRule ^ - [R=404,L]
 </IfModule>

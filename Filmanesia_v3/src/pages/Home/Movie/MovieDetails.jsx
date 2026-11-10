@@ -192,7 +192,7 @@ const MovieDetails = ({ movieId: movieIdProp }) => {
   return (
     <div className="min-h-screen bg-[#07080a] text-gray-200 selection:bg-red-500/30">
       <SEO
-        title={`${movie.title}${year ? ` (${year})` : ''} — Watch Free on Filmanesia`}
+        title={`${movie.title}${year ? ` (${year})` : ''} — Watch Free`}
         description={
           movie.overview
             ? `${movie.overview.slice(0, 150).trim()}… Watch ${movie.title} free on Filmanesia.`

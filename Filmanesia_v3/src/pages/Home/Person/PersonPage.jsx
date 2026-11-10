@@ -100,7 +100,7 @@ export default function PersonPage() {
       className="min-h-screen bg-[#07080a] text-white pt-24 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-16"
     >
       <SEO 
-        title={`${person.name} — Filmanesia`} 
+        title={person.name}
         description={person.biography || `Discover movies and TV shows starring ${person.name}.`}
         image={person.profile_path ? `https://image.tmdb.org/t/p/w780${person.profile_path}` : undefined}
       />

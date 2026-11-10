@@ -87,7 +87,7 @@ function Series() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-none">
-                TV Shows
+                {genre ? `${genre.name} TV Shows` : 'TV Shows'}
               </h1>
               {genre ? (
                 <div className="flex items-center gap-2 mt-1.5">

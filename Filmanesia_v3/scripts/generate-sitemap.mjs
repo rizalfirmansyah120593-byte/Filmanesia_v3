@@ -9,7 +9,10 @@ const site = 'https://www.filmanesia.com';
 const read = (file) => fs.readFileSync(file, 'utf8');
 const extract = (source, pattern) => [...source.matchAll(pattern)].map((match) => match[1]);
 
-const current = fs.existsSync(sitemapPath) ? extract(read(sitemapPath), /<loc>([^<]+)<\/loc>/g) : [];
+const current = fs.existsSync(sitemapPath)
+  ? extract(read(sitemapPath), /<loc>([^<]+)<\/loc>/g)
+    .filter((url) => !url.includes('/blog') && !/\/(?:movies|series)\/watch\//.test(url))
+  : [];
 const blogCards = extract(read(blogPath), /href:\s*['"](\/blog\/[^'"]+)['"]/g);
 const infoPages = ['/tentang', '/kontak', '/syarat-ketentuan'];
 const articleApi = (process.env.ARTICLES_API_URL || process.env.VITE_ARTICLES_API_URL || '').replace(/\/$/, '');
@@ -26,15 +29,13 @@ if (articleApi) {
   }
 }
 const urls = [...new Set([
-  ...current.filter((url) => !url.includes('/blog')),
+  ...current,
   `${site}/blog`,
   ...blogCards.map((url) => `${site}${url}`),
   ...remoteBlogUrls.map((url) => `${site}${url}`),
   ...infoPages.map((url) => `${site}${url}`),
 ])].sort((a, b) => a.localeCompare(b));
 
-const lastmod = new Date().toISOString().slice(0, 10);
-const blogUrl = (url) => url.includes('/blog');
-const body = urls.map((url) => `  <url><loc>${url}</loc><lastmod>${lastmod}</lastmod><changefreq>${blogUrl(url) ? 'monthly' : 'weekly'}</changefreq><priority>${url === `${site}/` ? '1.0' : blogUrl(url) ? '0.7' : '0.8'}</priority></url>`).join('\n');
+const body = urls.map((url) => `  <url><loc>${url}</loc></url>`).join('\n');
 fs.writeFileSync(sitemapPath, `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`);
-console.log(`[sitemap] Generated ${urls.length} URLs (${urls.filter(blogUrl).length} blog URLs)`);
+console.log(`[sitemap] Generated ${urls.length} URLs (${urls.filter((url) => url.includes('/blog')).length} blog URLs)`);

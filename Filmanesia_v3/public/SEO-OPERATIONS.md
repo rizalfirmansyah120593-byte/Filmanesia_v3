@@ -4,7 +4,7 @@
 
 1. Cari topik yang naik di Google Trends Indonesia dan validasi judulnya di TMDB atau sumber resmi.
 2. Buat artikel dengan pendapat editor, rating internal, data pemeran, durasi, genre, tanggal pembaruan, dan tautan terkait.
-3. Tambahkan artikel evergreen ke kartu artikel di `src/pages/Home/BlogPage.jsx`; build akan memasukkan URL ke sitemap beserta `lastmod`.
+3. Tambahkan artikel evergreen ke kartu artikel di `src/pages/Home/BlogPage.jsx`; build memasukkan URL artikel ke sitemap. `lastmod` sengaja tidak dicantumkan kecuali tanggal perubahan konten yang sebenarnya tersedia.
 4. Setelah deploy, periksa sitemap dan inspeksi URL di Google Search Console. Minta indexing hanya untuk artikel yang sudah final.
 
 ## Pengukuran

@@ -16,7 +16,6 @@ Filmanesia is an Indonesian movie and TV discovery site. Browse film and series 
 - [About Filmanesia](https://www.filmanesia.com/tentang)
 - [Contact](https://www.filmanesia.com/kontak)
 - [Terms](https://www.filmanesia.com/syarat-ketentuan)
-- Telephone: [+62 812-9316-1515](tel:+6281293161515)
 - Email: [contact@filmanesia.com](mailto:contact@filmanesia.com)
 
 Movie and TV metadata is provided by TMDB. Availability and subtitle support may vary by third-party provider.

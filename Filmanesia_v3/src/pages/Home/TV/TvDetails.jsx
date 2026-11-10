@@ -436,7 +436,7 @@ const TvDetails = ({ tvId: tvIdProp }) => {
   return (
     <div className="min-h-screen bg-[#07080a] text-gray-200 selection:bg-red-500/30">
       <SEO
-        title={`${tv.name}${year ? ` (${year})` : ''} — Watch Free on Filmanesia`}
+        title={`${tv.name}${year ? ` (${year})` : ''} — Watch Free`}
         description={
           tv.overview
             ? `${tv.overview.slice(0, 150).trim()}… Stream ${tv.name} free on Filmanesia.`
