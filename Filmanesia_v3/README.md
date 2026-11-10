@@ -87,19 +87,15 @@ A modern movie and TV show streaming discovery app built with **React 18**, **Vi
 
 ### Otomatisasi artikel harian
 
-Server Node.js Hostinger menjalankan [server.mjs](./server.mjs), sedangkan Hostinger Cron Jobs memanggil endpoint `/automation/generate` dua kali sehari pada pukul 08:00 dan 19:00 WIB. Workflow GitHub lama [generate-articles.yml](./.github/workflows/generate-articles.yml) tidak diperlukan untuk produksi.
+Server Node.js Hostinger menjalankan [server.mjs](./server.mjs) dan otomatis membuat maksimal dua artikel per hari. Tidak diperlukan Cron Jobs, PocketBase, token tambahan, atau workflow GitHub.
 
-Tambahkan environment variables berikut di Hostinger → Node.js → Environment variables:
+Tambahkan tiga environment variables berikut di Hostinger → Node.js → Environment variables:
 
+- `ARTICLE_AUTOPUBLISH_ENABLED=true` — mengaktifkan otomatisasi.
+- `OPENAI_ARTICLE_MODEL=gpt-4o-mini` — model hemat.
 - `OPENAI_API_KEY` — API key OpenAI.
-- `TMDB_API_KEY` — API key TMDB.
-- `POCKETBASE_URL` — URL PocketBase produksi.
-- `POCKETBASE_TOKEN` — token superuser/service PocketBase khusus automation, bukan token pengguna.
-- `ARTICLE_AUTOMATION_TOKEN` — token acak panjang untuk melindungi endpoint cron.
 
-Buat dua Hostinger Cron Jobs dengan URL berikut, tanpa menuliskan token di repository:
-`https://filmanesia.com/automation/generate?token=ARTICLE_AUTOMATION_TOKEN`
-Atur jadwalnya ke `0 8 * * *` dan `0 19 * * *` sesuai timezone Asia/Jakarta pada panel Hostinger. Model dapat diganti melalui `OPENAI_MODEL`. Artikel disimpan sebagai `published` setelah validasi field dan ditampilkan melalui API artikel yang sudah digunakan aplikasi.
+TMDB menggunakan `VITE_TMDB_API` yang sudah ada. Artikel disimpan di `data/articles.json` pada server Hostinger dan ditampilkan melalui `/api/articles`.
 
 4. **Start the development server:**
    ```bash

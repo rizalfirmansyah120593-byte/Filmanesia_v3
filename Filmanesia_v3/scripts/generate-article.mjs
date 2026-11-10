@@ -1,4 +1,6 @@
 import process from 'node:process';
+import { fileURLToPath } from 'node:url';
+import { createArticle, readArticles } from './article-store.mjs';
 
 const required = (name) => {
   const value = process.env[name];
@@ -7,12 +9,9 @@ const required = (name) => {
 };
 
 const openAiKey = required('OPENAI_API_KEY');
-const tmdbKey = required('TMDB_API_KEY');
-const pocketbaseUrl = required('POCKETBASE_URL').replace(/\/$/, '');
-const pocketbaseToken = required('POCKETBASE_TOKEN');
-const model = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+const tmdbKey = process.env.TMDB_API_KEY || process.env.VITE_TMDB_API || required('TMDB_API_KEY');
+const model = process.env.OPENAI_ARTICLE_MODEL || process.env.OPENAI_MODEL || 'gpt-4o-mini';
 const language = 'id-ID';
-const today = new Date().toISOString().slice(0, 10);
 
 const slugify = (value) => value.toLowerCase()
   .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
@@ -29,10 +28,8 @@ async function getTopic() {
   const candidates = (trending.results || []).filter((item) => item.id && (item.title || item.name) && item.overview);
   if (!candidates.length) throw new Error('TMDB returned no usable trending titles.');
 
-  const existing = await getJson(`${pocketbaseUrl}/api/collections/articles/records?perPage=100&sort=-published_at`, {
-    headers: { Authorization: `Bearer ${pocketbaseToken}` },
-  }).catch(() => ({ items: [] }));
-  const existingIds = new Set((existing.items || []).map((item) => String(item.tmdb_id)).filter(Boolean));
+  const existing = await readArticles();
+  const existingIds = new Set(existing.map((item) => String(item.tmdb_id)).filter(Boolean));
   return candidates.find((item) => !existingIds.has(String(item.id))) || candidates[0];
 }
 
@@ -84,18 +81,21 @@ async function publish(topic, article) {
     poster_url: topic.poster_path ? `https://image.tmdb.org/t/p/w780${topic.poster_path}` : '',
     tmdb_id: String(topic.id),
     status: 'published',
-    published_at: `${today}T08:00:00.000Z`,
+    published_at: new Date().toISOString(),
   };
   if (!payload.content || !payload.excerpt) throw new Error('Model returned incomplete article content.');
 
-  return getJson(`${pocketbaseUrl}/api/collections/articles/records`, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${pocketbaseToken}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
+  return createArticle(payload);
 }
 
-const topic = await getTopic();
-const article = await generateContent(topic);
-const published = await publish(topic, article);
-console.log(JSON.stringify({ id: published.id, title: published.title, slug: published.slug, model, topic: topic.title || topic.name }));
+export async function runGeneration() {
+  const topic = await getTopic();
+  const article = await generateContent(topic);
+  const published = await publish(topic, article);
+  return { id: published.id, title: published.title, slug: published.slug, model, topic: topic.title || topic.name };
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
+  const result = await runGeneration();
+  console.log(JSON.stringify(result));
+}

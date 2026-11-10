@@ -3,11 +3,13 @@ import { spawn } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
 import { extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readArticles } from './scripts/article-store.mjs';
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)), 'dist');
 const port = Number(process.env.PORT || 3000);
 const automationToken = process.env.ARTICLE_AUTOMATION_TOKEN;
 let generationInProgress = false;
+const autoPublishEnabled = process.env.ARTICLE_AUTOPUBLISH_ENABLED === 'true';
 
 const mimeTypes = {
   '.html': 'text/html; charset=utf-8',
@@ -54,6 +56,17 @@ function generateArticle(response) {
   });
 }
 
+async function serveArticles(response, url) {
+  const articles = await readArticles();
+  if (url.pathname === '/api/articles' || url.pathname === '/api/articles.php') {
+    return sendJson(response, 200, { items: articles });
+  }
+  const slug = url.searchParams.get('slug');
+  const article = articles.find((item) => item.slug === slug);
+  if (!article) return sendJson(response, 404, { error: 'Article not found.' });
+  return sendJson(response, 200, article);
+}
+
 async function serveStatic(response, pathname) {
   const requested = pathname === '/' ? '/index.html' : pathname;
   const filePath = normalize(join(root, `.${requested}`));
@@ -69,9 +82,35 @@ async function serveStatic(response, pathname) {
   }
 }
 
+async function autoPublishArticle() {
+  if (!autoPublishEnabled || generationInProgress) return;
+  const jakartaDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date());
+  const articles = await readArticles();
+  const publishedToday = articles.filter((article) => article.published_at?.slice(0, 10) === jakartaDate).length;
+  if (publishedToday >= 2) return;
+
+  generationInProgress = true;
+  try {
+    const { runGeneration } = await import('./scripts/generate-article.mjs');
+    console.log(JSON.stringify({ automation: 'article', result: await runGeneration() }));
+  } catch (error) {
+    console.error(`[article automation] ${error.message}`);
+  } finally {
+    generationInProgress = false;
+  }
+}
+
+if (autoPublishEnabled) {
+  setTimeout(autoPublishArticle, 15000);
+  setInterval(autoPublishArticle, 12 * 60 * 60 * 1000);
+}
+
 createServer((request, response) => {
   const url = new URL(request.url || '/', `http://${request.headers.host || 'localhost'}`);
   if (url.pathname === '/health') return sendJson(response, 200, { ok: true });
+  if (url.pathname === '/api/articles' || url.pathname === '/api/articles.php' || url.pathname === '/api/article' || url.pathname === '/api/article.php') {
+    return serveArticles(response, url).catch((error) => sendJson(response, 500, { error: error.message }));
+  }
   if (url.pathname === '/automation/generate') {
     if (request.method !== 'GET' && request.method !== 'POST') return sendJson(response, 405, { error: 'Use GET or POST.' });
     if (!isAuthorized(request, url)) return sendJson(response, 401, { error: 'Unauthorized.' });
