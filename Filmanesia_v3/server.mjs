@@ -1,7 +1,7 @@
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
 import { readFile } from 'node:fs/promises';
-import { extname, join, normalize, resolve } from 'node:path';
+import { extname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readArticles } from './scripts/article-store.mjs';
 
@@ -70,7 +70,10 @@ async function serveArticles(response, url) {
 async function serveStatic(response, pathname) {
   const requested = pathname === '/' ? '/index.html' : pathname;
   const filePath = normalize(join(root, `.${requested}`));
-  if (!filePath.startsWith(root + '\\') && filePath !== root) return sendJson(response, 403, { error: 'Forbidden' });
+  const relativePath = relative(root, filePath);
+  if (relativePath === '..' || relativePath.startsWith(`..${sep}`) || isAbsolute(relativePath)) {
+    return sendJson(response, 403, { error: 'Forbidden' });
+  }
   try {
     const body = await readFile(filePath);
     response.writeHead(200, { 'Content-Type': mimeTypes[extname(filePath)] || 'application/octet-stream' });
