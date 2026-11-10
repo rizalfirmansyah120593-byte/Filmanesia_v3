@@ -12,10 +12,24 @@ const extract = (source, pattern) => [...source.matchAll(pattern)].map((match) =
 const current = fs.existsSync(sitemapPath) ? extract(read(sitemapPath), /<loc>([^<]+)<\/loc>/g) : [];
 const blogCards = extract(read(blogPath), /href:\s*['"](\/blog\/[^'"]+)['"]/g);
 const infoPages = ['/tentang', '/kontak', '/syarat-ketentuan'];
+const articleApi = (process.env.ARTICLES_API_URL || process.env.VITE_ARTICLES_API_URL || '').replace(/\/$/, '');
+let remoteBlogUrls = [];
+if (articleApi) {
+  try {
+    const response = await fetch(`${articleApi}/articles.php`);
+    if (response.ok) {
+      const data = await response.json();
+      remoteBlogUrls = (data.items || []).map((article) => article.slug).filter(Boolean).map((slug) => `/blog/${slug}`);
+    }
+  } catch (error) {
+    console.warn(`[sitemap] Remote articles unavailable: ${error.message}`);
+  }
+}
 const urls = [...new Set([
   ...current.filter((url) => !url.includes('/blog')),
   `${site}/blog`,
   ...blogCards.map((url) => `${site}${url}`),
+  ...remoteBlogUrls.map((url) => `${site}${url}`),
   ...infoPages.map((url) => `${site}${url}`),
 ])].sort((a, b) => a.localeCompare(b));
 

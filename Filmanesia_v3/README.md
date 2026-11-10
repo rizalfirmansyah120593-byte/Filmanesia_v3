@@ -85,6 +85,22 @@ A modern movie and TV show streaming discovery app built with **React 18**, **Vi
 
    > The app uses Vite's `import.meta.env` — variable names **must** start with `VITE_`.
 
+### Otomatisasi artikel harian
+
+Server Node.js Hostinger menjalankan [server.mjs](./server.mjs), sedangkan Hostinger Cron Jobs memanggil endpoint `/automation/generate` dua kali sehari pada pukul 08:00 dan 19:00 WIB. Workflow GitHub lama [generate-articles.yml](./.github/workflows/generate-articles.yml) tidak diperlukan untuk produksi.
+
+Tambahkan environment variables berikut di Hostinger → Node.js → Environment variables:
+
+- `OPENAI_API_KEY` — API key OpenAI.
+- `TMDB_API_KEY` — API key TMDB.
+- `POCKETBASE_URL` — URL PocketBase produksi.
+- `POCKETBASE_TOKEN` — token superuser/service PocketBase khusus automation, bukan token pengguna.
+- `ARTICLE_AUTOMATION_TOKEN` — token acak panjang untuk melindungi endpoint cron.
+
+Buat dua Hostinger Cron Jobs dengan URL berikut, tanpa menuliskan token di repository:
+`https://filmanesia.com/automation/generate?token=ARTICLE_AUTOMATION_TOKEN`
+Atur jadwalnya ke `0 8 * * *` dan `0 19 * * *` sesuai timezone Asia/Jakarta pada panel Hostinger. Model dapat diganti melalui `OPENAI_MODEL`. Artikel disimpan sebagai `published` setelah validasi field dan ditampilkan melalui API artikel yang sudah digunakan aplikasi.
+
 4. **Start the development server:**
    ```bash
    npm run dev
