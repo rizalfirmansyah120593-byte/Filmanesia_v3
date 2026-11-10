@@ -3,14 +3,21 @@ import path from 'node:path';
 
 const dataDirectory = path.resolve('data');
 const dataFile = path.join(dataDirectory, 'articles.json');
+const seedFile = path.join(dataDirectory, 'articles.seed.json');
 
 export async function readArticles() {
   try {
     const value = JSON.parse(await readFile(dataFile, 'utf8'));
     return Array.isArray(value) ? value : [];
   } catch (error) {
-    if (error.code === 'ENOENT') return [];
-    throw error;
+    if (error.code !== 'ENOENT') throw error;
+    try {
+      const seed = JSON.parse(await readFile(seedFile, 'utf8'));
+      return Array.isArray(seed) ? seed : [];
+    } catch (seedError) {
+      if (seedError.code === 'ENOENT') return [];
+      throw seedError;
+    }
   }
 }
 
