@@ -1,8 +1,40 @@
+import { useEffect, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toDetailPath } from './urlUtils';
 import HeroBanner from './HeroBanner';
 import TrendingRow from './TrendingRow';
 import SEO from './SEO';
+
+// Mount below-the-fold rows only when they are close to the viewport. This keeps
+// the initial page from starting seven TMDB requests and rendering every card.
+function DeferredTrendingRow({ children }) {
+  const containerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = containerRef.current;
+    if (!element) return undefined;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { rootMargin: '700px 0px' });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div ref={containerRef} className="content-row min-h-[300px]">
+      {isVisible ? children : <div aria-hidden="true" className="min-h-[300px]" />}
+    </div>
+  );
+}
+
+DeferredTrendingRow.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 const SectionDivider = ({ label }) => (
   <div className="flex items-center gap-4 px-4 sm:px-6 mb-8 mt-4">
@@ -11,6 +43,10 @@ const SectionDivider = ({ label }) => (
     <div className="flex-1 h-px bg-white/[0.05]" />
   </div>
 );
+
+SectionDivider.propTypes = {
+  label: PropTypes.string.isRequired,
+};
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -58,64 +94,76 @@ export default function HomePage() {
           onSelect={handleSelect}
           onSeeAll={goMovies}
         />
-        <TrendingRow
-          title="Top 10 Movies This Week"
-          type="movie"
-          variant="popular"
-          showRank
-          originalLanguage={['en', 'zh', 'ko', 'ja']}
-          accent="#ef4444"
-          onSelect={handleSelect}
-          onSeeAll={goMovies}
-        />
-        <TrendingRow
-          title="Now Playing in Theaters"
-          type="movie"
-          variant="now_playing"
-          accent="#f59e0b"
-          onSelect={handleSelect}
-          onSeeAll={goMovies}
-        />
-        <TrendingRow
-          title="K-Drama Series"
-          type="tv"
-          variant="kdrama"
-          sinceYear={2020}
-          accent="#ec4899"
-          onSelect={handleSelect}
-          onSeeAll={goKDrama}
-        />
+        <DeferredTrendingRow>
+          <TrendingRow
+            title="Top 10 Movies This Week"
+            type="movie"
+            variant="popular"
+            showRank
+            originalLanguage={['en', 'zh', 'ko', 'ja']}
+            accent="#ef4444"
+            onSelect={handleSelect}
+            onSeeAll={goMovies}
+          />
+        </DeferredTrendingRow>
+        <DeferredTrendingRow>
+          <TrendingRow
+            title="Now Playing in Theaters"
+            type="movie"
+            variant="now_playing"
+            accent="#f59e0b"
+            onSelect={handleSelect}
+            onSeeAll={goMovies}
+          />
+        </DeferredTrendingRow>
+        <DeferredTrendingRow>
+          <TrendingRow
+            title="K-Drama Series"
+            type="tv"
+            variant="kdrama"
+            sinceYear={2020}
+            accent="#ec4899"
+            onSelect={handleSelect}
+            onSeeAll={goKDrama}
+          />
+        </DeferredTrendingRow>
 
         <SectionDivider label="TV Shows" />
 
         {/* ── TV ── */}
-        <TrendingRow
-          title="Asian TV Shows"
-          type="tv"
-          variant="popular"
-          originalLanguage={['ko', 'ja', 'zh']}
-          sinceYear={2020}
-          accent="#f97316"
-          onSelect={handleSelect}
-          onSeeAll={goSeries}
-        />
-        <TrendingRow
-          title="Trending TV Shows"
-          type="tv"
-          variant="trending"
-          accent="#8b5cf6"
-          onSelect={handleSelect}
-          onSeeAll={goSeries}
-        />
-        <TrendingRow
-          title="Top 10 Series This Week"
-          type="tv"
-          variant="trending"
-          showRank
-          accent="#8b5cf6"
-          onSelect={handleSelect}
-          onSeeAll={goSeries}
-        />
+        <DeferredTrendingRow>
+          <TrendingRow
+            title="Asian TV Shows"
+            type="tv"
+            variant="popular"
+            originalLanguage={['ko', 'ja', 'zh']}
+            sinceYear={2020}
+            accent="#f97316"
+            onSelect={handleSelect}
+            onSeeAll={goSeries}
+          />
+        </DeferredTrendingRow>
+        <DeferredTrendingRow>
+          <TrendingRow
+            title="Trending TV Shows"
+            type="tv"
+            variant="trending"
+            accent="#8b5cf6"
+            onSelect={handleSelect}
+            onSeeAll={goSeries}
+          />
+        </DeferredTrendingRow>
+        <DeferredTrendingRow>
+          <TrendingRow
+            title="Top 10 Series This Week"
+            type="tv"
+            variant="trending"
+            showRank
+            accent="#8b5cf6"
+            onSelect={handleSelect}
+            onSeeAll={goSeries}
+          />
+        </DeferredTrendingRow>
       </div>
     </div>
   );

@@ -7,6 +7,9 @@
     { "name": "Film", "url": "https://www.filmanesia.com/movies", "type": "collection" },
     { "name": "Serial TV", "url": "https://www.filmanesia.com/series", "type": "collection" },
     { "name": "Film Trending", "url": "https://www.filmanesia.com/trending-film", "type": "collection" },
-    { "name": "Blog Filmanesia", "url": "https://www.filmanesia.com/blog", "type": "collection" }
+    { "name": "Blog Filmanesia", "url": "https://www.filmanesia.com/blog", "type": "collection" },
+    { "name": "Tentang Filmanesia", "url": "https://www.filmanesia.com/tentang", "type": "about" },
+    { "name": "Kontak Filmanesia", "url": "https://www.filmanesia.com/kontak", "type": "contact" },
+    { "name": "Syarat dan Ketentuan", "url": "https://www.filmanesia.com/syarat-ketentuan", "type": "legal" }
   ]
 }

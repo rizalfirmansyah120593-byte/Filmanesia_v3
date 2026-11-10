@@ -33,6 +33,31 @@ html, body {
   min-height: 100vh;
 }
 
+/* Keep the no-JavaScript homepage useful to crawlers and AI agents. */
+.seo-fallback {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  color: #d1d5db;
+  background: #07080a;
+  font-family: system-ui, sans-serif;
+}
+
+.seo-fallback h1 {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.seo-fallback nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
+}
+
+.seo-fallback a { color: #f87171; text-decoration: underline; }
+
 /* Raise muted text to WCAG AA contrast on the dark surface. */
 .text-gray-500 { color: #9ca3af; }
 .text-gray-600 { color: #9ca3af; }

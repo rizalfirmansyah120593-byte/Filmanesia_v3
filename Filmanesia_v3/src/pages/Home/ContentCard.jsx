@@ -1,6 +1,5 @@
-import React, { useState, memo, useCallback, useEffect, useRef } from 'react';
+import { useState, memo, useCallback, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
 import { FaPlay, FaStar, FaPlus, FaCheck, FaTrash, FaVolumeMute, FaVolumeUp } from 'react-icons/fa';
 import { useWatchlist } from '../../context/WatchlistContext';
 
@@ -46,13 +45,6 @@ const ContentCard = memo(({
       setWlLoading(false);
     }
   }, [mediaId, mediaType, title, posterPath, voteAverage, rating, releaseDate, onNeedAuth, toggleWatchlist]);
-
-  const handleKeyPress = useCallback((e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      onClick?.();
-    }
-  }, [onClick]);
 
   const src = imageError ? placeholderImage : poster;
   const year = releaseDate ? new Date(releaseDate).getFullYear() : null;
@@ -131,11 +123,8 @@ const ContentCard = memo(({
   }, [showTrailer, mediaId, mediaType, trailerKey, trailerError]);
 
   return (
-    <motion.div
-      whileHover={{ scale: 1.05, y: -4 }}
-      whileTap={{ scale: 0.95 }}
-      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-      className={`group relative w-full cursor-pointer transition-shadow duration-200 ${showTrailer ? 'z-50' : 'z-10'} ${className}`}
+    <div
+      className={`group relative w-full cursor-pointer transition-[transform,box-shadow] duration-200 hover:scale-[1.05] hover:-translate-y-1 active:scale-[0.95] ${showTrailer ? 'z-50' : 'z-10'} ${className}`}
       onClick={onClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -201,7 +190,7 @@ const ContentCard = memo(({
                 onClick={handleWatchlist}
                 aria-label={inWatchlist ? `Remove ${title} from watchlist` : `Add ${title} to watchlist`}
                 title={inWatchlist ? 'Remove from Watchlist' : 'Add to Watchlist'}
-                aria-label={inWatchlist ? 'Remove from watchlist' : 'Add to watchlist'}
+                disabled={wlLoading}
                 className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center border transition-colors shadow-sm ${inWatchlist
                   ? (isWatchlistPage ? 'bg-black/60 border-white/20 hover:bg-red-600/90' : 'bg-red-600 border-red-500')
                   : 'bg-white/[0.08] border-white/20 text-gray-300 hover:bg-red-600 hover:border-red-500'
@@ -320,7 +309,7 @@ const ContentCard = memo(({
           </div>
         </div>
       )}
-    </motion.div>
+    </div>
   );
 });
 

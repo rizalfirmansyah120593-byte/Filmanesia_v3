@@ -141,13 +141,22 @@
 </head>
 
 <body>
-  <div id="root"></div>
-  <noscript>
-    <main>
+  <!-- This lightweight fallback is replaced by React immediately, while keeping the homepage useful to agents that do not execute JavaScript. -->
+  <div id="root">
+    <main class="seo-fallback">
       <h1>Filmanesia — Katalog Film dan Serial TV</h1>
       <p>Temukan film dan serial TV, jelajahi genre, dan baca panduan hiburan di Filmanesia.</p>
-      <a href="/movies">Film</a> · <a href="/series">Serial TV</a> · <a href="/tentang">Tentang Filmanesia</a> · <a href="/kontak">Kontak</a> · <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a>
+      <nav aria-label="Informasi Filmanesia">
+        <a href="/movies">Film</a>
+        <a href="/series">Serial TV</a>
+        <a href="/tentang">Tentang Filmanesia</a>
+        <a href="/kontak">Kontak</a>
+        <a href="/syarat-ketentuan">Syarat &amp; Ketentuan</a>
+      </nav>
     </main>
+  </div>
+  <noscript>
+    <p>JavaScript diperlukan untuk fitur pencarian dan pemutaran interaktif.</p>
   </noscript>
   <script type="module" src="/src/main.jsx"></script>
 </body>
