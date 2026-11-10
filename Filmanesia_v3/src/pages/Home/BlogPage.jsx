@@ -115,17 +115,16 @@ export default function BlogPage() {
     return () => { active = false; };
   }, []);
 
-  const articles = remoteArticles.length
-    ? remoteArticles.map((article) => ({
-      category: article.category || 'Artikel Film',
-      title: article.title,
-      excerpt: article.excerpt || article.meta_description || '',
-      date: article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '',
-      image: getArticleImage(article),
-      alt: article.title,
-      href: `/blog/${article.slug}`,
-    }))
-    : [...SEEDED_ARTICLES, ...ARTICLES];
+  const remoteCards = remoteArticles.map((article) => ({
+    category: article.category || 'Artikel Film',
+    title: article.title,
+    excerpt: article.excerpt || article.meta_description || '',
+    date: article.published_at ? new Date(article.published_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) : '',
+    image: getArticleImage(article),
+    alt: article.title,
+    href: `/blog/${article.slug}`,
+  }));
+  const articles = [...remoteCards, ...SEEDED_ARTICLES, ...ARTICLES].filter((article, index, all) => all.findIndex((item) => item.href === article.href) === index);
 
   const featured = articles[0];
   const latest = articles.slice(1);
