@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { spawn } from 'node:child_process';
-import { readFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { extname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readArticles } from './scripts/article-store.mjs';
@@ -98,10 +98,16 @@ async function serveStatic(response, pathname) {
     return sendJson(response, 403, { error: 'Forbidden' });
   }
   try {
-    const body = await readFile(filePath);
-    response.writeHead(200, { 'Content-Type': mimeTypes[extname(filePath)] || 'application/octet-stream' });
+    const entry = await stat(filePath);
+    const servedPath = entry.isDirectory() ? join(filePath, 'index.html') : filePath;
+    const body = await readFile(servedPath);
+    response.writeHead(200, { 'Content-Type': mimeTypes[extname(servedPath)] || 'application/octet-stream' });
     response.end(body);
-  } catch {
+  } catch (error) {
+    if (error.code !== 'ENOENT' && error.code !== 'ENOTDIR') {
+      console.error(`[static] Unable to serve ${pathname}: ${error.message}`);
+      return sendJson(response, 500, { error: 'Unable to serve requested file.' });
+    }
     if (!isAppRoute(pathname)) {
       const notFound = await readFile(join(root, '404.html'));
       response.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });

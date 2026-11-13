@@ -1,4 +1,4 @@
-import { GENRES, SPECIAL_CATEGORIES } from './tmdb';
+import { GENRES, SPECIAL_CATEGORIES } from './tmdb.js';
 
 const SORT_SLUGS = {
   movie: {

@@ -6,6 +6,7 @@ import { GENRES, SPECIAL_CATEGORIES } from '../tmdb';
 import { BiTv, BiSortAlt2 } from 'react-icons/bi';
 import { buildBrowsePath, getCategoryBySlug, getSortByFromSlug } from '../urlFilters';
 import SEO from '../SEO';
+import { getBrowseSeo } from '../seoBrowseLabels';
 
 const SORT_OPTIONS = [
   { value: 'popularity.desc',    label: 'Most Popular' },
@@ -36,6 +37,7 @@ function Series() {
   const genre =
     GENRES.tv.find(g => g.id === genreId) ||
     SPECIAL_CATEGORIES.tv.find(g => g.id === genreId);
+  const seo = getBrowseSeo('tv', genre);
 
   const handleSelect = (item) => {
     navigate(toDetailPath('tv', item.id, item.title || item.name), {
@@ -69,12 +71,8 @@ function Series() {
   return (
     <div className="flex flex-col min-h-screen">
       <SEO
-        title={genre ? `${genre.name} TV Shows` : 'TV Shows'}
-        description={
-          genre
-            ? `Stream ${genre.name} TV shows free on Filmanesia. Watch the best ${genre.name.toLowerCase()} series, from binge-worthy dramas to must-watch hits.`
-            : 'Stream trending TV shows and series free on Filmanesia. Discover the most popular, top-rated, and newest shows across all genres.'
-        }
+        title={seo.title}
+        description={seo.description}
         url={`https://www.filmanesia.com${buildBrowsePath('tv', genreId)}`}
       />
       {/* Sticky context header */}
@@ -86,9 +84,7 @@ function Series() {
               <BiTv className="text-red-500 text-xl" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-none">
-                {genre ? `${genre.name} TV Shows` : 'TV Shows'}
-              </h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-none">{seo.heading}</h1>
               {genre ? (
                 <div className="flex items-center gap-2 mt-1.5">
                   <span className="text-gray-400 text-[13px] font-medium leading-none">Browsing</span>

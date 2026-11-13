@@ -6,6 +6,7 @@ import { GENRES, SPECIAL_CATEGORIES } from '../tmdb';
 import { BiMoviePlay, BiSortAlt2 } from 'react-icons/bi';
 import { buildBrowsePath, getCategoryBySlug, getSortByFromSlug } from '../urlFilters';
 import SEO from '../SEO';
+import { getBrowseSeo } from '../seoBrowseLabels';
 
 const SORT_OPTIONS = [
   { value: 'popularity.desc',          label: 'Most Popular' },
@@ -37,6 +38,7 @@ function Movie() {
   const genre =
     GENRES.movie.find(g => g.id === genreId) ||
     SPECIAL_CATEGORIES.movie.find(g => g.id === genreId);
+  const seo = getBrowseSeo('movie', genre);
 
   const handleSelect = (item) => {
     navigate(toDetailPath('movie', item.id, item.title || item.name), {
@@ -70,12 +72,8 @@ function Movie() {
   return (
     <div className="flex flex-col min-h-screen">
       <SEO
-        title={genre ? `${genre.name} Movies` : 'Movies'}
-        description={
-          genre
-            ? `Browse and stream ${genre.name} movies free on Filmanesia. Discover the best ${genre.name.toLowerCase()} films, from classics to new releases.`
-            : 'Browse and stream trending movies free on Filmanesia. Discover the most popular, top-rated, and newest films across all genres.'
-        }
+        title={seo.title}
+        description={seo.description}
         url={`https://www.filmanesia.com${buildBrowsePath('movie', genreId)}`}
       />
       {/* Sticky context header */}
@@ -87,9 +85,7 @@ function Movie() {
               <BiMoviePlay className="text-red-500 text-xl" />
             </div>
             <div className="flex flex-col">
-              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-none">
-                {genre ? `${genre.name} Movies` : 'Movies'}
-              </h1>
+              <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight leading-none">{seo.heading}</h1>
               {genre ? (
                 <div className="flex items-center gap-2 mt-1.5">
                   <span className="text-gray-400 text-[13px] font-medium leading-none">Browsing</span>
