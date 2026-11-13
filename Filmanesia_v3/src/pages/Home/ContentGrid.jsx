@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import ContentCard from './ContentCard';
@@ -191,6 +191,7 @@ const ContentGrid = ({ genreId, type, onSelect, sortBy = 'popularity.desc', onRe
           <ContentCard
             title={item.title || item.name}
             poster={posterPath}
+            imageSizes="(min-width: 1280px) 13vw, (min-width: 1024px) 15vw, (min-width: 768px) 18vw, (min-width: 640px) 23vw, 30vw"
             rating={item.vote_average}
             onClick={() => onSelect(item)}
             releaseDate={item.release_date || item.first_air_date}

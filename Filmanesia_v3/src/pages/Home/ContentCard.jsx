@@ -6,6 +6,7 @@ import { useWatchlist } from '../../context/WatchlistContext';
 const ContentCard = memo(({
   title,
   poster,
+  imageSizes = '160px',
   rating,
   onClick = () => { },
   className = '',
@@ -47,6 +48,9 @@ const ContentCard = memo(({
   }, [mediaId, mediaType, title, posterPath, voteAverage, rating, releaseDate, onNeedAuth, toggleWatchlist]);
 
   const src = imageError ? placeholderImage : poster;
+  const srcSet = !imageError && posterPath
+    ? [185, 342, 500].map((width) => `https://image.tmdb.org/t/p/w${width}${posterPath} ${width}w`).join(', ')
+    : undefined;
   const year = releaseDate ? new Date(releaseDate).getFullYear() : null;
   const ratingNum = rating ? Math.round(rating * 10) : null;
   const ratingColor = rating >= 7 ? 'text-green-400' : rating >= 5 ? 'text-yellow-400' : 'text-red-400';
@@ -141,6 +145,8 @@ const ContentCard = memo(({
 
           <img
             src={src}
+            srcSet={srcSet}
+            sizes={imageSizes}
             alt={title}
             loading="lazy"
             width="342"
@@ -316,6 +322,7 @@ const ContentCard = memo(({
 ContentCard.propTypes = {
   title: PropTypes.string.isRequired,
   poster: PropTypes.string,
+  imageSizes: PropTypes.string,
   rating: PropTypes.number,
   onClick: PropTypes.func,
   className: PropTypes.string,

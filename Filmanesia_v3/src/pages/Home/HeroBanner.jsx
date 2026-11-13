@@ -8,6 +8,7 @@ const API_KEY  = import.meta.env.VITE_TMDB_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 // w780 is sufficient for the hero's rendered desktop width and saves several MB.
 const BACKDROP = 'https://image.tmdb.org/t/p/w780';
+const BACKDROP_SRCSET = 'https://image.tmdb.org/t/p/w500';
 const BACKDROP_THUMB = 'https://image.tmdb.org/t/p/w300';
 const INTERVAL = 7000;
 
@@ -22,8 +23,9 @@ const GENRE_MAP = {
 };
 
 const useTrending = () => {
-  const [items, setItems]     = useState([]);
-  const [loading, setLoading] = useState(true);
+  const initialItem = window.__FILMANESIA_INITIAL_HERO__;
+  const [items, setItems]     = useState(() => initialItem ? [initialItem] : []);
+  const [loading, setLoading] = useState(() => !initialItem);
 
   useEffect(() => {
     let cancelled = false;
@@ -131,6 +133,7 @@ export default function HeroBanner() {
       <div className={`absolute inset-0 transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
         <img
           src={`${BACKDROP}${item.backdrop_path}`}
+          srcSet={`${BACKDROP_SRCSET}${item.backdrop_path} 500w, ${BACKDROP}${item.backdrop_path} 780w`}
           alt={title}
           loading="eager"
           fetchPriority="high"
@@ -258,7 +261,16 @@ export default function HeroBanner() {
                   : 'ring-white/10 opacity-45 hover:opacity-75'
               }`}
             >
-              <img src={`${BACKDROP_THUMB}${it.backdrop_path}`} loading="lazy" width="300" height="169" sizes="80px" alt={`Thumbnail ${it.title || it.name}`} className="w-full h-full object-cover" />
+              <img
+                src={`${BACKDROP_THUMB}${it.backdrop_path}`}
+                srcSet={`https://image.tmdb.org/t/p/w92${it.backdrop_path} 92w, https://image.tmdb.org/t/p/w154${it.backdrop_path} 154w, ${BACKDROP_THUMB}${it.backdrop_path} 300w`}
+                loading="lazy"
+                width="300"
+                height="169"
+                sizes="80px"
+                alt={`Thumbnail ${it.title || it.name}`}
+                className="w-full h-full object-cover"
+              />
             </button>
           ))}
         </div>

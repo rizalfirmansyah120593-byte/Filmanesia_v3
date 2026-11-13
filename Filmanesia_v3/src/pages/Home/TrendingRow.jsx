@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 import { FiArrowRight } from 'react-icons/fi';
 import ContentCard from './ContentCard';
@@ -8,6 +9,7 @@ import { SPECIAL_PARAMS } from './tmdb';
 const API_KEY = import.meta.env.VITE_TMDB_API;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 const POSTER = 'https://image.tmdb.org/t/p/w342';
+const ROW_ITEM_LIMIT = 12;
 
 /* variant → TMDB endpoint path */
 const endpointFor = (type, variant) => {
@@ -126,9 +128,23 @@ function useRow(type, variant = 'trending', minRating = 0, minVotes = 0, origina
                   (minVotes === 0 || i.vote_count >= minVotes)
                 );
               })
-              .slice(0, 20)
+              .slice(0, ROW_ITEM_LIMIT)
           );
         }
+
+        TrendingRow.propTypes = {
+          title: PropTypes.string.isRequired,
+          type: PropTypes.oneOf(['movie', 'tv']).isRequired,
+          variant: PropTypes.string,
+          showRank: PropTypes.bool,
+          minRating: PropTypes.number,
+          minVotes: PropTypes.number,
+          sinceYear: PropTypes.number,
+          originalLanguage: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+          onSelect: PropTypes.func.isRequired,
+          onSeeAll: PropTypes.func,
+          accent: PropTypes.string,
+        };
       } catch { /* ignore */ }
       finally { if (!cancelled) setLoading(false); }
     })();
@@ -154,16 +170,32 @@ export default function TrendingRow({
 }) {
   const { items, loading } = useRow(type, variant, minRating, minVotes, originalLanguage, sinceYear);
   const rowRef = useRef(null);
+  const maxScrollRef = useRef(0);
   const dragStateRef = useRef({ active: false, startX: 0, startScrollLeft: 0, moved: false });
   const suppressClickRef = useRef(false);
   const [isDragging, setIsDragging] = useState(false);
   const [isAutoPaused, setIsAutoPaused] = useState(false);
   const autoScrollEnabled = type === 'movie' && variant === 'trending';
 
+  useEffect(() => {
+    const el = rowRef.current;
+    if (!autoScrollEnabled || !el) return undefined;
+
+    const updateMaxScroll = () => {
+      maxScrollRef.current = Math.max(0, el.scrollWidth - el.clientWidth);
+    };
+    updateMaxScroll();
+
+    if (typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(updateMaxScroll);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [autoScrollEnabled, items.length]);
+
   // Gently advance the Trending Movies row using the browser frame loop.
   // This avoids the small jumps that a setInterval can cause during scrolling.
   useEffect(() => {
-    if (!autoScrollEnabled || isAutoPaused || isDragging) return undefined;
+    if (!autoScrollEnabled || isAutoPaused || isDragging || window.matchMedia('(hover: none)').matches) return undefined;
     let animationId;
     let previousTime = null;
     const speed = 34; // pixels per second: faster, while remaining smooth
@@ -172,8 +204,8 @@ export default function TrendingRow({
       if (previousTime === null) previousTime = time;
       const delta = Math.min(time - previousTime, 50);
       previousTime = time;
-      if (el && el.scrollWidth > el.clientWidth) {
-        const maxScroll = el.scrollWidth - el.clientWidth;
+      if (el && maxScrollRef.current > 0) {
+        const maxScroll = maxScrollRef.current;
         const nextPosition = el.scrollLeft + (speed * delta) / 1000;
         el.scrollLeft = nextPosition >= maxScroll ? 0 : nextPosition;
       }
@@ -261,7 +293,7 @@ export default function TrendingRow({
         <div className="flex items-center gap-2">
           {onSeeAll && (
             <button
-              aria-label={`Lihat semua ${title}`}
+              aria-label={`See all ${title}`}
               onClick={onSeeAll}
               className="flex items-center gap-1 text-gray-500 hover:text-red-400 text-xs font-semibold uppercase tracking-wider transition-colors duration-200 mr-1"
             >
@@ -326,6 +358,7 @@ export default function TrendingRow({
               <ContentCard
                 title={item.title || item.name}
                 poster={item.poster_path ? `${POSTER}${item.poster_path}` : null}
+                imageSizes={showRank ? '185px' : '160px'}
                 rating={item.vote_average}
                 releaseDate={releaseDate.slice(0, 4)}
                 onClick={() => {

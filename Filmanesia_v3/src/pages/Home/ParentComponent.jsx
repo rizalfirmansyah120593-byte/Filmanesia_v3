@@ -146,7 +146,7 @@ function ParentComponent() {
           <div className="h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
           <div className="max-w-6xl mx-auto px-6 py-9 grid gap-7 text-xs text-gray-600 md:grid-cols-[1.1fr_1.6fr_1fr] md:items-center">
             <div className="flex items-center gap-3">
-              <img src="/filmanesia-logo.svg" alt="Filmanesia" className="w-[128px] h-auto" />
+              <img src="/filmanesia-logo.svg" alt="Filmanesia" width="128" height="27" className="w-[128px] h-auto" />
               <span>·</span>
               <span>Developed by <span className="text-gray-400 font-semibold">Rizal Firmansyah</span></span>
             </div>
@@ -206,7 +206,7 @@ function ParentComponent() {
         })}
         <button onClick={() => handleNavigation('watchlist')} aria-label="Buka watchlist" className="flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-colors text-gray-500 hover:text-gray-300">
           <FaUserCircle className="text-2xl" />
-          <span className="text-[10px] font-medium">Profile</span>
+          <span className="text-[10px] font-medium">Watchlist</span>
         </button>
       </nav>
     </div>

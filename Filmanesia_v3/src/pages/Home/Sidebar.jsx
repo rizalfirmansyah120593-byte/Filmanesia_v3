@@ -58,10 +58,10 @@ function Sidebar({ activePage, onNavigate, selectedGenreId, onGenreSelect }) {
       {/* Logo */}
       <button onClick={() => onNavigate('home')} className="relative flex items-center gap-4 px-[18px] pt-8 pb-8 shrink-0 text-left hover:opacity-90 transition-opacity">
         <div className="flex items-center justify-center w-[48px] h-[48px] shrink-0">
-          <img src="/filmanesia-icon.svg" alt="Filmanesia" className="w-full h-full drop-shadow-lg" />
+          <img src="/filmanesia-icon.svg" alt="Filmanesia" width="48" height="48" className="w-full h-full drop-shadow-lg" />
         </div>
         <div className={`flex flex-col leading-tight whitespace-nowrap transition-opacity duration-200 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
-          <img src="/filmanesia-logo.svg" alt="Filmanesia" className="w-[154px] h-auto" />
+          <img src="/filmanesia-logo.svg" alt="Filmanesia" width="154" height="33" className="w-[154px] h-auto" />
           <span className="text-red-400/70 text-[10px] font-semibold tracking-[0.22em] uppercase mt-0.5">Streaming</span>
         </div>
       </button>

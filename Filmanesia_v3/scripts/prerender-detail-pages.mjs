@@ -73,10 +73,22 @@ async function main() {
     return;
   }
   try {
-    const [movies, series] = await Promise.all([
+    const [movies, series, trending] = await Promise.all([
       tmdb('/trending/movie/week'),
       tmdb('/trending/tv/week'),
+      tmdb('/trending/all/week'),
     ]);
+    const initialHero = (trending.results || []).find((item) => item?.backdrop_path && (item.title || item.name) && item.overview);
+    if (initialHero) {
+      const smallImage = `https://image.tmdb.org/t/p/w500${initialHero.backdrop_path}`;
+      const largeImage = `https://image.tmdb.org/t/p/w780${initialHero.backdrop_path}`;
+      const preload = `<link rel="preload" as="image" href="${smallImage}" imagesrcset="${smallImage} 500w, ${largeImage} 780w" imagesizes="100vw" fetchpriority="high" />`;
+      const initialHeroScript = `<script>window.__FILMANESIA_INITIAL_HERO__=${jsonLd(initialHero)};</script>`;
+      const homeTemplate = template
+        .replace('</head>', `${preload}</head>`)
+        .replace('</body>', `${initialHeroScript}</body>`);
+      await writeFile(path.join(distDir, 'index.html'), homeTemplate, 'utf8');
+    }
     const pages = [
       ...(movies.results || []).slice(0, 20).map((item) => [item, 'movie']),
       ...(series.results || []).slice(0, 20).map((item) => [item, 'tv']),
