@@ -3,7 +3,7 @@ import { spawn } from 'node:child_process';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { acquireAutomationLock, readArticles } from './scripts/article-store.mjs';
+import { acquireAutomationLock, queueFacebookArticlesForDate, readArticles } from './scripts/article-store.mjs';
 import { publishPendingFacebookArticles } from './scripts/facebook-publisher.mjs';
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)), 'dist');
@@ -130,10 +130,14 @@ async function autoPublishArticle() {
     releaseAutomationLock = await acquireAutomationLock();
     if (!releaseAutomationLock) return;
 
-    if (facebookAutoPublishEnabled) await publishPendingFacebookArticles();
+    const jakartaDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date());
+    if (facebookAutoPublishEnabled) {
+      const queued = await queueFacebookArticlesForDate(jakartaDate, 2);
+      if (queued) console.log(`[Facebook automation] Queued ${queued} article(s) published today.`);
+      await publishPendingFacebookArticles();
+    }
     if (!autoPublishEnabled) return;
 
-    const jakartaDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date());
     const articles = await readArticles();
     const publishedToday = articles.filter((article) => article.published_at?.slice(0, 10) === jakartaDate).length;
     if (publishedToday >= 2) return;

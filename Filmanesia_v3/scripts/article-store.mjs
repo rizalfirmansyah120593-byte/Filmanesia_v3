@@ -167,6 +167,24 @@ export async function createArticle(article) {
   });
 }
 
+export async function queueFacebookArticlesForDate(publishedDate, limit = 2) {
+  if (!Number.isInteger(limit) || limit < 1) throw new Error('Facebook backfill limit must be a positive integer.');
+  return withFileLock(async () => {
+    const articles = await readArticlesFromFile();
+    const candidates = articles
+      .filter((article) => {
+        if (article.status !== 'published' || article.facebook_status) return false;
+        if (!article.published_at || Number.isNaN(Date.parse(article.published_at))) return false;
+        return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date(article.published_at)) === publishedDate;
+      })
+      .sort((left, right) => Date.parse(right.published_at) - Date.parse(left.published_at))
+      .slice(0, limit);
+    for (const article of candidates) article.facebook_status = 'pending';
+    if (candidates.length) await writeArticlesToFile(articles);
+    return candidates.length;
+  });
+}
+
 export async function listPendingFacebookArticles() {
   return (await readArticlesFromFile()).filter((article) => article.facebook_status === 'pending');
 }

@@ -107,7 +107,7 @@ Untuk memublikasikan artikel baru ke Facebook secara otomatis, set environment v
 - `FACEBOOK_PAGE_ACCESS_TOKEN` — simpan hanya di Hostinger, jangan di source code atau frontend.
 - `FACEBOOK_GRAPH_API_VERSION` — versi Graph API yang masih didukung untuk Meta App Anda, dalam format `vNN.N`.
 
-Meta App dan Page token harus memiliki izin penerbitan Page, seperti `pages_manage_posts`. Artikel yang gagal dikirim akan tetap tayang di website dan dicoba lagi pada siklus otomatis berikutnya. Status pengiriman dicatat agar beberapa instance server tidak membuat posting yang sama secara bersamaan.
+Meta App dan Page token harus memiliki izin penerbitan Page, seperti `pages_manage_posts`. Saat otomatisasi berjalan, hingga dua artikel terbaru yang terbit hari itu akan diantrekan, termasuk artikel yang terbit sebelum konfigurasi Facebook ditambahkan. Artikel yang gagal dikirim tetap tayang di website dan dicoba lagi pada siklus berikutnya. Status pengiriman dicatat agar beberapa instance server tidak membuat posting yang sama secara bersamaan.
 
 4. **Start the development server:**
    ```bash

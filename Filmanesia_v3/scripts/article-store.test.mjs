@@ -29,6 +29,27 @@ test('stores articles and atomically claims Facebook publication', async () => {
   await store.completeFacebookArticle(article.id, 'page-post-123');
   assert.deepEqual(await store.listPendingFacebookArticles(), []);
 
+  const backfillArticles = [
+    { id: 'backfill-old', published_at: new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString() },
+    { id: 'backfill-recent-1', published_at: new Date(Date.now() - 2000).toISOString() },
+    { id: 'backfill-recent-2', published_at: new Date().toISOString() },
+  ];
+  for (const candidate of backfillArticles) {
+    await store.createArticle({
+      ...candidate,
+      slug: candidate.id,
+      title: candidate.id,
+      excerpt: 'Ringkasan uji',
+      status: 'published',
+    });
+  }
+  const jakartaDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date());
+  assert.equal(await store.queueFacebookArticlesForDate(jakartaDate, 2), 2);
+  assert.deepEqual(
+    (await store.listPendingFacebookArticles()).map((item) => item.id).sort(),
+    ['backfill-recent-1', 'backfill-recent-2'],
+  );
+
   await Promise.all(Array.from({ length: 5 }, (_, index) => store.createArticle({
     id: `article-concurrent-${index}`,
     slug: `article-concurrent-${index}`,
@@ -39,7 +60,7 @@ test('stores articles and atomically claims Facebook publication', async () => {
     status: 'published',
     published_at: new Date().toISOString(),
   })));
-  assert.equal((await store.readArticles()).length, 7);
+  assert.equal((await store.readArticles()).length, 10);
 
   const saved = JSON.parse(await readFile(path.join(process.env.ARTICLE_DATA_DIR, 'articles.json'), 'utf8'));
   const storedArticle = saved.find((item) => item.id === article.id);
