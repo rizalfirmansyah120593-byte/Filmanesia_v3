@@ -87,15 +87,27 @@ A modern movie and TV show streaming discovery app built with **React 18**, **Vi
 
 ### Otomatisasi artikel harian
 
-Server Node.js Hostinger menjalankan [server.mjs](./server.mjs) dan otomatis membuat maksimal dua artikel per hari. Tidak diperlukan Cron Jobs, PocketBase, token tambahan, atau workflow GitHub.
+Server Node.js Hostinger menjalankan [server.mjs](./server.mjs), mencoba membuat artikel setiap 12 jam, dan membatasi publikasi menjadi maksimal dua artikel per hari.
 
-Tambahkan tiga environment variables berikut di Hostinger → Node.js → Environment variables:
+Di Hostinger → Node.js → Environment variables, atur:
 
 - `ARTICLE_AUTOPUBLISH_ENABLED=true` — mengaktifkan otomatisasi.
 - `OPENAI_ARTICLE_MODEL=gpt-4o-mini` — model hemat.
 - `OPENAI_API_KEY` — API key OpenAI.
+- `TMDB_API_KEY` — API key TMDB; `VITE_TMDB_API` juga dapat digunakan.
 
-TMDB menggunakan `VITE_TMDB_API` yang sudah ada. Artikel disimpan di `data/articles.json` pada server Hostinger dan ditampilkan melalui `/api/articles`.
+Artikel lokal tetap menggunakan `data/articles.json`. Pada Node.js Hostinger, artikel disimpan di `~/.filmanesia/data/articles.json` agar tetap ada di luar folder release yang diganti saat deploy. Saat pertama kali berjalan, aplikasi membaca data artikel yang lama atau seed sebagai sumber awal. `ARTICLE_DATA_DIR` dapat diatur bila paket hosting memakai direktori persisten yang berbeda. Artikel tersedia melalui `/api/articles`.
+
+#### Publikasi Facebook Page
+
+Untuk memublikasikan artikel baru ke Facebook secara otomatis, set environment variables berikut di Hostinger:
+
+- `FACEBOOK_AUTOPUBLISH_ENABLED=true`
+- `FACEBOOK_PAGE_ID`
+- `FACEBOOK_PAGE_ACCESS_TOKEN` — simpan hanya di Hostinger, jangan di source code atau frontend.
+- `FACEBOOK_GRAPH_API_VERSION` — versi Graph API yang masih didukung untuk Meta App Anda, dalam format `vNN.N`.
+
+Meta App dan Page token harus memiliki izin penerbitan Page, seperti `pages_manage_posts`. Artikel yang gagal dikirim akan tetap tayang di website dan dicoba lagi pada siklus otomatis berikutnya. Status pengiriman dicatat agar beberapa instance server tidak membuat posting yang sama secara bersamaan.
 
 4. **Start the development server:**
    ```bash

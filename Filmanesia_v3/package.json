@@ -9,6 +9,7 @@
     "generate-article": "node scripts/generate-article.mjs",
     "start": "node server.mjs",
     "build": "npm run generate-sitemap && vite build && node scripts/prerender-detail-pages.mjs",
+    "test": "node --test",
     "lint": "eslint .",
     "preview": "vite preview"
   },

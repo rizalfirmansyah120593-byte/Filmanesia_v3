@@ -1,6 +1,7 @@
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { createArticle, readArticles } from './article-store.mjs';
+import { publishPendingFacebookArticles } from './facebook-publisher.mjs';
 
 const required = (name) => {
   const value = process.env[name];
@@ -84,6 +85,7 @@ async function publish(topic, article) {
     status: 'published',
     published_at: new Date().toISOString(),
   };
+  if (process.env.FACEBOOK_AUTOPUBLISH_ENABLED === 'true') payload.facebook_status = 'pending';
   if (!payload.content || !payload.excerpt) throw new Error('Model returned incomplete article content.');
 
   return createArticle(payload);
@@ -93,7 +95,8 @@ export async function runGeneration() {
   const topic = await getTopic();
   const article = await generateContent(topic);
   const published = await publish(topic, article);
-  return { id: published.id, title: published.title, slug: published.slug, model, topic: topic.title || topic.name };
+  const facebook = await publishPendingFacebookArticles();
+  return { id: published.id, title: published.title, slug: published.slug, model, topic: topic.title || topic.name, facebook };
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {

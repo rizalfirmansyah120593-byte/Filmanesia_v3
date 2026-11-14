@@ -3,13 +3,15 @@ import { spawn } from 'node:child_process';
 import { readFile, stat } from 'node:fs/promises';
 import { extname, isAbsolute, join, normalize, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readArticles } from './scripts/article-store.mjs';
+import { acquireAutomationLock, readArticles } from './scripts/article-store.mjs';
+import { publishPendingFacebookArticles } from './scripts/facebook-publisher.mjs';
 
 const root = resolve(fileURLToPath(new URL('.', import.meta.url)), 'dist');
 const port = Number(process.env.PORT || 3000);
 const automationToken = process.env.ARTICLE_AUTOMATION_TOKEN;
 let generationInProgress = false;
 const autoPublishEnabled = process.env.ARTICLE_AUTOPUBLISH_ENABLED === 'true';
+const facebookAutoPublishEnabled = process.env.FACEBOOK_AUTOPUBLISH_ENABLED === 'true';
 const editorialPaths = new Set([
   'film-terbaru',
   'film-indonesia',
@@ -121,24 +123,38 @@ async function serveStatic(response, pathname) {
 }
 
 async function autoPublishArticle() {
-  if (!autoPublishEnabled || generationInProgress) return;
-  const jakartaDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date());
-  const articles = await readArticles();
-  const publishedToday = articles.filter((article) => article.published_at?.slice(0, 10) === jakartaDate).length;
-  if (publishedToday >= 2) return;
-
+  if ((!autoPublishEnabled && !facebookAutoPublishEnabled) || generationInProgress) return;
   generationInProgress = true;
+  let releaseAutomationLock;
   try {
+    releaseAutomationLock = await acquireAutomationLock();
+    if (!releaseAutomationLock) return;
+
+    if (facebookAutoPublishEnabled) await publishPendingFacebookArticles();
+    if (!autoPublishEnabled) return;
+
+    const jakartaDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta' }).format(new Date());
+    const articles = await readArticles();
+    const publishedToday = articles.filter((article) => article.published_at?.slice(0, 10) === jakartaDate).length;
+    if (publishedToday >= 2) return;
+
     const { runGeneration } = await import('./scripts/generate-article.mjs');
     console.log(JSON.stringify({ automation: 'article', result: await runGeneration() }));
   } catch (error) {
-    console.error(`[article automation] ${error.message}`);
+    console.error(`[article automation] ${error.stack || error.message}`);
   } finally {
+    if (releaseAutomationLock) {
+      try {
+        await releaseAutomationLock();
+      } catch (error) {
+        console.error(`[article automation lock] ${error.stack || error.message}`);
+      }
+    }
     generationInProgress = false;
   }
 }
 
-if (autoPublishEnabled) {
+if (autoPublishEnabled || facebookAutoPublishEnabled) {
   setTimeout(autoPublishArticle, 15000);
   setInterval(autoPublishArticle, 12 * 60 * 60 * 1000);
 }
