@@ -12,6 +12,19 @@ function required(name, env) {
   return value;
 }
 
+function slugify(value = '') {
+  return String(value).toLowerCase()
+    .normalize('NFKD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '').trim().replace(/\s+/g, '-').replace(/-+/g, '-');
+}
+
+export function getArticleWatchUrl(article, baseUrl) {
+  const title = String(article.title || 'film').trim();
+  const type = article.media_type === 'tv' ? 'series' : 'movies';
+  if (article.tmdb_id) return `${baseUrl}/${type}/watch/${encodeURIComponent(slugify(title))}-${encodeURIComponent(String(article.tmdb_id))}`;
+  return `${baseUrl}/search?query=${encodeURIComponent(title)}`;
+}
+
 export async function publishFacebookArticle(article, { env = process.env, fetchImpl = fetch } = {}) {
   const pageId = required('FACEBOOK_PAGE_ID', env);
   const pageAccessToken = required('FACEBOOK_PAGE_ACCESS_TOKEN', env);
@@ -20,10 +33,11 @@ export async function publishFacebookArticle(article, { env = process.env, fetch
 
   const baseUrl = (env.PUBLIC_SITE_URL || env.VITE_SITE_URL || 'https://www.filmanesia.com').replace(/\/+$/, '');
   const articleUrl = `${baseUrl}/blog/${encodeURIComponent(article.slug)}`;
+  const watchUrl = getArticleWatchUrl(article, baseUrl);
   const body = new URLSearchParams({
     access_token: pageAccessToken,
     link: articleUrl,
-    message: `${article.title}\n\n${article.excerpt}\n\nBaca selengkapnya di Filmanesia.`,
+    message: `${article.title}\n\n${article.excerpt}\n\nTonton ${article.title} di Filmanesia:\n${watchUrl}\n\nBaca selengkapnya di Filmanesia:\n${articleUrl}`,
   });
   const response = await fetchImpl(`https://graph.facebook.com/${apiVersion}/${encodeURIComponent(pageId)}/feed`, {
     method: 'POST',

@@ -23,6 +23,13 @@ const escapeHtml = (value = '') => String(value)
 
 const jsonLd = (value) => JSON.stringify(value).replaceAll('<', '\\u003c');
 
+function articleWatchPath(article) {
+  const title = String(article.title || 'film').trim();
+  const slug = slugify(title);
+  if (article.tmdb_id) return `/${article.media_type === 'tv' ? 'series' : 'movies'}/watch/${slug}-${encodeURIComponent(String(article.tmdb_id))}`;
+  return `/search?query=${encodeURIComponent(title)}`;
+}
+
 function replaceMeta(html, attribute, key, content) {
   const pattern = new RegExp(`<meta\\s+${attribute}=["']${key}["'][^>]*>`, 'i');
   const tag = `<meta ${attribute}="${key}" content="${escapeHtml(content)}" />`;
@@ -154,7 +161,7 @@ function curatedArticlePage(template, slug, [title, keyword, films, intro]) {
     mainEntityOfPage: canonical,
     inLanguage: 'id-ID',
   };
-  const filmList = films.map((film) => `<li>${escapeHtml(film)}</li>`).join('');
+  const filmList = films.map((film) => `<li><a href="/search?query=${encodeURIComponent(film)}">${escapeHtml(film)}</a></li>`).join('');
   const content = `<main><article><nav aria-label="Breadcrumb"><a href="/">Beranda</a> / <a href="/blog">Blog</a> / ${escapeHtml(title)}</nav><h1>${escapeHtml(title)}</h1><p>${escapeHtml(intro)}</p><p>Panduan ini membahas ${escapeHtml(keyword)} dan merangkum judul yang dapat dipertimbangkan sesuai genre serta suasana menonton.</p><section><h2>Rekomendasi pilihan</h2><ol>${filmList}</ol></section><p>Periksa sinopsis, rating usia, dan ketersediaan di layanan resmi sebelum menonton. <a href="/movies">Jelajahi katalog film Filmanesia</a>.</p></article></main>`;
   return pageHtml(template, {
     title: `${title} | Filmanesia`,
@@ -247,7 +254,8 @@ function articlePage(template, article) {
   const publishedAt = typeof article.published_at === 'string' && !Number.isNaN(Date.parse(article.published_at))
     ? article.published_at
     : null;
-  const content = `<main><article><nav aria-label="Breadcrumb"><a href="/">Beranda</a> / <a href="/blog">Blog</a> / ${escapeHtml(title)}</nav><h1>${escapeHtml(title)}</h1>${article.excerpt ? `<p>${escapeHtml(article.excerpt)}</p>` : ''}${paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}<p><a href="/blog">Baca panduan film lainnya di Filmanesia</a></p></article></main>`;
+  const watchPath = articleWatchPath(article);
+  const content = `<main><article><nav aria-label="Breadcrumb"><a href="/">Beranda</a> / <a href="/blog">Blog</a> / ${escapeHtml(title)}</nav><h1>${escapeHtml(title)}</h1>${article.excerpt ? `<p>${escapeHtml(article.excerpt)}</p>` : ''}<p><a href="${escapeHtml(watchPath)}">Tonton ${escapeHtml(title)} di Filmanesia</a></p>${paragraphs.map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}<p><a href="/blog">Baca panduan film lainnya di Filmanesia</a></p></article></main>`;
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Article',

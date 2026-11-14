@@ -26,6 +26,8 @@ test('posts pending articles and records the Facebook post ID', async () => {
     slug: 'article-test-facebook',
     title: 'Artikel uji Facebook',
     excerpt: 'Ringkasan uji Facebook',
+    tmdb_id: '12345',
+    media_type: 'movie',
     status: 'published',
     published_at: new Date().toISOString(),
     facebook_status: 'pending',
@@ -44,6 +46,8 @@ test('posts pending articles and records the Facebook post ID', async () => {
   assert.equal(requestUrl, 'https://graph.facebook.com/v24.0/page-123/feed');
   assert.equal(requestBody.get('access_token'), env.FACEBOOK_PAGE_ACCESS_TOKEN);
   assert.equal(requestBody.get('link'), 'https://www.filmanesia.com/blog/article-test-facebook');
+  assert.match(requestBody.get('message'), /https:\/\/www\.filmanesia\.com\/movies\/watch\/artikel-uji-facebook-12345/);
+  assert.match(requestBody.get('message'), /https:\/\/www\.filmanesia\.com\/blog\/article-test-facebook/);
   assert.deepEqual(await store.listPendingFacebookArticles(), []);
 });
 
